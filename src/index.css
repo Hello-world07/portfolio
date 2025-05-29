@@ -1,0 +1,187 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Montserrat:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Apply Poppins font globally */
+body {
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Custom Glow Effect for Skill Cards and Resume Button */
+.glow-effect {
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.3), 0 0 40px rgba(99, 102, 241, 0.2);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.glow-effect:hover {
+  box-shadow: 0 0 30px rgba(99, 102, 241, 0.5), 0 0 60px rgba(99, 102, 241, 0.3);
+}
+
+/* Modern Box Layout for Highlighted Words */
+.box-highlight {
+  display: inline-block;
+  padding: 0.05rem 0.2rem;
+  margin: 0 0.1rem;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 6px;
+  background-color: rgba(0, 0, 0, 0.03);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.box-highlight:hover {
+  background-color: rgba(0, 0, 0, 0.06);
+  border-color: rgba(0, 0, 0, 0.25);
+}
+
+.dark .box-highlight {
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+.dark .box-highlight:hover {
+  background-color: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* Wrapper for highlighted phrases to add vertical spacing */
+.highlight-wrapper {
+  display: inline-block;
+  margin-bottom: 0.25rem; /* Adds vertical spacing between lines */
+}
+
+/* Smoother Waving Emoji Animation */
+@keyframes smooth-wave {
+  0%, 100% { transform: rotate(0deg); }
+  20% { transform: rotate(15deg); }
+  40% { transform: rotate(-10deg); }
+  60% { transform: rotate(10deg); }
+  80% { transform: rotate(-5deg); }
+}
+
+.animate-smooth-wave {
+  display: inline-block;
+  animation: smooth-wave 1.5s ease-in-out infinite;
+  font-size: 1.5rem;
+}
+
+/* Icon Bounce Animation for Resume Button */
+@keyframes icon-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.animate-icon-bounce {
+  animation: icon-bounce 0.4s ease-in-out;
+}
+
+/* Adjust emoji size for smaller screens */
+@media (max-width: 640px) {
+  .animate-smooth-wave {
+    font-size: 1.25rem;
+  }
+}
+
+/* Gradient Text Animation for Subtitle */
+@keyframes gradient-text {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-gradient-text {
+  background-size: 200% 200%;
+  animation: gradient-text 5s ease infinite;
+}
+
+/* Heading Fade-In Animation */
+@keyframes heading-fade {
+  0% { opacity: 0; transform: translateY(-10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.animate-heading {
+  animation: heading-fade 0.6s ease-out forwards;
+}
+
+/* Unique Gradient Underline for Headings */
+.heading-underline {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 4px;
+}
+
+.heading-underline::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(to right, #4f46e5, #ec4899);
+  border-radius: 2px;
+  transition: transform 0.3s ease;
+}
+
+.heading-underline:hover::after {
+  transform: scaleX(1.1);
+}
+
+/* Contact Section Background */
+.contact-background {
+  background: radial-gradient(circle at center, rgba(165, 180, 252, 0.1) 0%, rgba(224, 231, 255, 0.05) 70%, transparent 100%),
+              linear-gradient(to bottom, rgba(243, 244, 246, 0.8), rgba(209, 213, 219, 0.8));
+  position: relative;
+}
+
+.contact-background::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAJ0lEQVQImWP4//8/A7mRiYlBn4GBgYHh4+Nj+P///0AMoqKiQggA4z0I/w0xVQIAAAAASUVORK5CYII=') repeat;
+  opacity: 0.05;
+  z-index: -1;
+}
+
+.dark .contact-background {
+  background: radial-gradient(circle at center, rgba(55, 65, 81, 0.2) 0%, rgba(17, 24, 39, 0.1) 70%, transparent 100%),
+              linear-gradient(to bottom, rgba(31, 41, 55, 0.8), rgba(17, 24, 39, 0.8));
+}
+
+.dark .contact-background::before {
+  opacity: 0.1;
+}
+
+/* Responsive adjustments for fixed left side */
+@media (max-width: 1024px) {
+  .fixed {
+    position: static;
+    height: auto;
+  }
+  .lg\:ml-\[33\.33\%\] {
+    margin-left: 0;
+  }
+}
+
+/* Ensure animations respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .animate-gradient-xy,
+  .animate-gradient-xy-slow,
+  .animate-smooth-wave,
+  .animate-gradient-text,
+  .animate-heading,
+  .animate-icon-bounce {
+    animation: none;
+  }
+  .heading-underline::after {
+    transform: none;
+  }
+  .glow-effect:hover {
+    box-shadow: none;
+    transform: none;
+  }
+}
