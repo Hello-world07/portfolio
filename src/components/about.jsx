@@ -60,74 +60,76 @@ const About = () => {
           </h3>
           <p className="text-sm sm:text-base lg:text-lg text-gray-600 dark:text-gray-200 leading-relaxed font-montserrat">
             Hello! I'm{' '}
-            <div className="highlight-wrapper">
+            <span className="highlight-wrapper">
               <span className="font-semibold text-black dark:text-white box-highlight">
                 Konda Pranath
               </span>
-            </div>
+            </span>
             , a dedicated{' '}
-            <div className="highlight-wrapper">
+            <span className="highlight-wrapper">
               <span className="font-semibold text-black dark:text-white box-highlight">
                 BTech student
               </span>
-            </div>{' '}
+            </span>{' '}
             specializing in{' '}
-            <div className="highlight-wrapper">
+            <span className="highlight-wrapper">
               <span className="font-semibold text-black dark:text-white box-highlight">
                 Computer Science Engineering (CSE)
               </span>
-            </div>{' '}
+            </span>{' '}
             at ACE Engineering College, Ghatkesar. I have a strong passion for{' '}
-            <div className="highlight-wrapper">
+            <span className="highlight-wrapper">
               <span className="font-semibold text-black dark:text-white box-highlight">
                 programming
               </span>
-            </div>{' '}
+            </span>{' '}
             and{' '}
-            <div className="highlight-wrapper">
+            <span className="highlight-wrapper">
               <span className="font-semibold text-black dark:text-white box-highlight">
                 problem-solving
               </span>
-            </div>
-            , and I enjoy exploring new technologies and applying them to real-world scenarios.
+            </span>
+            , and I enjoy exploring new technologies
+
+ and applying them to real-world scenarios.
           </p>
           <p className="text-sm sm:text-base lg:text-lg text-gray-600 dark:text-gray-200 leading-relaxed font-montserrat mt-4">
             As an enthusiastic{' '}
-            <div className="highlight-wrapper">
+            <span className="highlight-wrapper">
               <span className="font-semibold text-black dark:text-white box-highlight">
                 AI learner
               </span>
-            </div>{' '}
+            </span>{' '}
             and{' '}
-            <div className="highlight-wrapper">
+            <span className="highlight-wrapper">
               <span className="font-semibold text-black dark:text-white box-highlight">
                 web developer
               </span>
-            </div>
+            </span>
             , I’m always looking for opportunities to grow my technical skills. I stay updated with the latest trends in{' '}
-            <div className="highlight-wrapper">
+            <span className="highlight-wrapper">
               <span className="font-semibold text-black dark:text-white box-highlight">
                 software development
               </span>
-            </div>
+            </span>
             ,{' '}
-            <div className="highlight-wrapper">
+            <span className="highlight-wrapper">
               <span className="font-semibold text-black dark:text-white box-highlight">
                 artificial intelligence
               </span>
-            </div>
+            </span>
             , and{' '}
-            <div className="highlight-wrapper">
+            <span className="highlight-wrapper">
               <span className="font-semibold text-black dark:text-white box-highlight">
                 web technologies
               </span>
-            </div>
+            </span>
             . I take pride in writing{' '}
-            <div className="highlight-wrapper">
+            <span className="highlight-wrapper">
               <span className="font-semibold text-black dark:text-white box-highlight">
                 clean, efficient, and scalable code
               </span>
-            </div>{' '}
+            </span>{' '}
             to build meaningful solutions that make a real impact.
           </p>
 
@@ -138,112 +140,112 @@ const About = () => {
           <div className="text-sm sm:text-base lg:text-lg text-gray-600 dark:text-gray-200 leading-relaxed font-montserrat">
             <p>
               Completed{' '}
-              <div className="highlight-wrapper">
+              <span className="highlight-wrapper">
                 <span className="font-semibold text-black dark:text-white box-highlight">
                   Diploma in Computer Science Engineering (CSE)
                 </span>
-              </div>{' '}
+              </span>{' '}
               from Vathsalya Institute of Science and Technology, Bhongir, India (2021 – 2024)
             </p>
             <p>
               Graduated with a{' '}
-              <div className="highlight-wrapper">
+              <span className="highlight-wrapper">
                 <span className="font-semibold text-black dark:text-white box-highlight">
                   CGPA of 8.88/10
                 </span>
-              </div>
+              </span>
             </p>
             <p className="mt-2">Learned important subjects like:</p>
             <ul className="list-disc pl-6 mt-2">
               <li>
-                <div className="highlight-wrapper">
+                <span className="highlight-wrapper">
                   <span className="font-semibold text-black dark:text-white box-highlight">
                     Object-Oriented Programming with Java
                   </span>
-                </div>
+                </span>
               </li>
               <li>
-                <div className="highlight-wrapper">
+                <span className="highlight-wrapper">
                   <span className="font-semibold text-black dark:text-white box-highlight">
                     Python, C, C++
                   </span>
-                </div>
+                </span>
               </li>
               <li>
-                <div className="highlight-wrapper">
+                <span className="highlight-wrapper">
                   <span className="font-semibold text-black dark:text-white box-highlight">
                     Web basics: HTML, CSS, JavaScript
                   </span>
-                </div>
+                </span>
               </li>
               <li>
-                <div className="highlight-wrapper">
+                <span className="highlight-wrapper">
                   <span className="font-semibold text-black dark:text-white box-highlight">
                     Artificial Intelligence and Natural Language Processing
                   </span>
-                </div>
+                </span>
               </li>
             </ul>
             <p className="mt-4">
               Currently studying{' '}
-              <div className="highlight-wrapper">
+              <span className="highlight-wrapper">
                 <span className="font-semibold text-black dark:text-white box-highlight">
                   B.Tech in Computer Science Engineering
                 </span>
-              </div>{' '}
+              </span>{' '}
               at ACE Engineering College, Ghatkesar, Telangana, India
             </p>
             <p>
               Now in my{' '}
-              <div className="highlight-wrapper">
+              <span className="highlight-wrapper">
                 <span className="font-semibold text-black dark:text-white box-highlight">
                   2nd year of B.Tech
                 </span>
-              </div>
+              </span>
             </p>
             <p>
               Focused on gaining{' '}
-              <div className="highlight-wrapper">
+              <span className="highlight-wrapper">
                 <span className="font-semibold text-black dark:text-white box-highlight">
                   practical skills
                 </span>
-              </div>{' '}
+              </span>{' '}
               and{' '}
-              <div className="highlight-wrapper">
+              <span className="highlight-wrapper">
                 <span className="font-semibold text-black dark:text-white box-highlight">
                   knowledge
                 </span>
-              </div>{' '}
+              </span>{' '}
               to solve real-world problems
             </p>
             <p>
               Always eager to learn{' '}
-              <div className="highlight-wrapper">
+              <span className="highlight-wrapper">
                 <span className="font-semibold text-black dark:text-white box-highlight">
                   new technologies
                 </span>
-              </div>{' '}
+              </span>{' '}
               and improve every day
             </p>
             <p className="mt-4">
               I believe education is more than just books and grades. It’s about understanding how to use what you learn to{' '}
-              <div className="highlight-wrapper">
+              <span className="highlight-wrapper">
                 <span className="font-semibold text-black dark:text-white box-highlight">
                   create
                 </span>
-              </div>
+              </span>
               ,{' '}
-              <div className="highlight-wrapper">
+              <span className="highlight-wrapper">
                 <span className="font-semibold text-black dark:text-white box-highlight">
                   solve problems
                 </span>
-              </div>
+              </span>
               , and{' '}
-              <div className="highlight-wrapper">
+              <span className="highlight-wrapper">
                 <span className="font-semibold text-black dark:text-white box-highlight">
                   make a difference
                 </span>
-              </div>
+              </span>
               . With every step in my studies, I’m building the skills and mindset needed to grow in the fast-changing world of technology.
             </p>
           </div>
@@ -255,71 +257,71 @@ const About = () => {
           <div className="text-sm sm:text-base lg:text-lg text-gray-600 dark:text-gray-200 leading-relaxed font-montserrat">
             <p>
               At the moment, I don’t have any official certifications to share. I’ve completed a{' '}
-              <div className="highlight-wrapper">
+              <span className="highlight-wrapper">
                 <span className="font-semibold text-black dark:text-white box-highlight">
                   3-year diploma in Computer Science Engineering
                 </span>
-              </div>{' '}
+              </span>{' '}
               and I’m currently pursuing my{' '}
-              <div className="highlight-wrapper">
+              <span className="highlight-wrapper">
                 <span className="font-semibold text-black dark:text-white box-highlight">
                   B.Tech
                 </span>
-              </div>{' '}
+              </span>{' '}
               to keep building my skills and knowledge.
             </p>
             <p className="mt-4">
               I believe learning doesn't always need a certificate to show its value. I’ve been actively working on{' '}
-              <div className="highlight-wrapper">
+              <span className="highlight-wrapper">
                 <span className="font-semibold text-black dark:text-white box-highlight">
                   projects
                 </span>
-              </div>
+              </span>
               , improving my{' '}
-              <div className="highlight-wrapper">
+              <span className="highlight-wrapper">
                 <span className="font-semibold text-black dark:text-white box-highlight">
                   coding skills
                 </span>
-              </div>
+              </span>
               , and exploring{' '}
-              <div className="highlight-wrapper">
+              <span className="highlight-wrapper">
                 <span className="font-semibold text-black dark:text-white box-highlight">
                   new technologies
                 </span>
-              </div>
+              </span>
               . Still, I do plan to earn certifications that match my interests and goals.
             </p>
             <p className="mt-2">Certifications I plan to take soon:</p>
             <ul className="list-disc pl-6 mt-2">
               <li>
-                <div className="highlight-wrapper">
+                <span className="highlight-wrapper">
                   <span className="font-semibold text-black dark:text-white box-highlight">
                     Python Programming
                   </span>
-                </div>
+                </span>
               </li>
               <li>
-                <div className="highlight-wrapper">
+                <span className="highlight-wrapper">
                   <span className="font-semibold text-black dark:text-white box-highlight">
                     Java Development
                   </span>
-                </div>
+                </span>
               </li>
               <li>
-                <div className="highlight-wrapper">
+                <span className="highlight-wrapper">
                   <span className="font-semibold text-black dark:text-white box-highlight">
                     Web Development (HTML, CSS, JavaScript)
                   </span>
-                </div>
+                </span>
               </li>
             </ul>
             <p className="mt-4">
               As I complete them, I’ll update this section.{' '}
-              <div className="highlight-wrapper">
+              <span className="highlight-wrapper">
                 <span className="font-semibold text-black dark:text-white box-highlight">
                   Learning is a journey
                 </span>
-              </div>
+              </span>
               , and I’m just getting started.
             </p>
           </div>
