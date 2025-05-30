@@ -61,6 +61,6 @@ export default {
     },
   },
   plugins: [
-    require('tailwind-scrollbar')({ nocompatible: true }), // Added nocompatible option for broader browser support
+    require('tailwind-scrollbar')({ nocompatible: true }),
   ],
 };

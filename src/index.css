@@ -201,6 +201,50 @@ body {
   background: #888;
 }
 
+/* Tooltip styles */
+.tooltip {
+  position: relative;
+}
+
+.tooltip .tooltip-text {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  position: absolute;
+  z-index: 10;
+  background-color: #1f2937;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 0.75rem;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: 200px;
+}
+
+.dark .tooltip .tooltip-text {
+  background-color: #e5e7eb;
+  color: #1f2937;
+}
+
+.tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Tag cloud rotation animation */
+@keyframes tag-rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(6deg); }
+}
+
+.tag-rotate:hover {
+  animation: tag-rotate 0.3s ease forwards;
+}
+
 /* Ensure animations respect reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
   .animate-gradient-xy,
@@ -208,7 +252,8 @@ body {
   .animate-smooth-wave,
   .animate-gradient-text,
   .animate-heading,
-  .animate-icon-bounce {
+  .animate-icon-bounce,
+  .tag-rotate:hover {
     animation: none;
   }
   .heading-underline::after {
@@ -218,5 +263,9 @@ body {
   .glow-effect:focus {
     box-shadow: none;
     transform: none;
+  }
+  .tooltip .tooltip-text {
+    visibility: visible;
+    opacity: 1;
   }
 }
