@@ -49,7 +49,7 @@ body {
 /* Wrapper for highlighted phrases to add vertical spacing */
 .highlight-wrapper {
   display: inline-block;
-  margin-bottom: 0.25rem; /* Adds vertical spacing between lines */
+  margin-bottom: 0.25rem;
 }
 
 /* Smoother Waving Emoji Animation */
@@ -64,7 +64,19 @@ body {
 .animate-smooth-wave {
   display: inline-block;
   animation: smooth-wave 1.5s ease-in-out infinite;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
+}
+
+@media (min-width: 475px) {
+  .animate-smooth-wave {
+    font-size: 1.5rem;
+  }
+}
+
+@media (min-width: 640px) {
+  .animate-smooth-wave {
+    font-size: 1.75rem;
+  }
 }
 
 /* Icon Bounce Animation for Resume Button */
@@ -110,7 +122,19 @@ body {
 .heading-underline {
   position: relative;
   display: inline-block;
-  padding-bottom: 4px;
+  padding-bottom: 2px;
+}
+
+@media (min-width: 475px) {
+  .heading-underline {
+    padding-bottom: 3px;
+  }
+}
+
+@media (min-width: 640px) {
+  .heading-underline {
+    padding-bottom: 4px;
+  }
 }
 
 .heading-underline::after {
@@ -119,7 +143,22 @@ body {
   left: 0;
   bottom: 0;
   width: 100%;
-  height: 3px;
+  height: 2px;
+}
+
+@media (min-width: 475px) {
+  .heading-underline::after {
+    height: 3px;
+  }
+}
+
+@media (min-width: 640px) {
+  .heading-underline::after {
+    height: 4px;
+  }
+}
+
+.heading-underline::after {
   background: linear-gradient(to right, #4f46e5, #ec4899);
   border-radius: 2px;
   transition: transform 0.3s ease;
@@ -171,8 +210,23 @@ body {
 
 /* Scrollbar fallback for browsers that don’t support tailwind-scrollbar (e.g., Firefox) */
 *::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+}
+
+@media (min-width: 475px) {
+  *::-webkit-scrollbar {
+    width: 8px;
+  }
+}
+
+*::-webkit-scrollbar {
+  height: 6px;
+}
+
+@media (min-width: 475px) {
+  *::-webkit-scrollbar {
+    height: 8px;
+  }
 }
 
 *::-webkit-scrollbar-track {
@@ -216,13 +270,27 @@ body {
   color: #fff;
   text-align: center;
   border-radius: 6px;
-  padding: 8px 12px;
-  font-size: 0.75rem;
-  top: -40px;
+  padding: 6px 10px;
+  font-size: 0.65rem;
   left: 50%;
   transform: translateX(-50%);
   width: max-content;
-  max-width: 200px;
+  max-width: 180px;
+  bottom: calc(100% + 8px);
+}
+
+@media (min-width: 475px) {
+  .tooltip .tooltip-text {
+    padding: 8px 12px;
+    font-size: 0.75rem;
+    max-width: 200px;
+  }
+}
+
+@media (min-width: 640px) {
+  .tooltip .tooltip-text {
+    font-size: 0.875rem;
+  }
 }
 
 .dark .tooltip .tooltip-text {
@@ -235,16 +303,6 @@ body {
   opacity: 1;
 }
 
-/* Tag cloud rotation animation */
-@keyframes tag-rotate {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(6deg); }
-}
-
-.tag-rotate:hover {
-  animation: tag-rotate 0.3s ease forwards;
-}
-
 /* Ensure animations respect reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
   .animate-gradient-xy,
@@ -252,8 +310,7 @@ body {
   .animate-smooth-wave,
   .animate-gradient-text,
   .animate-heading,
-  .animate-icon-bounce,
-  .tag-rotate:hover {
+  .animate-icon-bounce {
     animation: none;
   }
   .heading-underline::after {
@@ -267,5 +324,12 @@ body {
   .tooltip .tooltip-text {
     visibility: visible;
     opacity: 1;
+  }
+}
+
+/* Additional responsive adjustments */
+@media (max-width: 475px) {
+  .animate-gradient-xy-slow {
+    animation-duration: 30s; /* Slower animation on small screens for performance */
   }
 }
