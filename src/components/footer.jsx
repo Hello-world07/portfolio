@@ -12,7 +12,7 @@ const Footer = () => {
         </div>
         <div className="flex gap-1 sm:gap-2">
           <a
-            href="https://linkedin.com/in/pranithkonda"
+            href="https://www.linkedin.com/in/konda-pranith-699916317/"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-center w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-indigo-500 hover:text-white transition-colors duration-300"
@@ -21,7 +21,7 @@ const Footer = () => {
             <FaLinkedin size={10} className="sm:size-12" />
           </a>
           <a
-            href="https://github.com/pranithkonda"
+            href="https://github.com/Hello-world07"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-center w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-indigo-500 hover:text-white transition-colors duration-300"
@@ -30,7 +30,7 @@ const Footer = () => {
             <FaGithub size={10} className="sm:size-12" />
           </a>
           <a
-            href="https://twitter.com/pranithkonda"
+            href="https://x.com/pranith081036"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-center w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-indigo-500 hover:text-white transition-colors duration-300"

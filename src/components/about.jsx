@@ -20,7 +20,7 @@ const About = () => {
           {/* Centered Social Media Icons */}
           <div className="flex justify-center gap-3 sm:gap-4">
             <a
-              href="https://linkedin.com"
+              href="https://www.linkedin.com/in/konda-pranith-699916317/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-600 dark:text-gray-200 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors duration-300"
@@ -28,7 +28,7 @@ const About = () => {
               <FaLinkedin size={24} className="sm:size-30" />
             </a>
             <a
-              href="https://github.com"
+              href="https://github.com/Hello-world07"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-600 dark:text-gray-200 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors duration-300"
@@ -36,7 +36,7 @@ const About = () => {
               <FaGithub size={24} className="sm:size-30" />
             </a>
             <a
-              href="https://twitter.com"
+              href="https://x.com/pranith081036"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-600 dark:text-gray-200 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors duration-300"

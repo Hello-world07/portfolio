@@ -235,7 +235,7 @@ const ContactUs = () => {
           </p>
           <div className="flex justify-center gap-2 sm:gap-3">
             <a
-              href="https://linkedin.com/in/pranithkonda"
+              href="https://www.linkedin.com/in/konda-pranith-699916317/"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-indigo-500 hover:text-white transition-colors duration-300"
@@ -244,7 +244,7 @@ const ContactUs = () => {
               <FaLinkedin size={12} className="sm:size-16" />
             </a>
             <a
-              href="https://github.com/pranithkonda"
+              href="https://github.com/Hello-world07"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-indigo-500 hover:text-white transition-colors duration-300"
@@ -253,7 +253,7 @@ const ContactUs = () => {
               <FaGithub size={12} className="sm:size-16" />
             </a>
             <a
-              href="https://twitter.com/pranithkonda"
+              href="https://x.com/pranith081036"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-indigo-500 hover:text-white transition-colors duration-300"
