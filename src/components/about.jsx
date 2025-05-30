@@ -62,7 +62,7 @@ const About = () => {
             Hello! I'm{' '}
             <span className="highlight-wrapper">
               <span className="font-semibold text-black dark:text-white box-highlight">
-                Konda Pranath
+                Konda Pranith
               </span>
             </span>
             , a dedicated{' '}
