@@ -36,7 +36,7 @@ const About = () => {
               <FaGithub size={24} className="sm:size-30" />
             </a>
             <a
-              href="https://x.com/pranith081036"
+              href=""
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-600 dark:text-gray-200 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors duration-300"
