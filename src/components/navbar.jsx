@@ -41,7 +41,7 @@ const Navbar = () => {
               to="/"
               className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white hover:text-indigo-700 dark:hover:text-indigo-400 transition-colors duration-300"
             >
-              𝓟𝓻𝓪𝓷𝓲𝓽𝓱_𝓚𝓸𝓷𝓭𝓪
+              pranith_konda
             </Link>
           </div>
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, memo } from 'react';
-import { FaLinkedin, FaGithub, FaTwitter, FaEnvelope } from 'react-icons/fa';
+import { FaLinkedin, FaGithub, FaEnvelope } from 'react-icons/fa';
+import { SiX } from 'react-icons/si'; // Replaced FaTwitter with SiX
 
 // Animated typing effect component
 const TypingEffect = memo(({ text, id }) => {
@@ -78,7 +79,7 @@ const ContactUs = () => {
     }
 
     try {
-        const response = await fetch(import.meta.env.VITE_FORMSPREE_URL, {
+      const response = await fetch(import.meta.env.VITE_FORMSPREE_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -109,7 +110,7 @@ const ContactUs = () => {
       <div className="w-full max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <TypingEffect text="Get in Touch" id="contact-heading" />
         <p className="text-base sm:text-lg lg:text-xl text-center text-gray-600 dark:text-gray-200 mb-6 sm:mb-8 font-montserrat">
-        I’m always open to new opportunities, collaborations, or just a quick tech chat. Feel free to reach out!
+          I’m always open to new opportunities, collaborations, or just a quick tech chat. Feel free to reach out!
         </p>
 
         {/* Contact Form */}
@@ -257,9 +258,9 @@ const ContactUs = () => {
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-indigo-500 hover:text-white transition-colors duration-300"
-              aria-label="Visit my Twitter profile"
+              aria-label="Visit my X profile"
             >
-              <FaTwitter size={12} className="sm:size-16" />
+              <SiX size={12} className="sm:size-16" />
             </a>
             <a
               href="mailto:pranith@example.com"

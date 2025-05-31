@@ -1,6 +1,7 @@
 import React from 'react';
 import profilePic from '../assets/image.jpg'; // Replace with your profile picture path
-import { FaLinkedin, FaGithub, FaTwitter, FaEnvelope } from 'react-icons/fa';
+import { FaLinkedin, FaGithub, FaEnvelope } from 'react-icons/fa';
+import { SiX } from 'react-icons/si'; // Added SiX for the X logo
 
 const About = () => {
   return (
@@ -36,12 +37,12 @@ const About = () => {
               <FaGithub size={24} className="sm:size-30" />
             </a>
             <a
-              href=""
+              href="https://x.com/pranith081036"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-600 dark:text-gray-200 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors duration-300"
             >
-              <FaTwitter size={24} className="sm:size-30" />
+              <SiX size={24} className="sm:size-30" />
             </a>
             <a
               href="mailto:your.pranithkondakp@gmal.com"
@@ -89,9 +90,7 @@ const About = () => {
                 problem-solving
               </span>
             </span>
-            , and I enjoy exploring new technologies
-
- and applying them to real-world scenarios.
+            , and I enjoy exploring new technologies and applying them to real-world scenarios.
           </p>
           <p className="text-sm sm:text-base lg:text-lg text-gray-600 dark:text-gray-200 leading-relaxed font-montserrat mt-4">
             As an enthusiastic{' '}
