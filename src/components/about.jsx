@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import profilePic from '../assets/image.jpg'; // Replace with your profile picture path
+import profilePic from '../assets/image1.jpg'; // Replace with your profile picture path
 import { FaLinkedin, FaGithub, FaEnvelope } from 'react-icons/fa';
 import { SiX } from 'react-icons/si'; // Added SiX for the X logo
 
