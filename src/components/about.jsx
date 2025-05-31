@@ -1,9 +1,23 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import profilePic from '../assets/image.jpg'; // Replace with your profile picture path
 import { FaLinkedin, FaGithub, FaEnvelope } from 'react-icons/fa';
 import { SiX } from 'react-icons/si'; // Added SiX for the X logo
 
 const About = () => {
+  const navigate = useNavigate();
+
+  const handleProjectsClick = () => {
+    navigate('/projects'); // Navigate to the Projects route
+    // Optional: Scroll to the projects section if on the same page
+    setTimeout(() => {
+      const projectsSection = document.getElementById('projects');
+      if (projectsSection) {
+        projectsSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100); // Small delay to ensure navigation completes
+  };
+
   return (
     <section className="min-h-screen bg-white dark:bg-black flex items-center justify-center pt-16 sm:pt-20 lg:pt-24 py-8 sm:py-12 transition-colors duration-300">
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-6 sm:gap-8">
@@ -323,6 +337,17 @@ const About = () => {
               </span>
               , and I’m just getting started.
             </p>
+          </div>
+
+          {/* Projects Button */}
+          <div className="mt-6 sm:mt-8 flex justify-center">
+            <button
+              onClick={handleProjectsClick}
+              className="px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-indigo-500 to-pink-500 text-white font-semibold rounded-lg glow-effect hover:from-indigo-600 hover:to-pink-600 transition-all duration-300 text-sm sm:text-base font-poppins relative overflow-hidden group -ml-4 sm:-ml-6"
+            >
+              <span className="relative z-10">Explore My Projects</span>
+              <span className="absolute inset-0 bg-gradient-to-r from-indigo-400 to-pink-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></span>
+            </button>
           </div>
         </div>
       </div>

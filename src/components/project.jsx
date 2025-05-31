@@ -10,10 +10,10 @@ const Projects = () => {
   };
 
   return (
-    <section className="min-h-screen bg-gray-100 dark:bg-custom-dark flex items-center justify-center py-6 sm:py-8 md:py-12 transition-colors duration-300 animate-gradient-xy-slow">
+    <section id="projects" className="min-h-screen bg-gray-100 dark:bg-custom-dark flex items-center justify-center py-6 sm:py-8 md:py-12 transition-colors duration-300 animate-gradient-xy-slow">
       <div className="w-full max-w-[90%] xs:max-w-[85%] sm:max-w-2xl md:max-w-3xl lg:max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4 md:mb-6 heading-underline animate-heading">
-          <span className="inline-block transform transition-transform duration-300 hover:scale-110">🚀</span> Welcome to the Projects Section
+        <h1 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4 md:mb-6 heading-underline animate-heading">
+          🚀 Welcome to the Projects Section
         </h1>
         <div className="mb-4 sm:mb-6 md:mb-8 text-xs xs:text-sm sm:text-base md:text-lg text-gray-600 dark:text-gray-200 animate-fade-in text-justify">
           <p className="mb-3 sm:mb-4">
