@@ -8,7 +8,7 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center">
         <div className="mb-1 sm:mb-0">
           <p className="text-[8px] sm:text-[10px] text-gray-600 dark:text-gray-300 font-montserrat">
-            © {new Date().getFullYear()} Pranith Konda. All rights terghts reserved.
+            © {new Date().getFullYear()} Pranith Konda. 
           </p>
         </div>
         <div className="flex gap-1 sm:gap-2">
