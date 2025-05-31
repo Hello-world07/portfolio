@@ -71,7 +71,7 @@ const About = () => {
         <div className="lg:w-2/3 lg:ml-[33.33%]">
           {/* About Section */}
           <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white mb-4 font-poppins heading-underline animate-heading">
-            About Me 🚀
+            About Me 🧑‍💻
           </h3>
           <p className="text-sm sm:text-base lg:text-lg text-gray-600 dark:text-gray-200 leading-relaxed font-montserrat">
             Hello! I'm{' '}
