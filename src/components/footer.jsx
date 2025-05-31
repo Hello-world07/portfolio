@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaLinkedin, FaGithub, FaEnvelope } from 'react-icons/fa';
-import { SiX } from 'react-icons/si'; // Added SiX for the X logo
+import { SiX } from 'react-icons/si'; // Replaced FaTwitter with SiX
 
 const Footer = () => {
   return (
@@ -8,7 +8,7 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center">
         <div className="mb-1 sm:mb-0">
           <p className="text-[8px] sm:text-[10px] text-gray-600 dark:text-gray-300 font-montserrat">
-            © {new Date().getFullYear()} Pranith Konda. All rights reserved.
+            © {new Date().getFullYear()} Pranith Konda. All rights terghts reserved.
           </p>
         </div>
         <div className="flex gap-1 sm:gap-2">
@@ -30,14 +30,15 @@ const Footer = () => {
           >
             <FaGithub size={10} className="sm:size-12" />
           </a>
-              <a
-                       href="https://x.com/pranith081036"
-                       target="_blank"
-                       rel="noopener noreferrer"
-                       className="text-gray-600 dark:text-gray-200 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors duration-300"
-                     >
-                       <SiX size={24} className="sm:size-30" />
-                     </a>
+          <a
+            href="https://x.com/pranith081036"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-indigo-500 hover:text-white transition-colors duration-300"
+            aria-label="Visit my X profile"
+          >
+            <SiX size={10} className="sm:size-12" />
+          </a>
           <a
             href="mailto:pranith@example.com"
             className="flex items-center justify-center w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-indigo-500 hover:text-white transition-colors duration-300"
