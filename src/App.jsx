@@ -9,8 +9,9 @@ import Code from './components/code';
 import ContactUs from './components/contactus';
 import Footer from './components/footer';
 
-// 🔥 Import the SpeedInsights component
+// ✅ Vercel Speed Insights & Analytics
 import { SpeedInsights } from '@vercel/speed-insights/react';
+import { Analytics } from '@vercel/analytics/react';
 
 const App = () => {
   return (
@@ -30,8 +31,9 @@ const App = () => {
           </main>
           <Footer />
 
-          {/* ✅ Add Speed Insights here */}
+          {/* ✅ Vercel Speed Insights and Analytics */}
           <SpeedInsights />
+          <Analytics />
         </div>
       </Router>
     </ThemeProvider>
