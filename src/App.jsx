@@ -9,7 +9,9 @@ import Code from './components/code';
 import ContactUs from './components/contactus';
 import Footer from './components/footer';
 
-// Main App component with theme provider for dark mode support
+// 🔥 Import the SpeedInsights component
+import { SpeedInsights } from '@vercel/speed-insights/react';
+
 const App = () => {
   return (
     <ThemeProvider>
@@ -27,6 +29,9 @@ const App = () => {
             </Routes>
           </main>
           <Footer />
+
+          {/* ✅ Add Speed Insights here */}
+          <SpeedInsights />
         </div>
       </Router>
     </ThemeProvider>
