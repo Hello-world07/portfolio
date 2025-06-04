@@ -104,7 +104,7 @@ const ContactUs = () => {
 
   return (
     <section
-      className="min-h-screen contact-background flex items-center justify-center py-8 sm:py-12 transition-colors duration-300"
+      className="min-h-screen contact-background flex items-center justify-center py-8 sm:py-12 transition-colors duration-300 **pt-16**" // Added pt-16
       aria-labelledby="contact-heading"
     >
       <div className="w-full max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
