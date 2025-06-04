@@ -19,8 +19,6 @@ const App = () => {
       <Router>
         <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-custom-dark transition-colors duration-300">
           <Navbar />
-          {/* REMOVED the <div className="h-16"></div> spacer here.
-              Padding will now be applied directly to individual content sections. */}
           <main className="flex-grow">
             <Routes>
               <Route path="/" element={<About />} />
