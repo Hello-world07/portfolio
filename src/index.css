@@ -197,8 +197,8 @@ body {
   opacity: 0.1;
 }
 
-/* Responsive adjustments for fixed left side */
-@media (max-width: 1024px) {
+/* REMOVED the media query that changed .fixed position to static */
+/* @media (max-width: 1024px) {
   .fixed {
     position: static;
     height: auto;
@@ -206,7 +206,7 @@ body {
   .lg\:ml-\[33\.33\%\] {
     margin-left: 0;
   }
-}
+} */
 
 /* Scrollbar fallback for browsers that don’t support tailwind-scrollbar (e.g., Firefox) */
 *::-webkit-scrollbar {
