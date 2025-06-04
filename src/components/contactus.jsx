@@ -104,10 +104,11 @@ const ContactUs = () => {
 
   return (
     <section
-      className="min-h-screen contact-background flex items-center justify-center py-8 sm:py-12 transition-colors duration-300 **pt-20**" // Changed from pt-16 to pt-20
+      className="min-h-screen contact-background flex items-center justify-center py-8 sm:py-12 transition-colors duration-300 relative z-10" // Removed pt-20 from section, added relative z-10
       aria-labelledby="contact-heading"
     >
-      <div className="w-full max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* ADDED THIS WRAPPER DIV WITH PT-20 */}
+      <div className="pt-20 w-full max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <TypingEffect text="Get in Touch" id="contact-heading" />
         <p className="text-base sm:text-lg lg:text-xl text-center text-gray-600 dark:text-gray-200 mb-6 sm:mb-8 font-montserrat">
           I’m always open to new opportunities, collaborations, or just a quick tech chat. Feel free to reach out!

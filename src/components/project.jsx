@@ -12,9 +12,10 @@ const Projects = () => {
   return (
     <section
       id="projects"
-      className="min-h-screen bg-gray-100 dark:bg-custom-dark flex items-center justify-center py-6 sm:py-8 md:py-12 transition-colors duration-300 animate-gradient-xy-slow **pt-20**" // Changed from pt-16 to pt-20
+      className="min-h-screen bg-gray-100 dark:bg-custom-dark flex items-center justify-center py-6 sm:py-8 md:py-12 transition-colors duration-300 animate-gradient-xy-slow relative z-10" // Removed pt-20 from section, added relative z-10
     >
-      <div className="w-full max-w-[90%] xs:max-w-[85%] sm:max-w-2xl md:max-w-3xl lg:max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* ADDED THIS WRAPPER DIV WITH PT-20 */}
+      <div className="pt-20 w-full max-w-[90%] xs:max-w-[85%] sm:max-w-2xl md:max-w-3xl lg:max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4 md:mb-6 heading-underline animate-heading">
           🚀 Welcome to the Projects Section
         </h1>
