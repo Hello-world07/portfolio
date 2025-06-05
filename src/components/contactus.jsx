@@ -1,6 +1,6 @@
 import React, { useState, useEffect, memo } from 'react';
 import { FaLinkedin, FaGithub, FaEnvelope } from 'react-icons/fa';
-import { SiX } from 'react-icons/si'; // Replaced FaTwitter with SiX
+import { SiX } from 'react-icons/si';
 
 // Animated typing effect component
 const TypingEffect = memo(({ text, id }) => {
@@ -33,18 +33,16 @@ const TypingEffect = memo(({ text, id }) => {
 });
 
 const ContactUs = () => {
-  // Form state
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     message: '',
   });
   const [errors, setErrors] = useState({});
-  const [status, setStatus] = useState(null); // null, 'success', or 'error'
+  const [status, setStatus] = useState(null);
   const [charCount, setCharCount] = useState(0);
   const maxChars = 500;
 
-  // Handle form input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -55,7 +53,6 @@ const ContactUs = () => {
     }
   };
 
-  // Validate form inputs
   const validateForm = () => {
     const newErrors = {};
     if (!formData.name.trim()) newErrors.name = 'Name is required';
@@ -69,7 +66,6 @@ const ContactUs = () => {
     return newErrors;
   };
 
-  // Handle form submission with Formspree
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validateForm();
@@ -104,7 +100,7 @@ const ContactUs = () => {
 
   return (
     <section
-      className="min-h-screen contact-background flex items-center justify-center py-8 sm:py-12 transition-colors duration-300 **pt-20**" // Changed from pt-16 to pt-20
+      className="min-h-screen contact-background flex items-center justify-center py-8 sm:py-12 transition-colors duration-300 pt-[calc(4rem+2.5rem)]" // Dynamic padding: 4rem (navbar height) + 2.5rem buffer
       aria-labelledby="contact-heading"
     >
       <div className="w-full max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -113,7 +109,6 @@ const ContactUs = () => {
           I’m always open to new opportunities, collaborations, or just a quick tech chat. Feel free to reach out!
         </p>
 
-        {/* Contact Form */}
         <div className="bg-white dark:bg-custom-dark-secondary p-6 sm:p-8 rounded-lg shadow-md glow-effect">
           <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6" noValidate>
             <div>
@@ -220,7 +215,7 @@ const ContactUs = () => {
             )}
             {status === 'error' && (
               <p
-                className="text-sm sm:text-base text-red-500 dark:text-red-400 font-montserrat text-center"
+                className="mt-1 text-sm text-red-500 dark:text-red-400 font-montserrat text-center"
                 role="alert"
               >
                 Failed to send message. Please try again later.
@@ -229,7 +224,6 @@ const ContactUs = () => {
           </form>
         </div>
 
-        {/* Social Media Icons with Follow Me Label */}
         <div className="mt-6 sm:mt-8">
           <p className="text-sm sm:text-base font-semibold text-center text-gray-700 dark:text-gray-200 mb-2 font-montserrat">
             Follow Me
