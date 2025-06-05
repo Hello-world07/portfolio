@@ -25,7 +25,7 @@ const TypingEffect = memo(({ text, id }) => {
   return (
     <h1
       id={id}
-      className="text-3xl sm:text-4xl lg:text-5xl font-bold text-center text-gray-900 dark:text-white mb-4 sm:mb-6 font-poppins heading-underline animate-heading"
+      className="text-3xl sm:text-4xl lg:text-5xl font-bold text-center text-gray-900 dark:text-white mb-4 sm:mb-6 font-poppins heading-underline animate-heading pt-8"
     >
       {displayedText}
     </h1>
@@ -100,7 +100,7 @@ const ContactUs = () => {
 
   return (
     <section
-      className="min-h-screen contact-background flex items-center justify-center py-8 sm:py-12 transition-colors duration-300 pt-[calc(4rem+2.5rem)]" // Dynamic padding: 4rem (navbar height) + 2.5rem buffer
+      className="min-h-screen contact-background flex items-center justify-center py-8 sm:py-12 transition-colors duration-300 pt-24" // Set to 6rem, matching Skills
       aria-labelledby="contact-heading"
     >
       <div className="w-full max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">

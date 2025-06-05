@@ -12,10 +12,10 @@ const Projects = () => {
   return (
     <section
       id="projects"
-      className="min-h-screen bg-gray-100 dark:bg-custom-dark flex items-center justify-center py-6 sm:py-8 md:py-12 transition-colors duration-300 animate-gradient-xy-slow pt-[calc(4rem+2.5rem)]" // Dynamic padding: 4rem (navbar height) + 2.5rem buffer
+      className="min-h-screen bg-gray-100 dark:bg-custom-dark flex items-center justify-center py-6 sm:py-8 md:py-12 transition-colors duration-300 animate-gradient-xy-slow pt-24" // Set to 6rem, matching Skills
     >
       <div className="w-full max-w-[90%] xs:max-w-[85%] sm:max-w-2xl md:max-w-3xl lg:max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4 md:mb-6 heading-underline animate-heading">
+        <h1 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4 md:mb-6 heading-underline animate-heading pt-8">
           🚀 Welcome to the Projects Section
         </h1>
         <div className="mb-4 sm:mb-6 md:mb-8 text-xs xs:text-sm sm:text-base md:text-lg text-gray-600 dark:text-gray-200 animate-fade-in text-justify">
