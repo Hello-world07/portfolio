@@ -75,14 +75,15 @@ const ContactUs = () => {
     }
 
     try {
-      const response = await fetch(import.meta.env.VITE_FORMSPREE_URL, {
+      const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Accept: 'application/json',
         },
         body: JSON.stringify(formData),
       });
+
+      const result = await response.json();
 
       if (response.ok) {
         setStatus('success');
@@ -90,7 +91,7 @@ const ContactUs = () => {
         setCharCount(0);
         setTimeout(() => setStatus(null), 5000);
       } else {
-        throw new Error('Form submission failed');
+        throw new Error(result.error || 'Form submission failed');
       }
     } catch (error) {
       setStatus('error');
@@ -100,7 +101,7 @@ const ContactUs = () => {
 
   return (
     <section
-      className="min-h-screen contact-background flex items-center justify-center py-8 sm:py-12 transition-colors duration-300 pt-24" // Set to 6rem, matching Skills
+      className="min-h-screen contact-background flex items-center justify-center py-8 sm:py-12 transition-colors duration-300 pt-24"
       aria-labelledby="contact-heading"
     >
       <div className="w-full max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
