@@ -4,12 +4,20 @@
     {
       "src": "api/contact.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "dist/**/*",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
     {
-      "src": "/contact",
+      "src": "/api/contact",
       "dest": "api/contact.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
     }
   ]
 }
