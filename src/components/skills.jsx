@@ -135,7 +135,7 @@ const Skills = () => {
         {/* Download Resume Button */}
         <div className="mt-10 sm:mt-12 text-center">
           <a
-            href="/pranith.pdf"
+            href="favicon.png"
             target="_blank"
             rel="noopener noreferrer"
             download
