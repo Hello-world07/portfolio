@@ -26,7 +26,7 @@ const About = () => {
           <img
             src={profilePic}
             alt="Profile"
-            className="w-40 h-40 sm:w-48 sm:h-48 lg:w-66 lg:h-64 rounded-full object-cover glow-effect mb-4 sm:mb-6 hover:scale-105 transition-transform duration-300"
+            className="w-40 h-40 sm:w-48 sm:h-48 lg:w-60 lg:h-64 rounded-full object-cover glow-effect mb-4 sm:mb-6 hover:scale-105 transition-transform duration-300"
           />
           {/* Name below profile image */}
           <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white mb-4 font-poppins">
