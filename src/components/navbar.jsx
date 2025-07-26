@@ -166,7 +166,7 @@ const Navbar = () => {
             <span className="relative z-10">Contact Me</span>
           </Link>
           <a
-            href="/pranith.pdf"
+            href="/resume.pdf"
             target="_blank"
             rel="noopener noreferrer"
             download
