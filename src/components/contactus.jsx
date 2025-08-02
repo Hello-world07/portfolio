@@ -100,7 +100,7 @@ const ContactUs = () => {
 
   return (
     <section
-      className="min-h-screen contact-background flex items-center justify-center py-8 sm:py-12 transition-colors duration-300 pt-24" // Set to 6rem, matching Skills
+      className="min-h-screen contact-background flex items-center justify-center py-8 sm:py-12 transition-colors duration-300 pt-24"
       aria-labelledby="contact-heading"
     >
       <div className="w-full max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
