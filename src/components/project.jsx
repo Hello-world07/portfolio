@@ -2,7 +2,7 @@ import React, { useState, useCallback, memo } from 'react';
 import { ClipboardIcon } from '@heroicons/react/24/outline';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const PasswordGenerator = memo(({ setMessage }) => {
+const PasswordGenerator = memo(() => {
   const [length, setLength] = useState(12);
   const [useUppercase, setUseUppercase] = useState(true);
   const [useLowercase, setUseLowercase] = useState(true);
@@ -12,6 +12,8 @@ const PasswordGenerator = memo(({ setMessage }) => {
   const [password, setPassword] = useState('');
   const [copied, setCopied] = useState(false);
   const [recentPasswords, setRecentPasswords] = useState([]);
+  const [passwordStrength, setPasswordStrength] = useState(null);
+  const [error, setError] = useState('');
 
   const uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   const lowercase = 'abcdefghijklmnopqrstuvwxyz';
@@ -40,9 +42,9 @@ const PasswordGenerator = memo(({ setMessage }) => {
     const entropy = pwd.length * (poolSize > 0 ? Math.log2(poolSize) : 0);
     strengthScore += Math.min(entropy / 2, 30);
 
-    if (strengthScore >= 80) return { label: 'Strong', color: 'text-green-500', score: strengthScore };
-    if (strengthScore >= 60) return { label: 'Moderate', color: 'text-yellow-500', score: strengthScore };
-    return { label: 'Weak', color: 'text-red-500', score: strengthScore };
+    if (strengthScore >= 80) return { label: 'Strong', color: 'bg-green-600', score: strengthScore };
+    if (strengthScore >= 60) return { label: 'Moderate', color: 'bg-yellow-600', score: strengthScore };
+    return { label: 'Weak', color: 'bg-red-600', score: strengthScore };
   }, [useUppercase, useLowercase, useDigits, useSymbols]);
 
   const generatePassword = useCallback(() => {
@@ -57,12 +59,12 @@ const PasswordGenerator = memo(({ setMessage }) => {
     }
 
     if (!charPool) {
-      setMessage('❌ Please select at least one character type.');
+      setError('Please select at least one character type.');
       return;
     }
 
     if (length <= 0) {
-      setMessage('❌ Password length must be greater than 0.');
+      setError('Password length must be greater than 0.');
       return;
     }
 
@@ -82,8 +84,9 @@ const PasswordGenerator = memo(({ setMessage }) => {
       strength: calculatePasswordStrength(generated)
     };
     setRecentPasswords(prev => [newPasswordEntry, ...prev].slice(0, 5));
-    setMessage('');
-  }, [length, useUppercase, useLowercase, useDigits, useSymbols, excludeAmbiguous]);
+    setPasswordStrength(newPasswordEntry.strength);
+    setError('');
+  }, [length, useUppercase, useLowercase, useDigits, useSymbols, excludeAmbiguous, calculatePasswordStrength]);
 
   const copyToClipboard = useCallback((text) => {
     navigator.clipboard.writeText(text).then(() => {
@@ -94,20 +97,29 @@ const PasswordGenerator = memo(({ setMessage }) => {
 
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {error && (
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="text-sm text-red-600 text-center"
+        >
+          {error}
+        </motion.p>
+      )}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div>
-          <label className="block text-sm text-gray-700 dark:text-gray-200 mb-1">Password Length</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Password Length</label>
           <input
             type="number"
             min="1"
             value={length}
             onChange={(e) => setLength(Number(e.target.value))}
-            className="w-full px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
+            className="w-full px-4 py-3 rounded-md bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm shadow-sm"
             placeholder="Enter length"
             aria-label="Password length"
           />
         </div>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-3">
           {[
             { label: 'Uppercase Letters', checked: useUppercase, setter: setUseUppercase },
             { label: 'Lowercase Letters', checked: useLowercase, setter: setUseLowercase },
@@ -115,12 +127,12 @@ const PasswordGenerator = memo(({ setMessage }) => {
             { label: 'Symbols', checked: useSymbols, setter: setUseSymbols },
             { label: 'Exclude Ambiguous (e.g., l, 1, I, O, 0)', checked: excludeAmbiguous, setter: setExcludeAmbiguous }
           ].map(({ label, checked, setter }) => (
-            <label key={label} className="flex items-center text-sm text-gray-700 dark:text-gray-200">
+            <label key={label} className="flex items-center text-sm text-gray-700 dark:text-gray-300">
               <input
                 type="checkbox"
                 checked={checked}
                 onChange={() => setter(!checked)}
-                className="mr-2 h-4 w-4 text-indigo-500 focus:ring-indigo-500"
+                className="mr-3 h-4 w-4 text-blue-500 focus:ring-blue-500 border-gray-300 rounded"
                 aria-label={label}
               />
               {label}
@@ -130,74 +142,85 @@ const PasswordGenerator = memo(({ setMessage }) => {
       </div>
       <div className="flex justify-center">
         <motion.button
-          whileHover={{ scale: 1.05 }}
+          whileHover={{ scale: 1.05, rotate: 2 }}
           whileTap={{ scale: 0.95 }}
           onClick={generatePassword}
-          className="px-5 py-2.5 bg-gradient-to-r from-indigo-500 to-pink-500 text-white font-semibold rounded-lg shadow-glow hover:from-indigo-600 hover:to-pink-600 transition-all duration-300 text-sm"
+          className="px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-medium rounded-md hover:from-blue-600 hover:to-indigo-700 transition-all duration-300 text-sm shadow-lg"
         >
           Generate Password
         </motion.button>
       </div>
       {password && (
-        <div className="text-center">
+        <div className="text-center space-y-2">
           <div className="relative">
             <input
               type="text"
               value={password}
               readOnly
-              className="w-full px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 focus:outline-none text-sm pr-10"
+              className="w-full px-4 py-3 rounded-md bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 focus:outline-none text-sm pr-10 shadow-sm"
               aria-label="Generated password"
             />
             <motion.button
-              whileHover={{ scale: 1.1 }}
+              whileHover={{ scale: 1.1, rotate: 5 }}
               onClick={() => copyToClipboard(password)}
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400"
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-blue-500"
               title="Copy to clipboard"
-              aria-label="Copy password to clipboard"
+              aria-label="Copy password"
             >
               <ClipboardIcon className="h-5 w-5" />
             </motion.button>
           </div>
-          <div className="mt-2">
-            <p className="text-sm text-gray-700 dark:text-gray-200">
-              Password Strength: <span className={passwordStrength?.color}>{passwordStrength?.label}</span>
-            </p>
-          </div>
+          {passwordStrength && (
+            <div>
+              <p className="text-sm text-gray-700 dark:text-gray-300 mb-1">
+                Strength: <span className={`${passwordStrength.color.replace('bg', 'text')}`}>{passwordStrength.label}</span>
+              </p>
+              <div className="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: `${Math.min(passwordStrength.score, 100)}%` }}
+                  transition={{ duration: 0.5 }}
+                  className={`${passwordStrength.color} h-2 rounded-full`}
+                ></motion.div>
+              </div>
+            </div>
+          )}
           {copied && (
             <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="mt-2 text-sm text-green-500 dark:text-green-400"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-sm text-green-600"
             >
-              Copied to clipboard!
+              Copied!
             </motion.p>
           )}
         </div>
       )}
       {recentPasswords.length > 0 && (
-        <div className="mt-6">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Recent Passwords</h3>
-          <div className="space-y-3">
+        <div className="mt-8">
+          <h3 className="text-md font-medium text-gray-900 dark:text-white mb-4">Recent Passwords</h3>
+          <div className="space-y-4">
             {recentPasswords.map((entry, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="flex items-center justify-between bg-gray-100 dark:bg-gray-700 p-3 rounded-lg"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.3, delay: index * 0.1 }}
+                className="flex items-center justify-between bg-white dark:bg-gray-800 p-4 rounded-md border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow"
               >
                 <div>
-                  <p className="text-sm text-gray-800 dark:text-gray-200">{entry.password}</p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">{entry.timestamp}</p>
+                  <p className="text-sm font-mono text-gray-900 dark:text-gray-100">{entry.password}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{entry.timestamp}</p>
                   <p className="text-xs text-gray-500 dark:text-gray-400">
-                    Strength: <span className={entry.strength.color}>{entry.strength.label}</span>
+                    Strength: <span className={`${entry.strength.color.replace('bg', 'text')}`}>{entry.strength.label}</span>
                   </p>
                 </div>
                 <motion.button
-                  whileHover={{ scale: 1.1 }}
+                  whileHover={{ scale: 1.1, rotate: 5 }}
                   onClick={() => copyToClipboard(entry.password)}
-                  className="text-gray-500 dark:text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400"
-                  title="Copy to clipboard"
-                  aria-label="Copy recent password to clipboard"
+                  className="text-gray-500 hover:text-blue-500"
+                  title="Copy"
+                  aria-label="Copy recent password"
                 >
                   <ClipboardIcon className="h-5 w-5" />
                 </motion.button>
@@ -210,7 +233,7 @@ const PasswordGenerator = memo(({ setMessage }) => {
   );
 });
 
-const ATMSimulator = memo(({ setMessage }) => {
+const ATMSimulator = memo(() => {
   const [pin, setPin] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
@@ -218,73 +241,65 @@ const ATMSimulator = memo(({ setMessage }) => {
   const [amount, setAmount] = useState('');
   const [action, setAction] = useState(null);
   const [transactions, setTransactions] = useState({ savings: [], credit: [] });
+  const [localMessage, setLocalMessage] = useState('');
+  const [isInvalidPin, setIsInvalidPin] = useState(false);
 
   const handlePinSubmit = useCallback(() => {
     if (pin === '1234') {
       setIsAuthenticated(true);
-      setMessage('');
+      setLocalMessage('');
       setPin('');
     } else {
-      setMessage('Invalid PIN! Please try again.');
+      setLocalMessage('Invalid PIN. Try again.');
+      setIsInvalidPin(true);
+      setTimeout(() => setIsInvalidPin(false), 500);
       setPin('');
     }
-  }, [pin, setMessage]);
+  }, [pin]);
 
   const handleCardSelection = useCallback((cardType) => {
     setSelectedCard(cardType);
-    setMessage('');
+    setLocalMessage('');
     setAction(null);
     setAmount('');
   }, []);
 
   const handleATMAction = useCallback((selectedAction) => {
     setAction(selectedAction);
-    setMessage('');
+    setLocalMessage('');
     if (selectedAction === 'check') {
-      setMessage(`Your current ${selectedCard} balance is: ₹${balance[selectedCard].toFixed(2)}`);
+      setLocalMessage(`Current ${selectedCard} balance: ₹${balance[selectedCard].toFixed(2)}`);
+    } else if (selectedAction === 'back') {
+      setSelectedCard(null);
     }
-  }, [selectedCard, balance, setMessage]);
+  }, [selectedCard, balance]);
 
   const handleTransaction = useCallback(() => {
     const parsedAmount = parseFloat(amount);
     if (isNaN(parsedAmount) || parsedAmount <= 0) {
-      setMessage('Invalid amount! Please enter a positive number.');
+      setLocalMessage('Enter a valid positive amount.');
       return;
     }
 
     const timestamp = new Date().toLocaleString();
     if (action === 'deposit') {
-      setBalance(prev => ({
-        ...prev,
-        [selectedCard]: prev[selectedCard] + parsedAmount
-      }));
+      setBalance(prev => ({ ...prev, [selectedCard]: prev[selectedCard] + parsedAmount }));
       setTransactions(prev => ({
         ...prev,
-        [selectedCard]: [{
-          type: 'Deposit',
-          amount: parsedAmount,
-          timestamp
-        }, ...prev[selectedCard]].slice(0, 5)
+        [selectedCard]: [{ type: 'Deposit', amount: parsedAmount, timestamp }, ...prev[selectedCard]].slice(0, 5)
       }));
-      setMessage(`₹${parsedAmount.toFixed(2)} deposited successfully. New balance: ₹${(balance[selectedCard] + parsedAmount).toFixed(2)}`);
+      setLocalMessage(`Deposited ₹${parsedAmount.toFixed(2)}. New balance: ₹${(balance[selectedCard] + parsedAmount).toFixed(2)}`);
     } else if (action === 'withdraw') {
       if (parsedAmount > balance[selectedCard]) {
-        setMessage('Insufficient balance!');
+        setLocalMessage('Insufficient balance.');
         return;
       }
-      setBalance(prev => ({
-        ...prev,
-        [selectedCard]: prev[selectedCard] - parsedAmount
-      }));
+      setBalance(prev => ({ ...prev, [selectedCard]: prev[selectedCard] - parsedAmount }));
       setTransactions(prev => ({
         ...prev,
-        [selectedCard]: [{
-          type: 'Withdrawal',
-          amount: parsedAmount,
-          timestamp
-        }, ...prev[selectedCard]].slice(0, 5)
+        [selectedCard]: [{ type: 'Withdrawal', amount: parsedAmount, timestamp }, ...prev[selectedCard]].slice(0, 5)
       }));
-      setMessage(`₹${parsedAmount.toFixed(2)} withdrawn successfully. New balance: ₹${(balance[selectedCard] - parsedAmount).toFixed(2)}`);
+      setLocalMessage(`Withdrew ₹${parsedAmount.toFixed(2)}. New balance: ₹${(balance[selectedCard] - parsedAmount).toFixed(2)}`);
     }
     setAmount('');
   }, [action, amount, balance, selectedCard]);
@@ -292,34 +307,53 @@ const ATMSimulator = memo(({ setMessage }) => {
   return (
     <div className="space-y-6">
       {!isAuthenticated ? (
-        <div className="flex flex-col gap-4">
-          <input
-            type="password"
-            value={pin}
-            onChange={(e) => setPin(e.target.value)}
-            className="w-full px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
-            placeholder="Enter 4-digit PIN"
-            maxLength="4"
-            aria-label="Enter 4-digit PIN"
-          />
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={handlePinSubmit}
-            className="px-5 py-2.5 bg-gradient-to-r from-indigo-500 to-pink-500 text-white font-semibold rounded-lg shadow-glow hover:from-indigo-600 hover:to-pink-600 transition-all duration-300 text-sm"
+        <div className="space-y-4">
+          <p className="text-sm text-gray-500 dark:text-gray-400 text-center">Demo PIN: 1234</p>
+          <motion.div
+            animate={isInvalidPin ? { x: [-5, 5, -5, 5, 0] } : { x: 0 }}
+            transition={{ duration: 0.3 }}
           >
-            Submit PIN
-          </motion.button>
+            <input
+              type="password"
+              value={pin}
+              onChange={(e) => setPin(e.target.value)}
+              className={`w-full px-4 py-3 rounded-md bg-white dark:bg-gray-800 border ${isInvalidPin ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'} text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm shadow-sm`}
+              placeholder="Enter 4-digit PIN"
+              maxLength="4"
+              aria-label="Enter PIN"
+            />
+          </motion.div>
+          {localMessage && (
+            <motion.p
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-sm text-red-600 text-center"
+            >
+              {localMessage}
+            </motion.p>
+          )}
+          <div className="flex justify-center">
+            <motion.button
+              whileHover={{ scale: 1.05, rotate: -2 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={handlePinSubmit}
+              className="px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-medium rounded-md hover:from-blue-600 hover:to-indigo-700 transition-all duration-300 text-sm shadow-lg"
+            >
+              Submit PIN
+            </motion.button>
+          </div>
         </div>
       ) : !selectedCard ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {['savings', 'credit'].map((cardType) => (
             <motion.button
               key={cardType}
-              whileHover={{ scale: 1.05 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              whileHover={{ scale: 1.05, rotate: 2 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => handleCardSelection(cardType)}
-              className="px-5 py-2.5 bg-gradient-to-r from-indigo-500 to-pink-500 text-white font-semibold rounded-lg shadow-glow hover:from-indigo-600 hover:to-pink-600 transition-all duration-300 text-sm"
+              className="px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-medium rounded-md hover:from-blue-600 hover:to-indigo-700 transition-all duration-300 text-sm shadow-lg"
             >
               {cardType.charAt(0).toUpperCase() + cardType.slice(1)} Account
             </motion.button>
@@ -327,65 +361,71 @@ const ATMSimulator = memo(({ setMessage }) => {
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 gap-4">
-            <div className="flex flex-col sm:flex-row gap-4">
+          <div className="space-y-4">
+            <div className="flex flex-wrap gap-3 justify-center">
               {['check', 'deposit', 'withdraw', 'back'].map((act) => (
                 <motion.button
                   key={act}
-                  whileHover={{ scale: 1.05 }}
+                  whileHover={{ scale: 1.05, rotate: act === 'back' ? -2 : 2 }}
                   whileTap={{ scale: 0.95 }}
-                  onClick={() => act === 'back' ? setSelectedCard(null) : handleATMAction(act)}
-                  className={`px-5 py-2.5 text-white font-semibold rounded-lg shadow-glow transition-all duration-300 text-sm ${
-                    act === 'back' ? 'bg-gray-500 hover:bg-gray-600' : 'bg-gradient-to-r from-indigo-500 to-pink-500 hover:from-indigo-600 hover:to-pink-600'
+                  onClick={() => handleATMAction(act)}
+                  className={`px-5 py-2.5 text-white font-medium rounded-md transition-all duration-300 text-sm shadow-lg ${
+                    act === 'back' ? 'bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700' : 'bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700'
                   }`}
                 >
-                  {act === 'back' ? 'Back to Card Selection' : `${act.charAt(0).toUpperCase() + act.slice(1)}`}
+                  {act === 'back' ? 'Back' : act.charAt(0).toUpperCase() + act.slice(1)}
                 </motion.button>
               ))}
             </div>
             {(action === 'deposit' || action === 'withdraw') && (
-              <div>
-                <label className="block text-sm text-gray-700 dark:text-gray-200 mb-1">
-                  {action === 'deposit' ? 'Deposit Amount' : 'Withdraw Amount'} (₹)
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  {action.charAt(0).toUpperCase() + action.slice(1)} Amount (₹)
                 </label>
-                <div className="flex gap-2">
+                <div className="flex gap-3">
                   <input
                     type="number"
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
-                    className="w-full px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
+                    className="flex-1 px-4 py-3 rounded-md bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm shadow-sm"
                     placeholder="Enter amount"
                     aria-label={`${action} amount`}
                   />
                   <motion.button
-                    whileHover={{ scale: 1.05 }}
+                    whileHover={{ scale: 1.05, rotate: 2 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={handleTransaction}
-                    className="px-5 py-2.5 bg-gradient-to-r from-indigo-500 to-pink-500 text-white font-semibold rounded-lg shadow-glow hover:from-indigo-600 hover:to-pink-600 transition-all duration-300 text-sm"
+                    className="px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-medium rounded-md hover:from-blue-600 hover:to-indigo-700 transition-all duration-300 text-sm shadow-lg"
                   >
                     Submit
                   </motion.button>
                 </div>
               </div>
             )}
+            {localMessage && (
+              <motion.p
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className={`text-sm text-center ${localMessage.includes('Invalid') || localMessage.includes('Insufficient') ? 'text-red-600' : 'text-green-600'}`}
+              >
+                {localMessage}
+              </motion.p>
+            )}
           </div>
           {transactions[selectedCard].length > 0 && (
-            <div className="mt-6">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                Recent Transactions ({selectedCard.charAt(0).toUpperCase() + selectedCard.slice(1)})
-              </h3>
-              <div className="space-y-3">
+            <div className="mt-8">
+              <h3 className="text-md font-medium text-gray-900 dark:text-white mb-4">Recent Transactions</h3>
+              <div className="space-y-4">
                 {transactions[selectedCard].map((tx, index) => (
                   <motion.div
                     key={index}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="flex items-center justify-between bg-gray-100 dark:bg-gray-700 p-3 rounded-lg"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.3, delay: index * 0.1 }}
+                    className="bg-white dark:bg-gray-800 p-4 rounded-md border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow"
                   >
-                    <div>
-                      <p className="text-sm text-gray-800 dark:text-gray-200">{tx.type}: ₹{tx.amount.toFixed(2)}</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">{tx.timestamp}</p>
-                    </div>
+                    <p className="text-sm text-gray-900 dark:text-gray-100">{tx.type}: ₹{tx.amount.toFixed(2)}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{tx.timestamp}</p>
                   </motion.div>
                 ))}
               </div>
@@ -411,24 +451,26 @@ const ProjectModal = ({ project, isOpen, onClose }) => (
         aria-modal="true"
       >
         <motion.div
-          initial={{ scale: 0.8 }}
+          initial={{ scale: 0.95 }}
           animate={{ scale: 1 }}
-          exit={{ scale: 0.8 }}
+          exit={{ scale: 0.95 }}
           onClick={(e) => e.stopPropagation()}
-          className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-4xl w-full m-4 backdrop-blur-md bg-opacity-80 max-h-[80vh] overflow-y-auto"
+          className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-4xl w-full m-4 max-h-[80vh] overflow-hidden flex flex-col"
         >
           <h2 id="modal-title" className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
             {project.title}
           </h2>
-          <pre className="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg overflow-x-auto text-xs max-h-[60vh] scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-200 dark:scrollbar-thumb-gray-400 dark:scrollbar-track-gray-700">
-            <code>{project.code}</code>
-          </pre>
-          <div className="mt-4 flex justify-end">
+          <div className="flex-1 overflow-y-auto bg-gray-100 dark:bg-gray-900 p-4 rounded-md mb-4">
+            <pre className="text-xs whitespace-pre-wrap break-words">
+              <code>{project.code}</code>
+            </pre>
+          </div>
+          <div className="flex justify-end">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={onClose}
-              className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 text-sm"
+              className="px-4 py-2 bg-gradient-to-r from-gray-500 to-gray-600 text-white rounded-md hover:from-gray-600 hover:to-gray-700 text-sm shadow-md"
               aria-label="Close modal"
             >
               Close
@@ -442,14 +484,13 @@ const ProjectModal = ({ project, isOpen, onClose }) => (
 
 const Projects = () => {
   const [filter, setFilter] = useState('all');
-  const [message, setMessage] = useState('');
   const [modalProject, setModalProject] = useState(null);
 
-  const projects = [
+  const projectsData = [
     {
       id: 'password',
-      title: '🚀 Password Generator',
-      description: 'A secure tool to generate customizable passwords with strength indicators and recent password history.',
+      title: 'Password Generator',
+      description: 'Generate secure, customizable passwords with strength evaluation and history.',
       code: `"""
 Password Generator - Python Project
 -----------------------------------
@@ -515,8 +556,8 @@ if __name__ == "__main__":
     },
     {
       id: 'atm',
-      title: '🏧 ATM Simulator',
-      description: 'An interactive ATM interface with PIN authentication, support for savings and credit accounts, and transaction history.',
+      title: 'ATM Simulator',
+      description: 'Simulate ATM operations with PIN authentication and multiple accounts.',
       code: `"""
 ATM Simulator - Python Project
 -----------------------------
@@ -659,61 +700,61 @@ if __name__ == "__main__":
   return (
     <section
       id="projects"
-      className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-900 dark:to-gray-800 py-12 pt-24 transition-colors duration-300"
-      style={{ fontFamily: "'Inter', sans-serif" }}
+      className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 py-12 pt-24 transition-colors duration-300"
+      style={{ fontFamily: "'Roboto', sans-serif" }}
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.h1
-          initial={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-8 text-center"
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+          className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-12 text-center"
         >
-          🚀 My Projects
+          My Projects
         </motion.h1>
-        <div className="flex justify-center mb-6">
-          <div className="inline-flex rounded-lg shadow-glow bg-gray-100 dark:bg-gray-700 p-1">
-            {['all', 'password', 'atm'].map((f) => (
+        <div className="flex justify-center mb-8">
+          <div className="inline-flex rounded-md shadow-sm bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 overflow-hidden">
+            {['all', 'password', 'atm'].map((f, index) => (
               <motion.button
                 key={f}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setFilter(f)}
-                className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300 ${
+                className={`px-5 py-2.5 text-sm font-medium transition-all duration-300 ${
                   filter === f
-                    ? 'bg-gradient-to-r from-indigo-500 to-pink-500 text-white'
-                    : 'text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600'
-                }`}
+                    ? 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white'
+                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                } ${index === 0 ? 'rounded-l-md' : index === 2 ? 'rounded-r-md' : ''}`}
               >
                 {f === 'all' ? 'All' : f === 'password' ? 'Password Generator' : 'ATM Simulator'}
               </motion.button>
             ))}
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {projects
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {projectsData
             .filter(project => filter === 'all' || project.id === filter)
-            .map(project => (
+            .map((project, index) => (
               <motion.div
                 key={project.id}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5 }}
-                className="bg-white dark:bg-gray-800 bg-opacity-80 backdrop-blur-md rounded-lg shadow-lg p-6 hover:shadow-xl transition-all duration-300"
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.2, ease: 'easeOut' }}
+                className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
               >
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">{project.title}</h2>
-                <p className="text-sm text-gray-600 dark:text-gray-200 mb-4 text-justify">{project.description}</p>
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">{project.title}</h2>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">{project.description}</p>
                 {project.id === 'password' ? (
-                  <PasswordGenerator setMessage={setMessage} />
+                  <PasswordGenerator />
                 ) : (
-                  <ATMSimulator setMessage={setMessage} />
+                  <ATMSimulator />
                 )}
                 <div className="mt-6 flex justify-center">
                   <motion.button
-                    whileHover={{ scale: 1.05 }}
+                    whileHover={{ scale: 1.05, rotate: 3 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setModalProject(project)}
-                    className="px-4 py-2 bg-gradient-to-r from-indigo-500 to-pink-500 text-white font-semibold rounded-lg shadow-glow hover:from-indigo-600 hover:to-pink-600 transition-all duration-300 text-sm"
+                    className="px-5 py-2.5 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-medium rounded-md hover:from-blue-600 hover:to-indigo-700 transition-all duration-300 text-sm shadow-md"
                   >
                     View Code
                   </motion.button>
@@ -721,15 +762,6 @@ if __name__ == "__main__":
               </motion.div>
             ))}
         </div>
-        {message && (
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="mt-6 text-center text-sm text-red-500 dark:text-red-400"
-          >
-            {message}
-          </motion.p>
-        )}
       </div>
       <ProjectModal
         project={modalProject}
