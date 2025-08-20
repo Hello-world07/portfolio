@@ -95,7 +95,7 @@ const Certifications = () => {
   const certifications = [
     {
       title: 'Oracle Cloud Infrastructure 2025 Certified Data Science Professional',
-      image: '/src/assets/1oracle.jpg',
+      image: '/1oracle.jpg',
     },
   ];
 
