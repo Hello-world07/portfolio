@@ -72,7 +72,7 @@ const Navbar = () => {
               to="/code"
               className="relative text-sm font-medium text-gray-600 dark:text-gray-200 hover:text-indigo-700 dark:hover:text-indigo-400 transition-colors duration-300 group"
             >
-              Code
+              Certificates
               <span className="absolute inset-x-0 bottom-0 h-0.5 bg-indigo-700 dark:bg-indigo-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center"></span>
             </Link>
             <Link
@@ -154,7 +154,7 @@ const Navbar = () => {
             className="relative text-sm font-medium text-gray-600 dark:text-gray-200 hover:text-indigo-700 dark:hover:text-indigo-400 transition-colors duration-300 group"
             onClick={toggleMenu}
           >
-            Code
+            Certificates
             <span className="absolute inset-x-0 bottom-0 h-0.5 bg-indigo-700 dark:bg-indigo-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center"></span>
           </Link>
           <Link
