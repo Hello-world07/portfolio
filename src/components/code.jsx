@@ -202,7 +202,7 @@ const Certifications = () => {
             transition={{ duration: 0.8, delay: 0.5 }}
             className="mt-8 sm:mt-10 text-sm sm:text-base lg:text-lg text-gray-600 dark:text-gray-300 text-center italic"
           >
-           hello welcome to certification section
+            These are my professional certifications. More will be added as I achieve them.
           </motion.p>
         </div>
       </div>
