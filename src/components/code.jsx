@@ -1,6 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const Certifications = () => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedImage, setSelectedImage] = useState('');
+
+    const openModal = (imageSrc) => {
+        // Prevent modal from opening on screens smaller than 768px (Tailwind's md breakpoint)
+        if (window.innerWidth < 768) {
+            return;
+        }
+
+        setSelectedImage(imageSrc);
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
     // Certification data. I have updated this to include only the Oracle certificate.
     const certifications = [
         {
@@ -20,11 +37,13 @@ const Certifications = () => {
             </div>
 
             <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                {/* Main Content */}
                 <div className="text-center mb-12">
                     <h1
-                        className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 dark:text-white mb-4 leading-tight animate-fade-in-up"
+                        className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 dark:text-white mb-2 leading-tight relative inline-block animate-fade-in-up"
                     >
                         My Professional Certification
+                        <div className="animated-line"></div>
                     </h1>
                     <p
                         className="text-base sm:text-lg lg:text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto animate-fade-in-up delay-200"
@@ -44,6 +63,7 @@ const Certifications = () => {
                                 transform hover:scale-105
                                 animate-fade-in-up-delay-${index}
                             `}
+                            onClick={() => openModal(cert.image)}
                             role="button"
                             aria-label={`View ${cert.title} certificate`}
                             tabIndex={0}
@@ -66,6 +86,34 @@ const Certifications = () => {
                     ))}
                 </div>
             </div>
+
+            {/* Modal for Image Preview */}
+            {isModalOpen && (
+                <div
+                    className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 animate-fade-in"
+                    onClick={closeModal}
+                >
+                    <div
+                        className="w-screen h-screen flex items-center justify-center p-4 relative"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <img
+                            src={selectedImage}
+                            alt="Certificate preview"
+                            className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-xl"
+                        />
+                        <button
+                            onClick={closeModal}
+                            className="absolute top-2 right-2 p-2 rounded-full bg-gray-700 text-white hover:bg-gray-600 transition-colors"
+                            aria-label="Close modal"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            )}
 
             {/* CSS for animations */}
             <style jsx>{`
@@ -130,6 +178,25 @@ const Certifications = () => {
                     background: #4B5EAA;
                     top: 90%; left: 40%;
                     animation: moveParticles 22s ease-in-out infinite alternate-reverse;
+                }
+
+                /* Animated line styles */
+                .animated-line {
+                    position: absolute;
+                    bottom: -8px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    width: 0;
+                    height: 4px;
+                    background: linear-gradient(90deg, #4B5EAA, #8A4AF3);
+                    border-radius: 2px;
+                    animation: drawLine 1.5s ease-out forwards;
+                }
+
+                @keyframes drawLine {
+                    to {
+                        width: 100%;
+                    }
                 }
             `}</style>
         </section>
