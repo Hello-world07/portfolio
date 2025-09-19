@@ -18,11 +18,15 @@ const Certifications = () => {
         setIsModalOpen(false);
     };
 
-    // Certification data. I have updated this to include only the Oracle certificate.
+    // Certification data. Added the Android Developer Virtual Internship certificate
     const certifications = [
         {
             title: 'Oracle Cloud Infrastructure 2025 Certified Data Science Professional',
             image: '/1oracle.jpg'
+        },
+        {
+            title: 'Android Developer Virtual Internship',
+            image: '/android.jpg'
         }
     ];
 
@@ -52,8 +56,8 @@ const Certifications = () => {
                     </p>
                 </div>
 
-                {/* Certifications Grid - now contains a single card */}
-                <div className="grid grid-cols-1 gap-8 relative max-w-lg mx-auto">
+                {/* Certifications Grid - now contains two cards, arranged side by side on medium+ screens */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative max-w-4xl mx-auto">
                     {certifications.map((cert, index) => (
                         <div
                             key={index}
