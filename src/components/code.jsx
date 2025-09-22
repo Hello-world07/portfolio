@@ -74,7 +74,7 @@ const Certifications = () => {
                         >
                             <div className="relative z-10">
                                 <div
-                                    className="w-full mb-6 rounded-lg overflow-hidden border border-gray-300 dark:border-gray-600 animate-fade-in delay-300"
+                                    className="w-full mb-6 aspect-[4/3] rounded-lg overflow-hidden border border-gray-300 dark:border-gray-600 animate-fade-in delay-300"
                                 >
                                     <img
                                         src={cert.image}
