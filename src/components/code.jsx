@@ -18,7 +18,7 @@ const Certifications = () => {
         setIsModalOpen(false);
     };
 
-    // Certification data. Added the Android Developer Virtual Internship certificate
+    // Certification data
     const certifications = [
         {
             title: 'Oracle Cloud Infrastructure 2025 Certified Data Science Professional',
@@ -27,6 +27,10 @@ const Certifications = () => {
         {
             title: 'Android Developer Virtual Internship',
             image: '/android.jpg'
+        },
+        {
+            title: 'Oracle Cloud Infrastructure 2025 Certified DevOps Professional',
+            image: '/devops.jpg'
         }
     ];
 
@@ -40,24 +44,24 @@ const Certifications = () => {
                 <div className="particle animate-particle-4"></div>
             </div>
 
-            <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div className="w-full max-w-7xl mx-auto px-2 sm:px-4 lg:px-6 relative z-10">
                 {/* Main Content */}
                 <div className="text-center mb-12">
                     <h1
                         className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 dark:text-white mb-2 leading-tight relative inline-block animate-fade-in-up"
                     >
-                        My Professional Certification
+                        My Professional Certifications
                         <div className="animated-line"></div>
                     </h1>
                     <p
                         className="text-base sm:text-lg lg:text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto animate-fade-in-up delay-200"
                     >
-                        This is the certification I have earned to validate my skills and expertise.
+                        These are the certifications I have earned to validate my skills and expertise.
                     </p>
                 </div>
 
-                {/* Certifications Grid - now contains two cards, arranged side by side on medium+ screens */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative max-w-4xl mx-auto">
+                {/* Certifications Grid - three cards in a row with increased width */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative w-full mx-auto">
                     {certifications.map((cert, index) => (
                         <div
                             key={index}
@@ -66,6 +70,7 @@ const Certifications = () => {
                                 transition-all duration-300 cursor-pointer overflow-hidden relative group
                                 transform hover:scale-105
                                 animate-fade-in-up-delay-${index}
+                                w-full
                             `}
                             onClick={() => openModal(cert.image)}
                             role="button"
