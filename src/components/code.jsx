@@ -30,7 +30,7 @@ const Certifications = () => {
         },
         {
             title: 'Oracle Cloud Infrastructure 2025 Certified DevOps Professional',
-            image: '/devops.jpg'
+            image: '/ops.jpg'
         }
     ];
 
