@@ -1,4 +1,3 @@
-// src/components/home.jsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import profilePic from '../assets/image1.jpg'; // Adjust path if necessary
@@ -34,7 +33,6 @@ const Home = () => {
         {/* Layer 3: Dynamic Neural Network / Data Flow Lines (SVG) - Active, flowing */}
         <svg className="absolute top-0 left-0 w-full h-full opacity-[0.08] animate-neural-pan" viewBox="0 0 100 100" preserveAspectRatio="none">
           <g strokeWidth="0.3" fill="currentColor">
-            {/* Multiple interconnected chains, more dense */}
             {[...Array(5)].map((_, chainIdx) => (
               <g key={`chain-${chainIdx}`} className={`animate-neural-chain delay-${chainIdx * 100}`}>
                 {[...Array(6)].map((_, nodeIdx) => {
@@ -69,11 +67,10 @@ const Home = () => {
                 left: `${(i * 21 + 10) % 100}%`,
                 animationDelay: `${i * 1.5}s`,
                 animationDuration: `${10 + i * 2}s`,
-                transform: `translate(-50%, -50%) rotate(${i * 45}deg)`, // Initial random rotation
+                transform: `translate(-50%, -50%) rotate(${i * 45}deg)`,
               }}
               viewBox="0 0 24 24"
             >
-              {/* Abstract circuit or data flow path */}
               <path d="M4 8h4V4h4v4h4V4h4v4h-4v4h4v4h-4v4h-4v-4h-4v4H4v-4h4v-4H4V8zm4 0v4h4V8H8z" stroke="currentColor" strokeWidth="1" fill="none" />
             </svg>
           ))}
@@ -107,45 +104,45 @@ const Home = () => {
           className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 rounded-full object-cover shadow-2xl ring-4 ring-indigo-500/60 dark:ring-indigo-400/60 mx-auto mb-8 sm:mb-10 md:mb-12 hover:scale-[1.03] transition-transform duration-300 ease-out will-change-transform focus-visible:ring-offset-4 focus-visible:ring-offset-gray-800 dark:focus-visible:ring-offset-gray-900 outline-none"
           loading="lazy"
         />
-        
+
         {/* Hero Title */}
         <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white drop-shadow-lg mb-4 sm:mb-6 md:mb-8 font-poppins leading-tight relative inline-block animate-fade-in-up">
           Konda Pranith
           <div className="animated-underline"></div>
         </h1>
-        
+
         {/* Subtitle */}
         <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold text-indigo-400 dark:text-indigo-300 mb-6 sm:mb-8 md:mb-10 font-montserrat animate-fade-in-up delay-200">
           Aspiring Software Engineer & AI Enthusiast
         </h2>
-        
+
         {/* Description */}
         <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-300 max-w-sm sm:max-w-md md:max-w-xl lg:max-w-4xl mx-auto mb-10 sm:mb-12 md:mb-14 font-montserrat leading-relaxed animate-fade-in-up delay-400">
           BTech Student in Computer Science Engineering. Passionate about programming, web development, and artificial intelligence. Explore my journey, impactful projects, and evolving skills.
         </p>
 
         {/* Call to Action Buttons */}
-        <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6 animate-fade-in-up delay-600">
+        <div className="flex flex-wrap justify-center items-center gap-3 sm:gap-4 animate-fade-in-up delay-600">
           <button
             onClick={handleAboutClick}
-            className="px-7 sm:px-9 py-3 sm:py-4 md:px-11 md:py-4 bg-gradient-to-r from-indigo-600 to-blue-500 text-white font-bold rounded-full shadow-lg hover:shadow-xl hover:scale-105 transform transition-all duration-300 text-base sm:text-lg md:text-xl font-poppins relative overflow-hidden group focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 outline-none"
+            className="px-3 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-indigo-600 to-blue-500 text-white font-bold rounded-full shadow-lg hover:shadow-xl hover:scale-105 hover:rotate-2 transform transition-all duration-300 text-sm sm:text-base md:text-lg font-poppins relative overflow-hidden group focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 outline-none animate-subtle-pulse"
           >
             <span className="relative z-10">About Me</span>
-            <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
+            <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"></span>
           </button>
           <button
             onClick={handleProjectsClick}
-            className="px-7 sm:px-9 py-3 sm:py-4 md:px-11 md:py-4 bg-gradient-to-r from-pink-600 to-red-500 text-white font-bold rounded-full shadow-lg hover:shadow-xl hover:scale-105 transform transition-all duration-300 text-base sm:text-lg md:text-xl font-poppins relative overflow-hidden group focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2 outline-none"
+            className="px-3 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-pink-600 to-red-500 text-white font-bold rounded-full shadow-lg hover:shadow-xl hover:scale-105 hover:rotate-2 transform transition-all duration-300 text-sm sm:text-base md:text-lg font-poppins relative overflow-hidden group focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-2 outline-none animate-subtle-pulse"
           >
             <span className="relative z-10">View Projects</span>
-            <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
+            <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"></span>
           </button>
           <button
             onClick={handleContactClick}
-            className="px-7 sm:px-9 py-3 sm:py-4 md:px-11 md:py-4 bg-gradient-to-r from-purple-600 to-fuchsia-500 text-white font-bold rounded-full shadow-lg hover:shadow-xl hover:scale-105 transform transition-all duration-300 text-base sm:text-lg md:text-xl font-poppins relative overflow-hidden group focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2 outline-none"
+            className="px-3 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-purple-600 to-fuchsia-500 text-white font-bold rounded-full shadow-lg hover:shadow-xl hover:scale-105 hover:rotate-2 transform transition-all duration-300 text-sm sm:text-base md:text-lg font-poppins relative overflow-hidden group focus-visible:ring-2 focus-visible:ring-purple-500 focus-visible:ring-offset-2 outline-none animate-subtle-pulse"
           >
             <span className="relative z-10">Contact Me</span>
-            <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
+            <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300"></span>
           </button>
         </div>
       </div>
@@ -160,7 +157,7 @@ const Home = () => {
         .animate-fade-in-up {
           animation: fadeInUp 0.8s ease-out forwards;
         }
-        .delay-100 { animation-delay: 0.1s; } /* Adjusted delays for more fine-grained control */
+        .delay-100 { animation-delay: 0.1s; }
         .delay-200 { animation-delay: 0.2s; }
         .delay-400 { animation-delay: 0.4s; }
         .delay-600 { animation-delay: 0.6s; }
@@ -179,39 +176,39 @@ const Home = () => {
         /* --- Layer 2: Abstract Grid Pattern --- */
         @keyframes grid-shift {
           0% { transform: translate(0, 0); }
-          100% { transform: translate(-20px, -20px); } /* Subtle diagonal shift */
+          100% { transform: translate(-20px, -20px); }
         }
         .animate-grid-shift {
-          animation: grid-shift 120s linear infinite alternate; /* Very slow, almost imperceptible movement */
+          animation: grid-shift 120s linear infinite alternate;
         }
 
         /* --- Layer 3: Dynamic Neural Network / Data Flow Lines --- */
         @keyframes neural-pan {
           0% { transform: translate(0, 0); }
-          100% { transform: translate(5%, 5%); } /* Gentle drift for the entire network */
+          100% { transform: translate(5%, 5%); }
         }
         .animate-neural-pan {
           animation: neural-pan 80s linear infinite alternate;
         }
 
         @keyframes node-pulse {
-            0%, 100% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.8); opacity: 1; } /* More prominent pulse */
+          0%, 100% { transform: scale(1); opacity: 0.8; }
+          50% { transform: scale(1.8); opacity: 1; }
         }
         .animate-node-pulse {
-            animation: node-pulse 2.5s ease-in-out infinite alternate;
+          animation: node-pulse 2.5s ease-in-out infinite alternate;
         }
 
         @keyframes line-flow {
-            0% { stroke-dasharray: 0 100; opacity: 0; }
-            30% { opacity: 1; }
-            100% { stroke-dasharray: 100 0; opacity: 0.5; }
+          0% { stroke-dasharray: 0 100; opacity: 0; }
+          30% { opacity: 1; }
+          100% { stroke-dasharray: 100 0; opacity: 0.5; }
         }
         .animate-line-flow {
-            animation: line-flow 4s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite forwards; /* Smoother, more organic flow */
-            stroke-dasharray: 100 0; /* Ensures it starts and ends correctly */
+          animation: line-flow 4s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite forwards;
+          stroke-dasharray: 100 0;
         }
-        
+
         /* --- Layer 4: Floating Abstract Tech Symbols --- */
         @keyframes symbol-rotate {
           0% { transform: translate(-50%, -50%) rotate(0deg); }
@@ -220,7 +217,7 @@ const Home = () => {
         .animate-symbol-rotate {
           animation: symbol-rotate var(--animation-duration, 15s) linear infinite;
         }
-        
+
         /* --- Layer 5: Enhanced Particles / Stardust --- */
         @keyframes stardust-float {
           0%, 100% { opacity: 0.7; transform: translate(0, 0) scale(1); }
@@ -230,7 +227,7 @@ const Home = () => {
         }
         .animate-stardust-float {
           animation: stardust-float var(--animation-duration, 8s) ease-in-out infinite alternate;
-          box-shadow: 0 0 5px rgba(255, 255, 255, 0.5); /* Subtle glow for particles */
+          box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
         }
 
         /* --- Main Content Card Enhancements --- */
@@ -238,13 +235,13 @@ const Home = () => {
           text-shadow: 0 3px 6px rgba(0, 0, 0, 0.5);
         }
         .shadow-3xl {
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 15px rgba(59,130,246,0.3); /* Deeper shadow with a subtle blue glow */
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 15px rgba(59,130,246,0.3);
         }
         .hover\:shadow-primary-lg:hover {
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 25px rgba(59,130,246,0.5); /* More intense glow on hover */
+          box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 25px rgba(59,130,246,0.5);
         }
 
-        /* --- Animated Underline (Already good, just ensure dark mode contrast) --- */
+        /* --- Animated Underline --- */
         .animated-underline {
           position: absolute;
           bottom: -10px;
@@ -259,6 +256,15 @@ const Home = () => {
         }
         @keyframes drawUnderline {
           to { transform: scaleX(1); }
+        }
+
+        /* --- Dynamic Button Animations --- */
+        @keyframes subtle-pulse {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.02); }
+        }
+        .animate-subtle-pulse {
+          animation: subtle-pulse 3s ease-in-out infinite;
         }
       `}</style>
     </section>
