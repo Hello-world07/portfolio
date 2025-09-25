@@ -3,7 +3,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './ThemeContext';
 import Navbar from './components/navbar';
-import Home from './components/home'; // Updated import for Home component
+import Home from './components/home';
 import About from './components/about';
 import Projects from './components/project';
 import Skills from './components/skills';
@@ -20,20 +20,30 @@ const App = () => {
     <ThemeProvider>
       <Router>
         <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-custom-dark transition-colors duration-300">
-          <Navbar />
-          <main className="flex-grow">
-            <Routes>
-              <Route path="/" element={<Home />} /> {/* Home as the landing page */}
-              <Route path="/about" element={<About />} />
-              <Route path="/projects" element={<Projects />} />
-              <Route path="/skills" element={<Skills />} />
-              <Route path="/code" element={<Code />} />
-              <Route path="/contact" element={<ContactUs />} />
-            </Routes>
-          </main>
-          <Footer />
+          <Routes>
+            {/* Landing page without Navbar and Footer */}
+            <Route path="/" element={<Home />} />
 
-          {/* ✅ Vercel Speed Insights and Analytics */}
+            {/* Layout with Navbar and Footer for other pages */}
+            <Route
+              path="/*"
+              element={
+                <>
+                  <Navbar />
+                  <main className="flex-grow">
+                    <Routes>
+                      <Route path="about" element={<About />} />
+                      <Route path="projects" element={<Projects />} />
+                      <Route path="skills" element={<Skills />} />
+                      <Route path="code" element={<Code />} />
+                      <Route path="contact" element={<ContactUs />} />
+                    </Routes>
+                  </main>
+                  <Footer />
+                </>
+              }
+            />
+          </Routes>
           <SpeedInsights />
           <Analytics />
         </div>
