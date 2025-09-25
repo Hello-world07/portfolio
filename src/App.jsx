@@ -1,7 +1,9 @@
+// src/App.jsx
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './ThemeContext';
 import Navbar from './components/navbar';
+import Home from './components/home'; // Updated import for Home component
 import About from './components/about';
 import Projects from './components/project';
 import Skills from './components/skills';
@@ -21,7 +23,7 @@ const App = () => {
           <Navbar />
           <main className="flex-grow">
             <Routes>
-              <Route path="/" element={<About />} />
+              <Route path="/" element={<Home />} /> {/* Home as the landing page */}
               <Route path="/about" element={<About />} />
               <Route path="/projects" element={<Projects />} />
               <Route path="/skills" element={<Skills />} />
