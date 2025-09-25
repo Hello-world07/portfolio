@@ -18,7 +18,7 @@ const Certifications = () => {
         setIsModalOpen(false);
     };
 
-    // Certification data. Added the Android Developer Virtual Internship certificate
+    // Certification data. Added the Android Developer Virtual Internship certificate and another Oracle certificate
     const certifications = [
         {
             title: 'Oracle Cloud Infrastructure 2025 Certified Data Science Professional',
@@ -27,6 +27,10 @@ const Certifications = () => {
         {
             title: 'Android Developer Virtual Internship',
             image: '/android.jpg'
+        },
+        {
+            title: 'Oracle Cloud Infrastructure 2025 Certified DevOps Professional',
+            image: '/devops.jpg'
         }
     ];
 
@@ -40,7 +44,7 @@ const Certifications = () => {
                 <div className="particle animate-particle-4"></div>
             </div>
 
-            <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div className="w-full max-w-7xl mx-auto px-2 sm:px-4 lg:px-6 relative z-10">
                 {/* Main Content */}
                 <div className="text-center mb-12">
                     <h1
@@ -56,13 +60,13 @@ const Certifications = () => {
                     </p>
                 </div>
 
-                {/* Certifications Grid - now contains two cards, arranged side by side on medium+ screens */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative max-w-4xl mx-auto">
+                {/* Certifications Grid - now contains three cards, arranged side by side on medium+ screens */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative max-w-6xl mx-auto">
                     {certifications.map((cert, index) => (
                         <div
                             key={index}
                             className={`
-                                bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700
+                                bg-white dark:bg-gray-800 p-10 sm:p-12 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700
                                 transition-all duration-300 cursor-pointer overflow-hidden relative group
                                 transform hover:scale-105
                                 animate-fade-in-up-delay-${index}
@@ -79,7 +83,7 @@ const Certifications = () => {
                                     <img
                                         src={cert.image}
                                         alt={`${cert.title} certificate`}
-                                        className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110"
+                                        className="w-[120%] h-full object-contain transition-transform duration-500 group-hover:scale-110"
                                     />
                                 </div>
                                 <h3 className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white mb-2 text-center">
