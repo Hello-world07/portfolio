@@ -107,7 +107,7 @@ const Home = () => {
 
         {/* Hero Title */}
         <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white drop-shadow-lg mb-4 sm:mb-6 md:mb-8 font-poppins leading-tight relative inline-block animate-fade-in-up">
-          Konda Pranith
+          PRANITH KONDA
           <div className="animated-underline"></div>
         </h1>
 
