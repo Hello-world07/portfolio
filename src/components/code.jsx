@@ -66,7 +66,7 @@ const Certifications = () => {
                         <div
                             key={index}
                             className={`
-                                bg-white dark:bg-gray-800 p-10 sm:p-12 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700
+                                bg-white dark:bg-gray-800 p-10 sm:p-12 rounded-2xl shadow-lg border-2 border-blue-500 dark:border-blue-400
                                 transition-all duration-300 cursor-pointer overflow-hidden relative group
                                 transform hover:scale-105
                                 animate-fade-in-up-delay-${index}
@@ -84,6 +84,7 @@ const Certifications = () => {
                                         src={cert.image}
                                         alt={`${cert.title} certificate`}
                                         className="w-[120%] h-full object-contain transition-transform duration-500 group-hover:scale-110"
+                                        loading="lazy"
                                     />
                                 </div>
                                 <h3 className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white mb-2 text-center">
@@ -109,6 +110,7 @@ const Certifications = () => {
                             src={selectedImage}
                             alt="Certificate preview"
                             className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-xl"
+                            loading="lazy"
                         />
                         <button
                             onClick={closeModal}
