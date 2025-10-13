@@ -31,6 +31,10 @@ const Certifications = () => {
         {
             title: 'Oracle Cloud Infrastructure 2025 Certified DevOps Professional',
             image: '/dev.jpg'
+        },
+        {
+            title: 'Certificate of Appreciation - CineHack.AI',
+            image: '/cinehack.jpg' // You can replace '/cinehack.jpg' with the actual path to the certificate image
         }
     ];
 
@@ -210,7 +214,7 @@ const Certifications = () => {
                 }
             `}</style>
         </section>
-    );
+    )
 };
 
 const App = () => {
