@@ -356,10 +356,9 @@ const About = () => {
           <div className="mt-6 sm:mt-8 flex justify-center">
             <button
               onClick={handleProjectsClick}
-              className="px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-indigo-500 to-pink-500 text-white font-semibold rounded-lg glow-effect hover:from-indigo-600 hover:to-pink-600 transition-all duration-300 text-sm sm:text-base font-poppins relative overflow-hidden group -ml-4 sm:-ml-6"
+              className="rounded-md flex items-center border border-slate-300 dark:border-gray-600 py-2 px-4 sm:py-3 sm:px-6 text-center text-sm sm:text-base transition-all shadow-sm hover:shadow-lg text-slate-600 dark:text-gray-300 hover:text-white dark:hover:text-white hover:bg-slate-800 dark:hover:bg-gray-800 hover:border-slate-800 dark:hover:border-gray-800 focus:text-white focus:bg-slate-800 focus:border-slate-800 active:border-slate-800 active:text-white active:bg-slate-800 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none font-poppins font-semibold -ml-4 sm:-ml-6"
             >
-              <span className="relative z-10">Explore My Projects</span>
-              <span className="absolute inset-0 bg-gradient-to-r from-indigo-400 to-pink-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></span>
+              Explore My Projects
             </button>
           </div>
         </div>
