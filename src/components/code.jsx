@@ -6,7 +6,6 @@ const Certifications = () => {
     const [selectedTitle, setSelectedTitle] = useState(''); // To show title in modal
 
     const openModal = (imageSrc, title) => {
-        // Removed the window.innerWidth condition. The modal will now open on all screen sizes.
         setSelectedImage(imageSrc);
         setSelectedTitle(title);
         setIsModalOpen(true);
@@ -42,6 +41,12 @@ const Certifications = () => {
             image: '/python.jpg',
             description: 'Foundational knowledge and practical skills in Python programming.'
         }
+        // Assuming you have an 'eduskill.jpg' image path here for the Eduskill certificate
+        // {
+        //     title: 'Eduskill Certificate',
+        //     image: '/eduskill.jpg', // Make sure this path is correct
+        //     description: 'Certification from Eduskill.'
+        // }
     ];
 
     return (
@@ -118,11 +123,11 @@ const Certifications = () => {
                         <h2 id="modal-title" className="text-2xl font-bold text-gray-900 dark:text-white mb-4 text-center">
                             {selectedTitle}
                         </h2>
-                        <div className="flex-grow flex items-center justify-center w-full max-h-[70vh] overflow-hidden">
+                        <div className="flex-grow flex items-center justify-center w-full overflow-hidden">
                             <img
                                 src={selectedImage}
                                 alt={`${selectedTitle} certificate preview`}
-                                className="max-w-full max-h-full object-contain rounded-md"
+                                className="max-w-full max-h-[calc(95vh-100px)] object-contain rounded-md" // Adjusted max-height here
                                 loading="lazy"
                             />
                         </div>
