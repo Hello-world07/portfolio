@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 const Certifications = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedImage, setSelectedImage] = useState('');
-    const [selectedTitle, setSelectedTitle] = useState(''); // To show title in modal
+    const [selectedTitle, setSelectedTitle] = useState('');
 
     const openModal = (imageSrc, title) => {
         setSelectedImage(imageSrc);
@@ -40,13 +40,12 @@ const Certifications = () => {
             title: 'Programming in Python',
             image: '/python.jpg',
             description: 'Foundational knowledge and practical skills in Python programming.'
+        },
+        {
+            title: 'Tribe Codeathon Participation',
+            image: '/tribe-codeathon.jpg', // Save the provided certificate as this file in your public folder
+            description: 'Successfully participated in the Tribe Codeathon conducted by Student Tribe on October 25th, 2025.'
         }
-        // Assuming you have an 'eduskill.jpg' image path here for the Eduskill certificate
-        // {
-        //     title: 'Eduskill Certificate',
-        //     image: '/eduskill.jpg', // Make sure this path is correct
-        //     description: 'Certification from Eduskill.'
-        // }
     ];
 
     return (
@@ -127,7 +126,7 @@ const Certifications = () => {
                             <img
                                 src={selectedImage}
                                 alt={`${selectedTitle} certificate preview`}
-                                className="max-w-full max-h-[calc(95vh-100px)] object-contain rounded-md" // Adjusted max-height here
+                                className="max-w-full max-h-[calc(95vh-100px)] object-contain rounded-md"
                                 loading="lazy"
                             />
                         </div>
@@ -167,24 +166,13 @@ const Certifications = () => {
                     }
                 `).join('')}
 
-                /* Blob background animation */
                 @keyframes blob {
-                    0% {
-                        transform: translate(0, 0) scale(1);
-                    }
-                    33% {
-                        transform: translate(30px, -50px) scale(1.1);
-                    }
-                    66% {
-                        transform: translate(-20px, 20px) scale(0.9);
-                    }
-                    100% {
-                        transform: translate(0, 0) scale(1);
-                    }
+                    0% { transform: translate(0, 0) scale(1); }
+                    33% { transform: translate(30px, -50px) scale(1.1); }
+                    66% { transform: translate(-20px, 20px) scale(0.9); }
+                    100% { transform: translate(0, 0) scale(1); }
                 }
-                .animate-blob {
-                    animation: blob 7s infinite ease-in-out;
-                }
+                .animate-blob { animation: blob 7s infinite ease-in-out; }
                 .animation-delay-200 { animation-delay: 2s; }
                 .animation-delay-400 { animation-delay: 4s; }
                 .animation-delay-600 { animation-delay: 6s; }
