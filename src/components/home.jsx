@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import Particles from 'react-tsparticles';
 import { loadSlim } from 'tsparticles-slim';
 
+// Particle options (unchanged)
 const PARTICLE_OPTIONS = {
   background: { color: { value: "#0a0a0a" } },
   fpsLimit: 120,
@@ -47,6 +48,37 @@ function AnimatedGradientText({ children, className = "" }) {
     >
       {children}
     </span>
+  );
+}
+
+function Button({ label, onClick }) {
+  return (
+    <motion.button
+      whileHover={{ scale: 1.06, y: -3 }}
+      whileTap={{ scale: 0.97, y: 1 }}
+      className="relative rounded-lg bg-gradient-to-tr from-[#232526] to-[#161a1d] px-7 py-3 font-semibold text-white shadow-md border border-gray-700 hover:from-[#232526]/70 hover:to-[#161a1d]/90 transition-all outline-none focus:ring-2 focus:ring-cyan-400"
+      onClick={onClick}
+      tabIndex={0}
+    >
+      {label}
+    </motion.button>
+  );
+}
+
+// Download Resume Button Component
+function DownloadResumeButton() {
+  return (
+    <motion.a
+      href="/resume.pdf"      // resume should be inside public folder!
+      download
+      whileHover={{ scale: 1.06, y: -3 }}
+      whileTap={{ scale: 0.97, y: 1 }}
+      className="relative rounded-lg bg-gradient-to-tr from-[#00bfff] to-[#8a2be2] px-7 py-3 font-semibold text-white shadow-md border border-gray-700 hover:from-[#00bfff]/80 hover:to-[#8a2be2]/90 transition-all outline-none focus:ring-2 focus:ring-amber-400"
+      tabIndex={0}
+      aria-label="Download Resume"
+    >
+      Download Resume
+    </motion.a>
   );
 }
 
@@ -106,6 +138,7 @@ const Home = () => {
           <Button label="About Me" onClick={() => navigate('/about')} />
           <Button label="View Projects" onClick={() => navigate('/projects')} />
           <Button label="Contact Me" onClick={() => navigate('/contact')} />
+          <DownloadResumeButton />
         </div>
       </motion.div>
 
@@ -127,19 +160,5 @@ const Home = () => {
     </section>
   );
 };
-
-function Button({ label, onClick }) {
-  return (
-    <motion.button
-      whileHover={{ scale: 1.06, y: -3 }}
-      whileTap={{ scale: 0.97, y: 1 }}
-      className="relative rounded-lg bg-gradient-to-tr from-[#232526] to-[#161a1d] px-7 py-3 font-semibold text-white shadow-md border border-gray-700 hover:from-[#232526]/70 hover:to-[#161a1d]/90 transition-all outline-none focus:ring-2 focus:ring-cyan-400"
-      onClick={onClick}
-      tabIndex={0}
-    >
-      {label}
-    </motion.button>
-  );
-}
 
 export default Home;
