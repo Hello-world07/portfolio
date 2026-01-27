@@ -277,82 +277,81 @@ const About = () => {
               . With every step in my studies, I’m building the skills and mindset needed to grow in the fast-changing world of technology.
             </p>
           </div>
+{/* Certifications Section */}
+<h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white mb-4 mt-6 sm:mt-8 font-poppins heading-underline animate-heading">
+  Certifications 🏆
+</h3>
 
-          {/* Certifications Section */}
-          <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 dark:text-white mb-4 mt-6 sm:mt-8 font-poppins heading-underline animate-heading">
-            Certifications 🏆
-          </h3>
-          <div className="text-sm sm:text-base lg:text-lg text-gray-600 dark:text-gray-200 leading-relaxed font-montserrat">
-            <p>
-              At the moment, I don’t have any official certifications to share. I’ve completed a{' '}
-              <span className="highlight-wrapper">
-                <span className="font-semibold text-black dark:text-white box-highlight">
-                  3-year diploma in Computer Science Engineering
-                </span>
-              </span>{' '}
-              and I’m currently pursuing my{' '}
-              <span className="highlight-wrapper">
-                <span className="font-semibold text-black dark:text-white box-highlight">
-                  B.Tech
-                </span>
-              </span>{' '}
-              to keep building my skills and knowledge.
-            </p>
-            <p className="mt-4">
-              I believe learning doesn't always need a certificate to show its value. I’ve been actively working on{' '}
-              <span className="highlight-wrapper">
-                <span className="font-semibold text-black dark:text-white box-highlight">
-                  projects
-                </span>
-              </span>
-              , improving my{' '}
-              <span className="highlight-wrapper">
-                <span className="font-semibold text-black dark:text-white box-highlight">
-                  coding skills
-                </span>
-              </span>
-              , and exploring{' '}
-              <span className="highlight-wrapper">
-                <span className="font-semibold text-black dark:text-white box-highlight">
-                  new technologies
-                </span>
-              </span>
-              . Still, I do plan to earn certifications that match my interests and goals.
-            </p>
-            <p className="mt-2">Certifications I plan to take soon:</p>
-            <ul className="list-disc pl-6 mt-2">
-              <li>
-                <span className="highlight-wrapper">
-                  <span className="font-semibold text-black dark:text-white box-highlight">
-                    Python Programming
-                  </span>
-                </span>
-              </li>
-              <li>
-                <span className="highlight-wrapper">
-                  <span className="font-semibold text-black dark:text-white box-highlight">
-                    Java Development
-                  </span>
-                </span>
-              </li>
-              <li>
-                <span className="highlight-wrapper">
-                  <span className="font-semibold text-black dark:text-white box-highlight">
-                    Web Development (HTML, CSS, JavaScript)
-                  </span>
-                </span>
-              </li>
-            </ul>
-            <p className="mt-4">
-              As I complete them, I’ll update this section.{' '}
-              <span className="highlight-wrapper">
-                <span className="font-semibold text-black dark:text-white box-highlight">
-                  Learning is a journey
-                </span>
-              </span>
-              , and I’m just getting started.
-            </p>
-          </div>
+<div className="text-sm sm:text-base lg:text-lg text-gray-600 dark:text-gray-200 leading-relaxed font-montserrat">
+
+  {/* OCI Data Science */}
+  <p className="mt-4">
+    <span className="highlight-wrapper">
+      <span className="font-semibold text-black dark:text-white box-highlight">
+        Oracle Cloud Infrastructure 2025 – Certified Data Science Professional
+      </span>
+    </span>
+    <br />
+    Demonstrates expertise in machine learning and data science on OCI.
+  </p>
+
+  {/* Android Internship */}
+  <p className="mt-4">
+    <span className="highlight-wrapper">
+      <span className="font-semibold text-black dark:text-white box-highlight">
+        Android Developer Virtual Internship – Google for Developers
+      </span>
+    </span>
+    <br />
+    Practical experience in building robust Android applications.
+  </p>
+
+  {/* OCI DevOps */}
+  <p className="mt-4">
+    <span className="highlight-wrapper">
+      <span className="font-semibold text-black dark:text-white box-highlight">
+        Oracle Cloud Infrastructure 2025 – Certified DevOps Professional
+      </span>
+    </span>
+    <br />
+    Proficiency in implementing CI/CD pipelines and DevOps practices on OCI.
+  </p>
+
+  {/* CineHack.AI */}
+  <p className="mt-4">
+    <span className="highlight-wrapper">
+      <span className="font-semibold text-black dark:text-white box-highlight">
+        Certificate of Appreciation – CineHack.AI
+      </span>
+    </span>
+    <br />
+    Recognized for contributions and innovative solutions at CineHack.AI.
+  </p>
+
+  {/* Meta Python */}
+  <p className="mt-4">
+    <span className="highlight-wrapper">
+      <span className="font-semibold text-black dark:text-white box-highlight">
+        Programming in Python – Meta (Coursera)
+      </span>
+    </span>
+    <br />
+    Foundational knowledge and practical skills in Python programming.
+  </p>
+
+  {/* Tribe Codeathon */}
+  <p className="mt-4">
+    <span className="highlight-wrapper">
+      <span className="font-semibold text-black dark:text-white box-highlight">
+        Tribe Codeathon Participation
+      </span>
+    </span>
+    <br />
+    Successfully participated in the Tribe Codeathon conducted by Student Tribe on
+    October 25th, 2025.
+  </p>
+
+</div>
 
           {/* Projects Button */}
           <div className="mt-6 sm:mt-8 flex justify-center">
