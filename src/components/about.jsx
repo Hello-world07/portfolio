@@ -352,7 +352,7 @@ const About = () => {
   </p>
 
 </div>
-
+ 
           {/* Projects Button */}
           <div className="mt-6 sm:mt-8 flex justify-center">
             <button
