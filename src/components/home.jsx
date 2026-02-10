@@ -19,7 +19,7 @@ function Button({ label, onClick, variant = 'primary', icon }) {
         scale: 0.98,
         transition: { duration: 0.1 }
       }}
-      className={`group relative px-8 py-3.5 rounded-lg font-medium transition-all duration-200 overflow-hidden ${styles[variant]}`}
+      className={`group relative px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-3.5 rounded-lg font-medium transition-all duration-200 overflow-hidden text-sm sm:text-base ${styles[variant]}`}
       onClick={onClick}
       tabIndex={0}
     >
@@ -38,8 +38,8 @@ function Button({ label, onClick, variant = 'primary', icon }) {
       </motion.span>
       
       {/* Button content */}
-      <span className="relative flex items-center justify-center gap-2">
-        {icon && <span className="text-lg">{icon}</span>}
+      <span className="relative flex items-center justify-center gap-1.5 sm:gap-2">
+        {icon && <span className="text-base sm:text-lg">{icon}</span>}
         <span className="tracking-wide">{label}</span>
         
         {/* Animated arrow */}
@@ -69,7 +69,7 @@ function DownloadResumeButton() {
         scale: 0.98,
         transition: { duration: 0.1 }
       }}
-      className="group relative inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-lg font-medium bg-gradient-to-r from-[#1a73e8] to-[#4285f4] text-white shadow-[0_1px_2px_0_rgba(60,64,67,0.3),0_1px_3px_1px_rgba(60,64,67,0.15)] hover:shadow-[0_1px_3px_0_rgba(60,64,67,0.3),0_4px_8px_3px_rgba(60,64,67,0.15)] transition-all duration-200 overflow-hidden"
+      className="group relative inline-flex items-center justify-center gap-1.5 sm:gap-2 px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-3.5 rounded-lg font-medium bg-gradient-to-r from-[#1a73e8] to-[#4285f4] text-white shadow-[0_1px_2px_0_rgba(60,64,67,0.3),0_1px_3px_1px_rgba(60,64,67,0.15)] hover:shadow-[0_1px_3px_0_rgba(60,64,67,0.3),0_4px_8px_3px_rgba(60,64,67,0.15)] transition-all duration-200 overflow-hidden text-sm sm:text-base"
       tabIndex={0}
       aria-label="Download Resume"
     >
@@ -81,8 +81,8 @@ function DownloadResumeButton() {
         transition={{ duration: 0.6 }}
       />
       
-      <span className="relative flex items-center gap-2 tracking-wide">
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <span className="relative flex items-center gap-1.5 sm:gap-2 tracking-wide">
+        <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
         </svg>
         Download Resume
@@ -107,6 +107,8 @@ const Home = () => {
           loop
           muted
           playsInline
+          preload="auto"
+          poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 1080'%3E%3Crect fill='%23f0f0f0' width='1920' height='1080'/%3E%3C/svg%3E"
         >
           <source src="/5657af743257c466354ddac1b85c3386.mp4" type="video/mp4" />
         </video>
@@ -154,14 +156,14 @@ const Home = () => {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="absolute inset-0 bg-white/80 backdrop-blur-xl rounded-3xl -m-8 shadow-2xl"
+            className="absolute inset-0 bg-white/80 backdrop-blur-xl rounded-3xl -m-4 sm:-m-6 md:-m-8 shadow-2xl"
             style={{ zIndex: -1 }}
           />
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3, type: "spring", stiffness: 100 }}
-            className="relative text-6xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-blue-900 to-gray-900 tracking-tight leading-tight px-8 py-4"
+            className="relative text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-blue-900 to-gray-900 tracking-tight leading-tight px-4 sm:px-6 md:px-8 py-3 sm:py-4"
             style={{ 
               fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
               WebkitTextStroke: '1px rgba(0, 0, 0, 0.1)',
@@ -176,14 +178,14 @@ const Home = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
-          className="mb-8 inline-block"
+          className="mb-8 inline-block w-full max-w-2xl px-2"
         >
-          <div className="bg-white/85 backdrop-blur-lg rounded-2xl px-8 py-6 shadow-xl border border-gray-200/50">
+          <div className="bg-white/85 backdrop-blur-lg rounded-2xl px-4 sm:px-6 md:px-8 py-4 sm:py-5 md:py-6 shadow-xl border border-gray-200/50">
             <motion.h2 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.5 }}
-              className="text-2xl md:text-3xl font-bold text-gray-900 mb-3 tracking-tight"
+              className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-2 sm:mb-3 tracking-tight"
             >
               Aspiring Software Engineer & AI Enthusiast
             </motion.h2>
@@ -191,7 +193,7 @@ const Home = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.6 }}
-              className="flex items-center justify-center gap-3 text-sm text-gray-700 font-semibold"
+              className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 text-xs sm:text-sm text-gray-700 font-semibold"
             >
               <motion.span 
                 whileHover={{ scale: 1.1 }}
@@ -199,7 +201,7 @@ const Home = () => {
               >
                 🎓 BTech in Computer Science
               </motion.span>
-              <span className="text-gray-400">•</span>
+              <span className="hidden sm:inline text-gray-400">•</span>
               <motion.span 
                 whileHover={{ scale: 1.1 }}
                 className="flex items-center gap-1"
@@ -215,14 +217,14 @@ const Home = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.7 }}
-          className="mb-12 max-w-3xl mx-auto"
+          className="mb-12 max-w-3xl mx-auto px-2"
         >
-          <div className="bg-white/80 backdrop-blur-lg rounded-2xl px-10 py-8 shadow-xl border border-gray-200/50">
+          <div className="bg-white/80 backdrop-blur-lg rounded-2xl px-4 sm:px-6 md:px-10 py-4 sm:py-6 md:py-8 shadow-xl border border-gray-200/50">
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.8 }}
-              className="text-lg md:text-xl text-gray-900 font-medium leading-relaxed"
+              className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-900 font-medium leading-relaxed"
             >
               Passionate about creating innovative solutions through programming, web development, 
               and artificial intelligence. Committed to leveraging cutting-edge technologies to 
