@@ -11,28 +11,25 @@ const IS_EMBED  = false;
 // SCREENSHOTS — put images in /public/expense/
 // ─────────────────────────────────────────────────────────────
 const screenshots = [
-  { src: "image5.png",                    label: "Make.com – Telegram → Sheets Pipeline" },
-  { src: "image3.png",   label: "Google Sheets – Live Expense Log" },
-  { src: "image4.png",   label: "Gmail – Daily Expense Report" },
-  { src: "image1.png",   label: "Google Sheets – Running Total" },
-  { src: "image2.png",   label: "Make.com – Email Scenario" },
+  { src: "image5.png",  label: "Make.com – Telegram → Sheets Pipeline" },
+  { src: "image3.png",  label: "Google Sheets – Live Expense Log" },
+  { src: "image4.png",  label: "Gmail – Daily Expense Report" },
+  { src: "image1.png",  label: "Google Sheets – Running Total" },
+  { src: "image2.png",  label: "Make.com – Email Scenario" },
 ];
 
 // ─────────────────────────────────────────────────────────────
 // DESIGN TOKENS
 // ─────────────────────────────────────────────────────────────
 const C = {
-  // Expense tracker (project 02 → now top)
   violet:       "#7c3aed",
   violetLight:  "#8b5cf6",
   violetGlow:   "rgba(124,58,237,0.18)",
   violetPale:   "#ede9fe",
-  // Customer analytics (project 01 → now bottom)
   azure:        "#1d4ed8",
   azureLight:   "#3b82f6",
   azureGlow:    "rgba(29,78,216,0.18)",
   azurePale:    "#eff6ff",
-  // Neutrals
   ink:          "#0a0a0f",
   inkLight:     "#0f172a",
   slate:        "#334155",
@@ -101,7 +98,7 @@ const Counter = ({ to, suffix = "" }) => {
 const TypingText = ({ words, color }) => {
   const [wordIndex, setWordIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
-  const [deleting, setDeleting] = useState(false);
+  const [deleting, setDeleting]   = useState(false);
 
   useEffect(() => {
     const current = words[wordIndex];
@@ -219,7 +216,6 @@ const ScreenshotGallery = ({ accentColor }) => {
           <span style={{ fontSize: "0.82rem", fontWeight: 700, color: C.muted }}>{screenshots[active].label}</span>
           <span style={{ fontSize: "0.7rem", color: C.ghost }}>Add image to /public/expense/</span>
         </div>
-        {/* Gradient overlay */}
         <div style={{
           position: "absolute", bottom: 0, left: 0, right: 0,
           background: "linear-gradient(transparent, rgba(0,0,0,0.55))",
@@ -235,7 +231,6 @@ const ScreenshotGallery = ({ accentColor }) => {
             color: "#fff", fontSize: "0.64rem", fontWeight: 600,
           }}>🔍 Enlarge</span>
         </div>
-        {/* Counter badge */}
         <div style={{
           position: "absolute", top: "14px", right: "14px",
           background: "rgba(0,0,0,0.5)", backdropFilter: "blur(6px)",
@@ -341,7 +336,7 @@ const VideoPlayer = ({ accentColor }) => {
         style={{
           width: "100%", aspectRatio: "16/9",
           borderRadius: "16px", overflow: "hidden", cursor: "pointer",
-          background: `linear-gradient(135deg, ${C.ink} 0%, #0f172a 50%, #1a0533 100%)`,
+          background: C.ink,
           border: `1px solid ${accentColor}30`,
           boxShadow: `0 8px 28px rgba(0,0,0,0.15)`,
           display: "flex", alignItems: "center", justifyContent: "center",
@@ -349,16 +344,21 @@ const VideoPlayer = ({ accentColor }) => {
           transition: "box-shadow 0.3s",
         }}
       >
-        {/* Grid pattern */}
+        {/* Thumbnail image fills the entire background */}
+        <img
+          src="image3.png"
+          alt="Demo video thumbnail"
+          style={{
+            position: "absolute", inset: 0,
+            width: "100%", height: "100%",
+            objectFit: "cover",
+          }}
+          onError={(e) => { e.target.style.display = "none"; }}
+        />
+        {/* Dark overlay so play button is visible */}
         <div style={{
           position: "absolute", inset: 0,
-          backgroundImage: `linear-gradient(${accentColor}12 1px, transparent 1px), linear-gradient(90deg, ${accentColor}12 1px, transparent 1px)`,
-          backgroundSize: "36px 36px",
-        }} />
-        {/* Radial glow */}
-        <div style={{
-          position: "absolute", inset: 0,
-          background: `radial-gradient(ellipse at center, ${accentColor}28 0%, transparent 65%)`,
+          background: "rgba(0,0,0,0.45)",
         }} />
         {/* Play button */}
         <motion.div
@@ -368,17 +368,17 @@ const VideoPlayer = ({ accentColor }) => {
             width: "76px", height: "76px", borderRadius: "50%",
             background: C.white,
             display: "flex", alignItems: "center", justifyContent: "center",
-            boxShadow: `0 12px 40px rgba(0,0,0,0.35), 0 0 0 8px ${accentColor}20`,
-            zIndex: 1,
+            boxShadow: `0 12px 40px rgba(0,0,0,0.5), 0 0 0 8px ${accentColor}40`,
+            zIndex: 1, position: "relative",
           }}
         >
           <svg width="28" height="28" viewBox="0 0 24 24" fill={accentColor}>
             <path d="M8 5v14l11-7z" />
           </svg>
         </motion.div>
-        {/* Badge */}
+        {/* Watch Demo badge */}
         <div style={{
-          position: "absolute", top: "16px", left: "16px",
+          position: "absolute", top: "16px", left: "16px", zIndex: 1,
           background: hasVideo ? `${accentColor}ee` : "rgba(15,23,42,0.7)",
           backdropFilter: "blur(8px)", borderRadius: "8px",
           padding: "5px 14px", fontSize: "0.68rem", fontWeight: 700,
@@ -387,10 +387,10 @@ const VideoPlayer = ({ accentColor }) => {
           {hasVideo ? "▶ Watch Demo" : "🎬 Coming Soon"}
         </div>
         <div style={{
-          position: "absolute", bottom: "14px", right: "14px",
-          background: "rgba(0,0,0,0.5)", backdropFilter: "blur(4px)",
+          position: "absolute", bottom: "14px", right: "14px", zIndex: 1,
+          background: "rgba(0,0,0,0.55)", backdropFilter: "blur(4px)",
           borderRadius: "6px", padding: "4px 12px",
-          fontSize: "0.64rem", color: "rgba(255,255,255,0.6)",
+          fontSize: "0.64rem", color: "rgba(255,255,255,0.8)",
         }}>
           Click to play
         </div>
@@ -487,123 +487,142 @@ const SectionDivider = ({ label }) => (
 );
 
 // ─────────────────────────────────────────────────────────────
-// PROJECTS SECTION HEADER
+// PROJECTS SECTION HEADER  ← scrollTo logic added
 // ─────────────────────────────────────────────────────────────
-const ProjectsSectionHeader = () => (
-  <div style={{
-    background: C.ink,
-    padding: "80px 24px 72px",
-    textAlign: "center",
-    position: "relative",
-    overflow: "hidden",
-  }}>
-    {/* Background grid */}
+const ProjectsSectionHeader = () => {
+  const scrollTo = (id) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  return (
     <div style={{
-      position: "absolute", inset: 0,
-      backgroundImage: `linear-gradient(rgba(124,58,237,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(124,58,237,0.06) 1px, transparent 1px)`,
-      backgroundSize: "48px 48px",
-    }} />
-    {/* Glow blobs */}
-    <div style={{ position: "absolute", top: "-60px", left: "20%", width: "320px", height: "320px", borderRadius: "50%", background: `radial-gradient(circle, ${C.violetGlow} 0%, transparent 70%)`, filter: "blur(40px)" }} />
-    <div style={{ position: "absolute", bottom: "-40px", right: "25%", width: "260px", height: "260px", borderRadius: "50%", background: `radial-gradient(circle, ${C.azureGlow} 0%, transparent 70%)`, filter: "blur(40px)" }} />
+      background: C.ink,
+      padding: "80px 24px 72px",
+      textAlign: "center",
+      position: "relative",
+      overflow: "hidden",
+    }}>
+      {/* Background grid */}
+      <div style={{
+        position: "absolute", inset: 0,
+        backgroundImage: `linear-gradient(rgba(124,58,237,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(124,58,237,0.06) 1px, transparent 1px)`,
+        backgroundSize: "48px 48px",
+      }} />
+      {/* Glow blobs */}
+      <div style={{ position: "absolute", top: "-60px", left: "20%", width: "320px", height: "320px", borderRadius: "50%", background: `radial-gradient(circle, ${C.violetGlow} 0%, transparent 70%)`, filter: "blur(40px)" }} />
+      <div style={{ position: "absolute", bottom: "-40px", right: "25%", width: "260px", height: "260px", borderRadius: "50%", background: `radial-gradient(circle, ${C.azureGlow} 0%, transparent 70%)`, filter: "blur(40px)" }} />
 
-    <motion.div
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7 }}
-      style={{ position: "relative", zIndex: 1 }}
-    >
-      {/* Eyebrow */}
-      <motion.span
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.2, duration: 0.5 }}
-        style={{
-          display: "inline-block",
-          fontSize: "0.6rem", fontWeight: 800,
-          letterSpacing: "0.25em", textTransform: "uppercase",
-          color: C.violetLight, background: `${C.violetLight}18`,
-          border: `1px solid ${C.violetLight}40`,
-          borderRadius: "999px", padding: "6px 18px",
-          marginBottom: "22px",
-        }}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7 }}
+        style={{ position: "relative", zIndex: 1 }}
       >
-        Portfolio — 2 Projects
-      </motion.span>
+        {/* Eyebrow */}
+        <motion.span
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+          style={{
+            display: "inline-block",
+            fontSize: "0.6rem", fontWeight: 800,
+            letterSpacing: "0.25em", textTransform: "uppercase",
+            color: C.violetLight, background: `${C.violetLight}18`,
+            border: `1px solid ${C.violetLight}40`,
+            borderRadius: "999px", padding: "6px 18px",
+            marginBottom: "22px",
+          }}
+        >
+          Portfolio — 2 Projects
+        </motion.span>
 
-      <h1 style={{
-        fontSize: "clamp(2rem, 5vw, 3.4rem)",
-        fontWeight: 900, color: C.white,
-        letterSpacing: "-0.035em", lineHeight: 1.08,
-        marginBottom: "18px",
-        fontFamily: "'Georgia', serif",
-      }}>
-        Work I've{" "}
-        <TypingText words={["built.", "shipped.", "automated.", "designed."]} color={C.violetLight} />
-      </h1>
+        <h1 style={{
+          fontSize: "clamp(2rem, 5vw, 3.4rem)",
+          fontWeight: 900, color: C.white,
+          letterSpacing: "-0.035em", lineHeight: 1.08,
+          marginBottom: "18px",
+          fontFamily: "'Georgia', serif",
+        }}>
+          Work I've{" "}
+          <TypingText words={["built.", "shipped.", "automated.", "designed."]} color={C.violetLight} />
+        </h1>
 
-      <p style={{
-        fontSize: "1rem", color: C.ghost,
-        lineHeight: 1.75, maxWidth: "420px",
-        margin: "0 auto 36px",
-      }}>
-        From data analytics to no-code automation pipelines — real projects, real impact.
-      </p>
+        <p style={{
+          fontSize: "1rem", color: C.ghost,
+          lineHeight: 1.75, maxWidth: "420px",
+          margin: "0 auto 36px",
+        }}>
+          From data pipelines to no-code automation — projects built while learning CS, solving real problems.
+        </p>
 
-      {/* Stats row */}
-      <div style={{ display: "flex", justifyContent: "center", gap: "32px", flexWrap: "wrap", marginBottom: "36px" }}>
-        {[
-          { num: 2, suffix: "", label: "Projects" },
-          { num: 100, suffix: "%", label: "Automated" },
-          { num: 24, suffix: "/7", label: "Running" },
-        ].map((s, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 + i * 0.1 }}
-            style={{ textAlign: "center" }}
-          >
-            <div style={{ fontSize: "1.8rem", fontWeight: 900, color: C.white, lineHeight: 1 }}>
-              <Counter to={s.num} suffix={s.suffix} />
-            </div>
-            <div style={{ fontSize: "0.62rem", color: C.ghost, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", marginTop: "4px" }}>
-              {s.label}
-            </div>
+        {/* Stats row */}
+        <div style={{ display: "flex", justifyContent: "center", gap: "32px", flexWrap: "wrap", marginBottom: "36px" }}>
+          {[
+            { num: 2,   suffix: "",   label: "Projects"  },
+            { num: 100, suffix: "%",  label: "Automated" },
+            { num: 24,  suffix: "/7", label: "Running"   },
+          ].map((s, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 + i * 0.1 }}
+              style={{ textAlign: "center" }}
+            >
+              <div style={{ fontSize: "1.8rem", fontWeight: 900, color: C.white, lineHeight: 1 }}>
+                <Counter to={s.num} suffix={s.suffix} />
+              </div>
+              <div style={{ fontSize: "0.62rem", color: C.ghost, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", marginTop: "4px" }}>
+                {s.label}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* ── Project pills — clicking scrolls to that section ── */}
+        <div style={{ display: "flex", justifyContent: "center", gap: "10px", flexWrap: "wrap" }}>
+          {[
+            { num: "01", label: "Expense Tracker",    color: C.violetLight, bg: `${C.violetLight}18`, border: `${C.violetLight}40`, id: "project-expense"   },
+            { num: "02", label: "Customer Analytics", color: C.azureLight,  bg: `${C.azureLight}18`,  border: `${C.azureLight}40`,  id: "project-analytics" },
+          ].map((p) => (
+            <motion.div
+              key={p.num}
+              onClick={() => scrollTo(p.id)}
+              whileHover={{ scale: 1.07, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ type: "spring", stiffness: 320, damping: 22 }}
+              style={{
+                display: "flex", alignItems: "center", gap: "8px",
+                background: p.bg, border: `1px solid ${p.border}`,
+                borderRadius: "999px", padding: "7px 18px",
+                cursor: "pointer",
+              }}
+            >
+              <span style={{ fontSize: "0.6rem", fontWeight: 900, color: p.color, letterSpacing: "0.12em" }}>{p.num}</span>
+              <span style={{ width: "1px", height: "12px", background: `${p.color}40` }} />
+              <span style={{ fontSize: "0.74rem", fontWeight: 600, color: C.white }}>{p.label}</span>
+              {/* Down-arrow hint */}
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" style={{ marginLeft: "2px" }}>
+                <path d="M12 5v14M5 12l7 7 7-7" stroke={p.color} strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Scroll hint */}
+        <div style={{ marginTop: "36px", display: "flex", flexDirection: "column", alignItems: "center", gap: "7px" }}>
+          <span style={{ fontSize: "0.6rem", color: C.ghost, letterSpacing: "0.12em", textTransform: "uppercase" }}>scroll to explore</span>
+          <motion.div animate={{ y: [0, 6, 0] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M12 5v14M5 12l7 7 7-7" stroke={C.violetLight} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </motion.div>
-        ))}
-      </div>
-
-      {/* Project pills */}
-      <div style={{ display: "flex", justifyContent: "center", gap: "10px", flexWrap: "wrap" }}>
-        {[
-          { num: "01", label: "Expense Tracker",  color: C.violetLight, bg: `${C.violetLight}18`, border: `${C.violetLight}40` },
-          { num: "02", label: "Customer Analytics", color: C.azureLight, bg: `${C.azureLight}18`, border: `${C.azureLight}40` },
-        ].map((p) => (
-          <div key={p.num} style={{
-            display: "flex", alignItems: "center", gap: "8px",
-            background: p.bg, border: `1px solid ${p.border}`,
-            borderRadius: "999px", padding: "7px 18px",
-          }}>
-            <span style={{ fontSize: "0.6rem", fontWeight: 900, color: p.color, letterSpacing: "0.12em" }}>{p.num}</span>
-            <span style={{ width: "1px", height: "12px", background: `${p.color}40` }} />
-            <span style={{ fontSize: "0.74rem", fontWeight: 600, color: C.white }}>{p.label}</span>
-          </div>
-        ))}
-      </div>
-
-      {/* Scroll hint */}
-      <div style={{ marginTop: "36px", display: "flex", flexDirection: "column", alignItems: "center", gap: "7px" }}>
-        <span style={{ fontSize: "0.6rem", color: C.ghost, letterSpacing: "0.12em", textTransform: "uppercase" }}>scroll to explore</span>
-        <motion.div animate={{ y: [0, 6, 0] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-            <path d="M12 5v14M5 12l7 7 7-7" stroke={C.violetLight} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </motion.div>
-      </div>
-    </motion.div>
-  </div>
-);
+        </div>
+      </motion.div>
+    </div>
+  );
+};
 
 // ─────────────────────────────────────────────────────────────
 // PROJECT BADGE
@@ -622,7 +641,7 @@ const ProjectBadge = ({ number, total, color }) => (
 );
 
 // ─────────────────────────────────────────────────────────────
-// PROJECT 01 — Daily Expense Tracker (NOW TOP)
+// PROJECT 01 — Daily Expense Tracker  ← id="project-expense" added
 // ─────────────────────────────────────────────────────────────
 const DailyExpenseTracker = () => {
   const [hoveredFeature, setHoveredFeature] = useState(null);
@@ -631,6 +650,7 @@ const DailyExpenseTracker = () => {
 
   return (
     <section
+      id="project-expense"
       ref={ref}
       style={{
         background: C.white, padding: "80px 24px 100px",
@@ -638,14 +658,12 @@ const DailyExpenseTracker = () => {
         overflow: "hidden",
       }}
     >
-      {/* Accent bar */}
       <div style={{
         position: "absolute", left: 0, top: "80px", bottom: "100px",
         width: "4px",
         background: `linear-gradient(180deg, ${C.violet}, ${C.violetLight}, #c4b5fd)`,
         borderRadius: "0 4px 4px 0",
       }} />
-      {/* Subtle bg glow */}
       <div style={{
         position: "absolute", top: 0, right: 0, width: "40%", height: "300px",
         background: `radial-gradient(ellipse at top right, ${C.violetGlow} 0%, transparent 70%)`,
@@ -653,8 +671,6 @@ const DailyExpenseTracker = () => {
       }} />
 
       <div style={{ maxWidth: "860px", margin: "0 auto" }}>
-
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -688,32 +704,26 @@ const DailyExpenseTracker = () => {
             fontSize: "clamp(1.9rem, 4.5vw, 3rem)",
             fontWeight: 900, color: C.inkLight,
             letterSpacing: "-0.03em", lineHeight: 1.1,
-            marginBottom: "6px",
-            fontFamily: "'Georgia', serif",
+            marginBottom: "6px", fontFamily: "'Georgia', serif",
           }}>
             Daily Expense
           </h2>
           <h2 style={{
             fontSize: "clamp(1.9rem, 4.5vw, 3rem)",
             fontWeight: 900, letterSpacing: "-0.03em", lineHeight: 1.1,
-            marginBottom: "22px",
-            fontFamily: "'Georgia', serif",
+            marginBottom: "22px", fontFamily: "'Georgia', serif",
             background: `linear-gradient(135deg, ${C.violet}, ${C.violetLight})`,
             WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
           }}>
             Tracker
           </h2>
 
-          <p style={{
-            color: C.slate, fontSize: "1rem",
-            lineHeight: 1.8, maxWidth: "560px", marginBottom: "28px",
-          }}>
+          <p style={{ color: C.slate, fontSize: "1rem", lineHeight: 1.8, maxWidth: "560px", marginBottom: "28px" }}>
             A fully automated personal finance pipeline — text an expense to a Telegram bot,
             watch it appear in Google Sheets instantly, and receive a clean daily email summary
             every morning. Built on Make.com's free tier with zero code written.
           </p>
 
-          {/* Tags */}
           <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
             {TAGS_EXPENSE.map((t) => (
               <motion.span
@@ -723,45 +733,24 @@ const DailyExpenseTracker = () => {
                   fontSize: "0.7rem", fontWeight: 700,
                   padding: "5px 14px", borderRadius: "999px",
                   color: t.color, background: t.bg,
-                  border: `1px solid ${t.color}28`,
-                  cursor: "default",
+                  border: `1px solid ${t.color}28`, cursor: "default",
                 }}
               >{t.label}</motion.span>
             ))}
           </div>
         </motion.div>
 
-        {/* Screenshots */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 0.15, duration: 0.6 }}
-        >
+        <motion.div initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.15, duration: 0.6 }}>
           <ScreenshotGallery accentColor={C.violet} />
         </motion.div>
 
-        {/* Video */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 0.25, duration: 0.6 }}
-        >
+        <motion.div initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.25, duration: 0.6 }}>
           <VideoPlayer accentColor={C.violet} />
         </motion.div>
 
-        {/* Features */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 0.35, duration: 0.6 }}
-          style={{ marginBottom: "52px" }}
-        >
+        <motion.div initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.35, duration: 0.6 }} style={{ marginBottom: "52px" }}>
           <SectionLabel>Key Features</SectionLabel>
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(195px, 1fr))",
-            gap: "14px",
-          }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(195px, 1fr))", gap: "14px" }}>
             {FEATURES.map((f, i) => (
               <motion.div
                 key={i}
@@ -787,22 +776,12 @@ const DailyExpenseTracker = () => {
           </div>
         </motion.div>
 
-        {/* Pipeline */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 0.5, duration: 0.6 }}
-          style={{
-            background: C.surface, border: `1px solid ${C.border}`,
-            borderRadius: "18px", padding: "30px 28px 26px",
-            boxShadow: "0 2px 12px rgba(0,0,0,0.05)",
-          }}
+          initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.5, duration: 0.6 }}
+          style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: "18px", padding: "30px 28px 26px", boxShadow: "0 2px 12px rgba(0,0,0,0.05)" }}
         >
           <SectionLabel>Automation Pipeline</SectionLabel>
-
-          <p style={{ fontSize: "0.68rem", fontWeight: 700, color: C.ghost, marginBottom: "12px", textTransform: "uppercase", letterSpacing: "0.1em" }}>
-            On message received
-          </p>
+          <p style={{ fontSize: "0.68rem", fontWeight: 700, color: C.ghost, marginBottom: "12px", textTransform: "uppercase", letterSpacing: "0.1em" }}>On message received</p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", alignItems: "center", marginBottom: "26px" }}>
             {PIPELINE_1.map((node, i) => (
               <React.Fragment key={i}>
@@ -811,12 +790,8 @@ const DailyExpenseTracker = () => {
               </React.Fragment>
             ))}
           </div>
-
           <div style={{ height: "1px", background: `linear-gradient(90deg, transparent, ${C.border}, transparent)`, marginBottom: "26px" }} />
-
-          <p style={{ fontSize: "0.68rem", fontWeight: 700, color: C.ghost, marginBottom: "12px", textTransform: "uppercase", letterSpacing: "0.1em" }}>
-            Daily at 6:00 AM
-          </p>
+          <p style={{ fontSize: "0.68rem", fontWeight: 700, color: C.ghost, marginBottom: "12px", textTransform: "uppercase", letterSpacing: "0.1em" }}>Daily at 6:00 AM</p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", alignItems: "center" }}>
             {PIPELINE_2.map((node, i) => (
               <React.Fragment key={i}>
@@ -832,7 +807,7 @@ const DailyExpenseTracker = () => {
 };
 
 // ─────────────────────────────────────────────────────────────
-// PROJECT 02 — Customer Analytics (NOW BOTTOM)
+// PROJECT 02 — Customer Analytics  ← id="project-analytics" added
 // ─────────────────────────────────────────────────────────────
 const CustomerAnalytics = () => {
   const ref = useRef(null);
@@ -847,20 +822,15 @@ const CustomerAnalytics = () => {
 
   return (
     <section
+      id="project-analytics"
       ref={ref}
-      style={{
-        background: C.white, padding: "80px 24px 100px",
-        position: "relative", overflow: "hidden",
-      }}
+      style={{ background: C.white, padding: "80px 24px 100px", position: "relative", overflow: "hidden" }}
     >
-      {/* Accent bar */}
       <div style={{
-        position: "absolute", left: 0, top: "80px", bottom: "100px",
-        width: "4px",
+        position: "absolute", left: 0, top: "80px", bottom: "100px", width: "4px",
         background: `linear-gradient(180deg, ${C.azure}, ${C.azureLight}, #93c5fd)`,
         borderRadius: "0 4px 4px 0",
       }} />
-      {/* Subtle bg glow */}
       <div style={{
         position: "absolute", top: 0, right: 0, width: "40%", height: "300px",
         background: `radial-gradient(ellipse at top right, ${C.azureGlow} 0%, transparent 70%)`,
@@ -885,34 +855,25 @@ const CustomerAnalytics = () => {
           </div>
 
           <h2 style={{
-            fontSize: "clamp(1.9rem, 4.5vw, 3rem)",
-            fontWeight: 900, color: C.inkLight,
-            letterSpacing: "-0.03em", lineHeight: 1.1,
-            marginBottom: "6px",
-            fontFamily: "'Georgia', serif",
+            fontSize: "clamp(1.9rem, 4.5vw, 3rem)", fontWeight: 900, color: C.inkLight,
+            letterSpacing: "-0.03em", lineHeight: 1.1, marginBottom: "6px", fontFamily: "'Georgia', serif",
           }}>
             Customer Segmentation
           </h2>
           <h2 style={{
-            fontSize: "clamp(1.9rem, 4.5vw, 3rem)",
-            fontWeight: 900, letterSpacing: "-0.03em", lineHeight: 1.1,
-            marginBottom: "22px",
-            fontFamily: "'Georgia', serif",
+            fontSize: "clamp(1.9rem, 4.5vw, 3rem)", fontWeight: 900,
+            letterSpacing: "-0.03em", lineHeight: 1.1, marginBottom: "22px", fontFamily: "'Georgia', serif",
             background: `linear-gradient(135deg, ${C.azure}, ${C.azureLight})`,
             WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
           }}>
             &amp; Review Sentiment
           </h2>
 
-          <p style={{
-            color: C.slate, fontSize: "1rem",
-            lineHeight: 1.8, maxWidth: "520px", marginBottom: "36px",
-          }}>
+          <p style={{ color: C.slate, fontSize: "1rem", lineHeight: 1.8, maxWidth: "520px", marginBottom: "36px" }}>
             Analyzes customer segments and review sentiments to uncover actionable business insights
             using data science techniques — from raw data to clear visual dashboards.
           </p>
 
-          {/* Tech tags */}
           <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginBottom: "40px" }}>
             {[
               { label: "Python",       color: "#1d4ed8", bg: "#eff6ff" },
@@ -921,27 +882,15 @@ const CustomerAnalytics = () => {
               { label: "Matplotlib",   color: "#92400e", bg: "#fef3c7" },
               { label: "NLP",          color: "#6d28d9", bg: "#ede9fe" },
             ].map((t) => (
-              <motion.span
-                key={t.label}
-                whileHover={{ scale: 1.06 }}
-                style={{
-                  fontSize: "0.7rem", fontWeight: 700,
-                  padding: "5px 14px", borderRadius: "999px",
-                  color: t.color, background: t.bg,
-                  border: `1px solid ${t.color}28`,
-                  cursor: "default",
-                }}
-              >{t.label}</motion.span>
+              <motion.span key={t.label} whileHover={{ scale: 1.06 }} style={{
+                fontSize: "0.7rem", fontWeight: 700, padding: "5px 14px", borderRadius: "999px",
+                color: t.color, background: t.bg, border: `1px solid ${t.color}28`, cursor: "default",
+              }}>{t.label}</motion.span>
             ))}
           </div>
 
-          {/* Feature grid */}
           <SectionLabel>What it does</SectionLabel>
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(195px, 1fr))",
-            gap: "14px", marginBottom: "48px",
-          }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(195px, 1fr))", gap: "14px", marginBottom: "48px" }}>
             {ANALYTICS_FEATURES.map((f, i) => (
               <motion.div
                 key={i}
@@ -949,12 +898,7 @@ const CustomerAnalytics = () => {
                 initial={{ opacity: 0, y: 16 }}
                 animate={inView ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: 0.2 + i * 0.07, duration: 0.5, type: "spring", stiffness: 200 }}
-                style={{
-                  background: C.surface, border: `1px solid ${C.border}`,
-                  borderRadius: "14px", padding: "22px 20px",
-                  boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
-                  transition: "all 0.22s ease",
-                }}
+                style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: "14px", padding: "22px 20px", boxShadow: "0 1px 4px rgba(0,0,0,0.04)", transition: "all 0.22s ease" }}
                 onHoverStart={(e) => { e.currentTarget.style.borderColor = `${C.azureLight}40`; e.currentTarget.style.background = C.azureGlow; }}
                 onHoverEnd={(e) => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.background = C.surface; }}
               >
@@ -965,39 +909,18 @@ const CustomerAnalytics = () => {
             ))}
           </div>
 
-          {/* CTA */}
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.5, duration: 0.6 }}
-            style={{
-              background: `linear-gradient(135deg, ${C.inkLight} 0%, #1e3a5f 100%)`,
-              borderRadius: "18px", padding: "36px 32px",
-              position: "relative", overflow: "hidden",
-            }}
+            initial={{ opacity: 0, y: 16 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.5, duration: 0.6 }}
+            style={{ background: `linear-gradient(135deg, ${C.inkLight} 0%, #1e3a5f 100%)`, borderRadius: "18px", padding: "36px 32px", position: "relative", overflow: "hidden" }}
           >
-            <div style={{
-              position: "absolute", inset: 0,
-              backgroundImage: `linear-gradient(${C.azureGlow} 1px, transparent 1px), linear-gradient(90deg, ${C.azureGlow} 1px, transparent 1px)`,
-              backgroundSize: "28px 28px",
-            }} />
-            <div style={{
-              position: "absolute", top: 0, right: 0, width: "200px", height: "200px",
-              background: `radial-gradient(circle, ${C.azureGlow} 0%, transparent 70%)`,
-            }} />
+            <div style={{ position: "absolute", inset: 0, backgroundImage: `linear-gradient(${C.azureGlow} 1px, transparent 1px), linear-gradient(90deg, ${C.azureGlow} 1px, transparent 1px)`, backgroundSize: "28px 28px" }} />
+            <div style={{ position: "absolute", top: 0, right: 0, width: "200px", height: "200px", background: `radial-gradient(circle, ${C.azureGlow} 0%, transparent 70%)` }} />
             <div style={{ position: "relative", zIndex: 1 }}>
               <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "12px" }}>
                 <span style={{ fontSize: "1.6rem" }}>📱</span>
-                <span style={{
-                  fontSize: "0.6rem", fontWeight: 800, letterSpacing: "0.16em",
-                  color: C.azureLight, textTransform: "uppercase",
-                  background: `${C.azureLight}18`, border: `1px solid ${C.azureLight}40`,
-                  borderRadius: "999px", padding: "4px 12px",
-                }}>Mobile App</span>
+                <span style={{ fontSize: "0.6rem", fontWeight: 800, letterSpacing: "0.16em", color: C.azureLight, textTransform: "uppercase", background: `${C.azureLight}18`, border: `1px solid ${C.azureLight}40`, borderRadius: "999px", padding: "4px 12px" }}>Mobile App</span>
               </div>
-              <h3 style={{ fontSize: "1.15rem", fontWeight: 800, color: C.white, marginBottom: "8px" }}>
-                Download the Android Build
-              </h3>
+              <h3 style={{ fontSize: "1.15rem", fontWeight: 800, color: C.white, marginBottom: "8px" }}>Download the Android Build</h3>
               <p style={{ fontSize: "0.82rem", color: "#94a3b8", lineHeight: 1.65, marginBottom: "22px" }}>
                 Explore the analytics live on your Android device via Firebase App Distribution.
               </p>
@@ -1005,28 +928,15 @@ const CustomerAnalytics = () => {
                 whileHover={{ scale: 1.05, boxShadow: `0 8px 28px ${C.azureGlow}` }}
                 whileTap={{ scale: 0.96 }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                style={{
-                  padding: "13px 28px",
-                  background: `linear-gradient(135deg, ${C.azure}, ${C.azureLight})`,
-                  color: C.white, fontWeight: 700,
-                  borderRadius: "12px", border: "none",
-                  cursor: "pointer", fontSize: "0.88rem",
-                  boxShadow: `0 4px 18px ${C.azureGlow}`,
-                  display: "inline-flex", alignItems: "center", gap: "9px",
-                }}
-                onClick={() => window.open(
-                  "https://appdistribution.firebase.google.com/testerapps/1:195095990413:android:ab80021ee87e6ea70a92c4/releases/3ju5r5sfigrbg?utm_source=firebase-console",
-                  "_blank"
-                )}
+                style={{ padding: "13px 28px", background: `linear-gradient(135deg, ${C.azure}, ${C.azureLight})`, color: C.white, fontWeight: 700, borderRadius: "12px", border: "none", cursor: "pointer", fontSize: "0.88rem", boxShadow: `0 4px 18px ${C.azureGlow}`, display: "inline-flex", alignItems: "center", gap: "9px" }}
+                onClick={() => window.open("https://appdistribution.firebase.google.com/testerapps/1:195095990413:android:ab80021ee87e6ea70a92c4/releases/3ju5r5sfigrbg?utm_source=firebase-console", "_blank")}
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" />
                 </svg>
                 Download Latest Build
               </motion.button>
-              <p style={{ marginTop: "12px", fontSize: "0.74rem", color: "#64748b" }}>
-                📌 Mobile only — link won't open on desktop.
-              </p>
+              <p style={{ marginTop: "12px", fontSize: "0.74rem", color: "#64748b" }}>📌 Mobile only — link won't open on desktop.</p>
             </div>
           </motion.div>
         </motion.div>
