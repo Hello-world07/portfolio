@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useLocation } from 'react-router-dom';
 import { motion, AnimatePresence, useInView, useScroll, useTransform } from "framer-motion";
 
 // ─────────────────────────────────────────────────────────────
@@ -502,6 +503,7 @@ const ProjectsSectionHeader = () => {
       textAlign: "center",
       position: "relative",
       overflow: "hidden",
+      opacity: 1,
     }}>
       {/* Background grid */}
       <div style={{
@@ -513,17 +515,9 @@ const ProjectsSectionHeader = () => {
       <div style={{ position: "absolute", top: "-60px", left: "20%", width: "320px", height: "320px", borderRadius: "50%", background: `radial-gradient(circle, ${C.violetGlow} 0%, transparent 70%)`, filter: "blur(40px)" }} />
       <div style={{ position: "absolute", bottom: "-40px", right: "25%", width: "260px", height: "260px", borderRadius: "50%", background: `radial-gradient(circle, ${C.azureGlow} 0%, transparent 70%)`, filter: "blur(40px)" }} />
 
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7 }}
-        style={{ position: "relative", zIndex: 1 }}
-      >
+      <div style={{ position: "relative", zIndex: 1 }}>
         {/* Eyebrow */}
-        <motion.span
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.2, duration: 0.5 }}
+        <span
           style={{
             display: "inline-block",
             fontSize: "0.6rem", fontWeight: 800,
@@ -535,7 +529,7 @@ const ProjectsSectionHeader = () => {
           }}
         >
           Portfolio — 2 Projects
-        </motion.span>
+        </span>
 
         <h1 style={{
           fontSize: "clamp(2rem, 5vw, 3.4rem)",
@@ -565,9 +559,7 @@ const ProjectsSectionHeader = () => {
           ].map((s, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 + i * 0.1 }}
+              transition={{ delay: 0.1 + i * 0.1 }}
               style={{ textAlign: "center" }}
             >
               <div style={{ fontSize: "1.8rem", fontWeight: 900, color: C.white, lineHeight: 1 }}>
@@ -619,7 +611,7 @@ const ProjectsSectionHeader = () => {
             </svg>
           </motion.div>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 };
@@ -645,13 +637,10 @@ const ProjectBadge = ({ number, total, color }) => (
 // ─────────────────────────────────────────────────────────────
 const DailyExpenseTracker = () => {
   const [hoveredFeature, setHoveredFeature] = useState(null);
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
 
   return (
     <section
       id="project-expense"
-      ref={ref}
       style={{
         background: C.white, padding: "80px 24px 100px",
         borderBottom: `1px solid ${C.border}`, position: "relative",
@@ -673,7 +662,8 @@ const DailyExpenseTracker = () => {
       <div style={{ maxWidth: "860px", margin: "0 auto" }}>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.05 }}
           transition={{ duration: 0.65 }}
           style={{ marginBottom: "52px" }}
         >
@@ -740,15 +730,15 @@ const DailyExpenseTracker = () => {
           </div>
         </motion.div>
 
-        <motion.div initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.15, duration: 0.6 }}>
+        <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false, amount: 0.05 }} transition={{ delay: 0.15, duration: 0.6 }}>
           <ScreenshotGallery accentColor={C.violet} />
         </motion.div>
 
-        <motion.div initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.25, duration: 0.6 }}>
+        <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false, amount: 0.05 }} transition={{ delay: 0.25, duration: 0.6 }}>
           <VideoPlayer accentColor={C.violet} />
         </motion.div>
 
-        <motion.div initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.35, duration: 0.6 }} style={{ marginBottom: "52px" }}>
+        <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false, amount: 0.05 }} transition={{ delay: 0.35, duration: 0.6 }} style={{ marginBottom: "52px" }}>
           <SectionLabel>Key Features</SectionLabel>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(195px, 1fr))", gap: "14px" }}>
             {FEATURES.map((f, i) => (
@@ -758,7 +748,7 @@ const DailyExpenseTracker = () => {
                 onHoverEnd={() => setHoveredFeature(null)}
                 whileHover={{ y: -5 }}
                 initial={{ opacity: 0, y: 16 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
+                whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false, amount: 0.05 }}
                 transition={{ delay: 0.4 + i * 0.07, duration: 0.5, type: "spring", stiffness: 200 }}
                 style={{
                   background: hoveredFeature === i ? `${C.violetGlow}` : C.surface,
@@ -777,7 +767,7 @@ const DailyExpenseTracker = () => {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.5, duration: 0.6 }}
+          initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false, amount: 0.05 }} transition={{ delay: 0.5, duration: 0.6 }}
           style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: "18px", padding: "30px 28px 26px", boxShadow: "0 2px 12px rgba(0,0,0,0.05)" }}
         >
           <SectionLabel>Automation Pipeline</SectionLabel>
@@ -810,8 +800,6 @@ const DailyExpenseTracker = () => {
 // PROJECT 02 — Customer Analytics  ← id="project-analytics" added
 // ─────────────────────────────────────────────────────────────
 const CustomerAnalytics = () => {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
 
   const ANALYTICS_FEATURES = [
     { icon: "🧠", title: "Customer Segmentation", desc: "K-means clustering to identify distinct customer groups and behavioral patterns." },
@@ -823,7 +811,6 @@ const CustomerAnalytics = () => {
   return (
     <section
       id="project-analytics"
-      ref={ref}
       style={{ background: C.white, padding: "80px 24px 100px", position: "relative", overflow: "hidden" }}
     >
       <div style={{
@@ -840,7 +827,8 @@ const CustomerAnalytics = () => {
       <div style={{ maxWidth: "680px", margin: "0 auto" }}>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.05 }}
           transition={{ duration: 0.65 }}
           style={{ marginBottom: "52px" }}
         >
@@ -896,7 +884,7 @@ const CustomerAnalytics = () => {
                 key={i}
                 whileHover={{ y: -5 }}
                 initial={{ opacity: 0, y: 16 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
+                whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false, amount: 0.05 }}
                 transition={{ delay: 0.2 + i * 0.07, duration: 0.5, type: "spring", stiffness: 200 }}
                 style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: "14px", padding: "22px 20px", boxShadow: "0 1px 4px rgba(0,0,0,0.04)", transition: "all 0.22s ease" }}
                 onHoverStart={(e) => { e.currentTarget.style.borderColor = `${C.azureLight}40`; e.currentTarget.style.background = C.azureGlow; }}
@@ -910,7 +898,7 @@ const CustomerAnalytics = () => {
           </div>
 
           <motion.div
-            initial={{ opacity: 0, y: 16 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.5, duration: 0.6 }}
+            initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false, amount: 0.05 }} transition={{ delay: 0.5, duration: 0.6 }}
             style={{ background: `linear-gradient(135deg, ${C.inkLight} 0%, #1e3a5f 100%)`, borderRadius: "18px", padding: "36px 32px", position: "relative", overflow: "hidden" }}
           >
             <div style={{ position: "absolute", inset: 0, backgroundImage: `linear-gradient(${C.azureGlow} 1px, transparent 1px), linear-gradient(90deg, ${C.azureGlow} 1px, transparent 1px)`, backgroundSize: "28px 28px" }} />
@@ -967,16 +955,19 @@ const GlobalStyles = () => {
 };
 
 // ─────────────────────────────────────────────────────────────
-// ROOT EXPORT
+// ROOT EXPORT — key={pathname} forces full remount on navigation
 // ─────────────────────────────────────────────────────────────
-const MiniProjectHeader = () => (
-  <>
-    <GlobalStyles />
-    <ProjectsSectionHeader />
-    <DailyExpenseTracker />
-    <SectionDivider label="Next Project" />
-    <CustomerAnalytics />
-  </>
-);
+const MiniProjectHeader = () => {
+  const { pathname } = useLocation();
+  return (
+    <div key={pathname}>
+      <GlobalStyles />
+      <ProjectsSectionHeader />
+      <DailyExpenseTracker />
+      <SectionDivider label="Next Project" />
+      <CustomerAnalytics />
+    </div>
+  );
+};
 
 export default MiniProjectHeader;
