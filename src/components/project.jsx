@@ -1,6 +1,73 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useLocation } from 'react-router-dom';
-import { motion, AnimatePresence, useInView, useScroll, useTransform } from "framer-motion";
+
+// ─────────────────────────────────────────────────────────────
+// ANIMATED COUNTER (header only)
+// ─────────────────────────────────────────────────────────────
+const Counter = ({ to, suffix = "" }) => {
+  const [val, setVal] = useState(0);
+  const ref = useRef(null);
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setInView(true); },
+      { threshold: 0.1 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!inView) return;
+    let start = 0;
+    const step = to / 40;
+    const timer = setInterval(() => {
+      start += step;
+      if (start >= to) { setVal(to); clearInterval(timer); }
+      else setVal(Math.floor(start));
+    }, 30);
+    return () => clearInterval(timer);
+  }, [inView, to]);
+
+  return <span ref={ref}>{val}{suffix}</span>;
+};
+
+// ─────────────────────────────────────────────────────────────
+// TYPING TEXT (header only)
+// ─────────────────────────────────────────────────────────────
+const TypingText = ({ words, color }) => {
+  const [wordIndex, setWordIndex] = useState(0);
+  const [charIndex, setCharIndex] = useState(0);
+  const [deleting, setDeleting]   = useState(false);
+
+  useEffect(() => {
+    const current = words[wordIndex];
+    const timeout = setTimeout(() => {
+      if (!deleting && charIndex < current.length) {
+        setCharIndex(c => c + 1);
+      } else if (!deleting && charIndex === current.length) {
+        setTimeout(() => setDeleting(true), 1400);
+      } else if (deleting && charIndex > 0) {
+        setCharIndex(c => c - 1);
+      } else {
+        setDeleting(false);
+        setWordIndex(i => (i + 1) % words.length);
+      }
+    }, deleting ? 55 : 90);
+    return () => clearTimeout(timeout);
+  }, [charIndex, deleting, wordIndex, words]);
+
+  return (
+    <span style={{ color }}>
+      {words[wordIndex].slice(0, charIndex)}
+      <span style={{
+        display: "inline-block", width: "2px", height: "1em",
+        background: color, marginLeft: "2px", verticalAlign: "text-bottom",
+        animation: "blink 1s step-end infinite",
+      }} />
+    </span>
+  );
+};
 
 // ─────────────────────────────────────────────────────────────
 // VIDEO CONFIG — set IS_EMBED = false for local mp4
@@ -71,66 +138,6 @@ const PIPELINE_2 = [
 ];
 
 // ─────────────────────────────────────────────────────────────
-// ANIMATED COUNTER
-// ─────────────────────────────────────────────────────────────
-const Counter = ({ to, suffix = "" }) => {
-  const [val, setVal] = useState(0);
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true });
-
-  useEffect(() => {
-    if (!inView) return;
-    let start = 0;
-    const step = to / 40;
-    const timer = setInterval(() => {
-      start += step;
-      if (start >= to) { setVal(to); clearInterval(timer); }
-      else setVal(Math.floor(start));
-    }, 30);
-    return () => clearInterval(timer);
-  }, [inView, to]);
-
-  return <span ref={ref}>{val}{suffix}</span>;
-};
-
-// ─────────────────────────────────────────────────────────────
-// TYPING TEXT ANIMATION
-// ─────────────────────────────────────────────────────────────
-const TypingText = ({ words, color }) => {
-  const [wordIndex, setWordIndex] = useState(0);
-  const [charIndex, setCharIndex] = useState(0);
-  const [deleting, setDeleting]   = useState(false);
-
-  useEffect(() => {
-    const current = words[wordIndex];
-    const timeout = setTimeout(() => {
-      if (!deleting && charIndex < current.length) {
-        setCharIndex(c => c + 1);
-      } else if (!deleting && charIndex === current.length) {
-        setTimeout(() => setDeleting(true), 1400);
-      } else if (deleting && charIndex > 0) {
-        setCharIndex(c => c - 1);
-      } else {
-        setDeleting(false);
-        setWordIndex(i => (i + 1) % words.length);
-      }
-    }, deleting ? 55 : 90);
-    return () => clearTimeout(timeout);
-  }, [charIndex, deleting, wordIndex, words]);
-
-  return (
-    <span style={{ color }}>
-      {words[wordIndex].slice(0, charIndex)}
-      <span style={{
-        display: "inline-block", width: "2px", height: "1em",
-        background: color, marginLeft: "2px", verticalAlign: "text-bottom",
-        animation: "blink 1s step-end infinite",
-      }} />
-    </span>
-  );
-};
-
-// ─────────────────────────────────────────────────────────────
 // SHARED: SECTION LABEL
 // ─────────────────────────────────────────────────────────────
 const SectionLabel = ({ children, color = C.ghost }) => (
@@ -148,31 +155,21 @@ const SectionLabel = ({ children, color = C.ghost }) => (
 // ─────────────────────────────────────────────────────────────
 // PIPELINE NODE
 // ─────────────────────────────────────────────────────────────
-const PipelineNode = ({ icon, label, sub, accentColor }) => (
-  <motion.div
-    whileHover={{ y: -3, boxShadow: `0 8px 24px ${accentColor}30` }}
-    transition={{ type: "spring", stiffness: 300, damping: 20 }}
-    style={{
-      background: C.white, border: `1px solid ${C.border}`,
-      borderRadius: "12px", padding: "12px 16px",
-      textAlign: "center", minWidth: "82px",
-      boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
-    }}
-  >
+const PipelineNode = ({ icon, label, sub }) => (
+  <div style={{
+    background: C.white, border: `1px solid ${C.border}`,
+    borderRadius: "12px", padding: "12px 16px",
+    textAlign: "center", minWidth: "82px",
+    boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
+  }}>
     <div style={{ fontSize: "1.2rem" }}>{icon}</div>
     <div style={{ fontSize: "0.66rem", fontWeight: 800, color: C.inkLight, marginTop: "5px" }}>{label}</div>
     <div style={{ fontSize: "0.58rem", color: C.ghost, marginTop: "2px" }}>{sub}</div>
-  </motion.div>
+  </div>
 );
 
 const Arrow = ({ color }) => (
-  <motion.span
-    animate={{ x: [0, 3, 0] }}
-    transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-    style={{ color: color || C.border, fontSize: "1rem", flexShrink: 0 }}
-  >
-    →
-  </motion.span>
+  <span style={{ color: color || C.border, fontSize: "1rem", flexShrink: 0 }}>→</span>
 );
 
 // ─────────────────────────────────────────────────────────────
@@ -186,11 +183,7 @@ const ScreenshotGallery = ({ accentColor }) => {
     <div style={{ marginBottom: "52px" }}>
       <SectionLabel color={C.ghost}>Project Screenshots</SectionLabel>
 
-      <motion.div
-        key={active}
-        initial={{ opacity: 0, scale: 0.98 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.3 }}
+      <div
         onClick={() => setLightbox(true)}
         style={{
           width: "100%", aspectRatio: "16/9",
@@ -240,15 +233,13 @@ const ScreenshotGallery = ({ accentColor }) => {
         }}>
           {active + 1} / {screenshots.length}
         </div>
-      </motion.div>
+      </div>
 
       {/* Thumbnails */}
       <div style={{ display: "flex", gap: "8px", overflowX: "auto", paddingBottom: "4px" }}>
         {screenshots.map((s, i) => (
-          <motion.div
+          <div
             key={i}
-            whileHover={{ scale: 1.06 }}
-            whileTap={{ scale: 0.94 }}
             onClick={() => setActive(i)}
             style={{
               flexShrink: 0, width: "96px", height: "60px",
@@ -256,67 +247,63 @@ const ScreenshotGallery = ({ accentColor }) => {
               border: active === i ? `2.5px solid ${accentColor}` : `2px solid ${C.border}`,
               boxShadow: active === i ? `0 0 0 3px ${accentColor}30` : "none",
               background: C.surface,
-              transition: "border 0.15s, box-shadow 0.15s",
             }}
           >
             <img src={s.src} alt={s.label}
               style={{ width: "100%", height: "100%", objectFit: "cover" }}
               onError={(e) => { e.target.style.opacity = "0"; }}
             />
-          </motion.div>
+          </div>
         ))}
       </div>
 
       {/* Pill indicators */}
       <div style={{ display: "flex", justifyContent: "center", gap: "5px", marginTop: "14px" }}>
         {screenshots.map((_, i) => (
-          <motion.div
+          <div
             key={i}
             onClick={() => setActive(i)}
-            animate={{ width: active === i ? "22px" : "6px", background: active === i ? accentColor : C.border }}
-            transition={{ duration: 0.25 }}
-            style={{ height: "6px", borderRadius: "999px", cursor: "pointer" }}
+            style={{
+              height: "6px", borderRadius: "999px", cursor: "pointer",
+              width: active === i ? "22px" : "6px",
+              background: active === i ? accentColor : C.border,
+              transition: "width 0.25s, background 0.25s",
+            }}
           />
         ))}
       </div>
 
       {/* Lightbox */}
-      <AnimatePresence>
-        {lightbox && (
-          <motion.div
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            onClick={() => setLightbox(false)}
+      {lightbox && (
+        <div
+          onClick={() => setLightbox(false)}
+          style={{
+            position: "fixed", inset: 0,
+            background: "rgba(0,0,0,0.92)", zIndex: 9000,
+            display: "flex", alignItems: "center", justifyContent: "center",
+            padding: "24px",
+          }}
+        >
+          <img
+            src={screenshots[active].src}
+            alt={screenshots[active].label}
+            onClick={(e) => e.stopPropagation()}
             style={{
-              position: "fixed", inset: 0,
-              background: "rgba(0,0,0,0.92)", zIndex: 9000,
-              display: "flex", alignItems: "center", justifyContent: "center",
-              padding: "24px",
+              maxWidth: "92vw", maxHeight: "88vh",
+              borderRadius: "14px",
+              boxShadow: "0 40px 100px rgba(0,0,0,0.7)",
+              objectFit: "contain",
             }}
-          >
-            <motion.img
-              initial={{ scale: 0.88, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.88, opacity: 0 }}
-              src={screenshots[active].src}
-              alt={screenshots[active].label}
-              onClick={(e) => e.stopPropagation()}
-              style={{
-                maxWidth: "92vw", maxHeight: "88vh",
-                borderRadius: "14px",
-                boxShadow: "0 40px 100px rgba(0,0,0,0.7)",
-                objectFit: "contain",
-              }}
-            />
-            <button onClick={() => setLightbox(false)} style={{
-              position: "fixed", top: "20px", right: "20px",
-              width: "42px", height: "42px", borderRadius: "50%",
-              background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)",
-              color: "#fff", fontSize: "1.1rem", cursor: "pointer",
-              display: "flex", alignItems: "center", justifyContent: "center",
-            }}>✕</button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          />
+          <button onClick={() => setLightbox(false)} style={{
+            position: "fixed", top: "20px", right: "20px",
+            width: "42px", height: "42px", borderRadius: "50%",
+            background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)",
+            color: "#fff", fontSize: "1.1rem", cursor: "pointer",
+            display: "flex", alignItems: "center", justifyContent: "center",
+          }}>✕</button>
+        </div>
+      )}
     </div>
   );
 };
@@ -331,9 +318,8 @@ const VideoPlayer = ({ accentColor }) => {
   return (
     <>
       <SectionLabel color={C.ghost}>Demo Video</SectionLabel>
-      <motion.div
+      <div
         onClick={() => setOpen(true)}
-        whileHover={{ scale: 1.008, boxShadow: `0 16px 48px ${accentColor}30` }}
         style={{
           width: "100%", aspectRatio: "16/9",
           borderRadius: "16px", overflow: "hidden", cursor: "pointer",
@@ -342,10 +328,8 @@ const VideoPlayer = ({ accentColor }) => {
           boxShadow: `0 8px 28px rgba(0,0,0,0.15)`,
           display: "flex", alignItems: "center", justifyContent: "center",
           position: "relative", marginBottom: "52px",
-          transition: "box-shadow 0.3s",
         }}
       >
-        {/* Thumbnail image fills the entire background */}
         <img
           src="image3.png"
           alt="Demo video thumbnail"
@@ -356,28 +340,22 @@ const VideoPlayer = ({ accentColor }) => {
           }}
           onError={(e) => { e.target.style.display = "none"; }}
         />
-        {/* Dark overlay so play button is visible */}
         <div style={{
           position: "absolute", inset: 0,
           background: "rgba(0,0,0,0.45)",
         }} />
         {/* Play button */}
-        <motion.div
-          whileHover={{ scale: 1.12 }}
-          whileTap={{ scale: 0.9 }}
-          style={{
-            width: "76px", height: "76px", borderRadius: "50%",
-            background: C.white,
-            display: "flex", alignItems: "center", justifyContent: "center",
-            boxShadow: `0 12px 40px rgba(0,0,0,0.5), 0 0 0 8px ${accentColor}40`,
-            zIndex: 1, position: "relative",
-          }}
-        >
+        <div style={{
+          width: "76px", height: "76px", borderRadius: "50%",
+          background: C.white,
+          display: "flex", alignItems: "center", justifyContent: "center",
+          boxShadow: `0 12px 40px rgba(0,0,0,0.5), 0 0 0 8px ${accentColor}40`,
+          zIndex: 1, position: "relative",
+        }}>
           <svg width="28" height="28" viewBox="0 0 24 24" fill={accentColor}>
             <path d="M8 5v14l11-7z" />
           </svg>
-        </motion.div>
-        {/* Watch Demo badge */}
+        </div>
         <div style={{
           position: "absolute", top: "16px", left: "16px", zIndex: 1,
           background: hasVideo ? `${accentColor}ee` : "rgba(15,23,42,0.7)",
@@ -395,60 +373,54 @@ const VideoPlayer = ({ accentColor }) => {
         }}>
           Click to play
         </div>
-      </motion.div>
+      </div>
 
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            onClick={() => setOpen(false)}
+      {open && (
+        <div
+          onClick={() => setOpen(false)}
+          style={{
+            position: "fixed", inset: 0,
+            background: "rgba(0,0,0,0.93)", zIndex: 9000,
+            display: "flex", alignItems: "center", justifyContent: "center",
+            padding: "24px",
+          }}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
             style={{
-              position: "fixed", inset: 0,
-              background: "rgba(0,0,0,0.93)", zIndex: 9000,
-              display: "flex", alignItems: "center", justifyContent: "center",
-              padding: "24px",
+              width: "100%", maxWidth: "960px",
+              borderRadius: "18px", overflow: "hidden",
+              boxShadow: `0 48px 120px rgba(0,0,0,0.8), 0 0 0 1px ${accentColor}40`,
+              aspectRatio: "16/9", background: "#000",
+              position: "relative",
             }}
           >
-            <motion.div
-              initial={{ scale: 0.88, opacity: 0, y: 20 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.88, opacity: 0 }}
-              onClick={(e) => e.stopPropagation()}
-              style={{
-                width: "100%", maxWidth: "960px",
-                borderRadius: "18px", overflow: "hidden",
-                boxShadow: `0 48px 120px rgba(0,0,0,0.8), 0 0 0 1px ${accentColor}40`,
-                aspectRatio: "16/9", background: "#000",
-                position: "relative",
-              }}
-            >
-              {!hasVideo ? (
-                <div style={{
-                  width: "100%", height: "100%",
-                  display: "flex", flexDirection: "column",
-                  alignItems: "center", justifyContent: "center",
-                  background: "linear-gradient(135deg, #1e1b4b, #1e3a5f)",
-                  color: "#fff", gap: "12px",
-                }}>
-                  <span style={{ fontSize: "3rem" }}>🎬</span>
-                  <p style={{ fontWeight: 700, fontSize: "1.1rem" }}>Video Coming Soon</p>
-                </div>
-              ) : IS_EMBED ? (
-                <iframe src={VIDEO_URL} style={{ width: "100%", height: "100%", border: "none" }} allow="autoplay; fullscreen" allowFullScreen />
-              ) : (
-                <video src={VIDEO_URL} controls autoPlay style={{ width: "100%", height: "100%" }} />
-              )}
-              <button onClick={() => setOpen(false)} style={{
-                position: "absolute", top: "14px", right: "14px",
-                width: "38px", height: "38px", borderRadius: "50%",
-                background: "rgba(0,0,0,0.7)", border: "1px solid rgba(255,255,255,0.2)",
-                color: "#fff", fontSize: "1rem", cursor: "pointer",
-                display: "flex", alignItems: "center", justifyContent: "center",
-              }}>✕</button>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            {!hasVideo ? (
+              <div style={{
+                width: "100%", height: "100%",
+                display: "flex", flexDirection: "column",
+                alignItems: "center", justifyContent: "center",
+                background: "linear-gradient(135deg, #1e1b4b, #1e3a5f)",
+                color: "#fff", gap: "12px",
+              }}>
+                <span style={{ fontSize: "3rem" }}>🎬</span>
+                <p style={{ fontWeight: 700, fontSize: "1.1rem" }}>Video Coming Soon</p>
+              </div>
+            ) : IS_EMBED ? (
+              <iframe src={VIDEO_URL} style={{ width: "100%", height: "100%", border: "none" }} allow="autoplay; fullscreen" allowFullScreen />
+            ) : (
+              <video src={VIDEO_URL} controls autoPlay style={{ width: "100%", height: "100%" }} />
+            )}
+            <button onClick={() => setOpen(false)} style={{
+              position: "absolute", top: "14px", right: "14px",
+              width: "38px", height: "38px", borderRadius: "50%",
+              background: "rgba(0,0,0,0.7)", border: "1px solid rgba(255,255,255,0.2)",
+              color: "#fff", fontSize: "1rem", cursor: "pointer",
+              display: "flex", alignItems: "center", justifyContent: "center",
+            }}>✕</button>
+          </div>
+        </div>
+      )}
     </>
   );
 };
@@ -473,28 +445,34 @@ const SectionDivider = ({ label }) => (
     }}>{label}</span>
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "3px" }}>
       {[0, 1, 2].map((i) => (
-        <motion.div
-          key={i}
-          animate={{ opacity: [0.2, 1, 0.2], y: [0, 5, 0] }}
-          transition={{ duration: 1.4, delay: i * 0.2, repeat: Infinity, ease: "easeInOut" }}
+        <svg
+          key={i} width="22" height="12" viewBox="0 0 22 12" fill="none"
+          style={{ animation: `bounceArrow 1.4s ease-in-out ${i * 0.2}s infinite` }}
         >
-          <svg width="22" height="12" viewBox="0 0 22 12" fill="none">
-            <path d="M2 2L11 10L20 2" stroke={C.violet} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </motion.div>
+          <path d="M2 2L11 10L20 2" stroke={C.violet} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
       ))}
     </div>
   </div>
 );
 
 // ─────────────────────────────────────────────────────────────
-// PROJECTS SECTION HEADER  ← scrollTo logic added
+// PROJECTS SECTION HEADER — with original animations restored
 // ─────────────────────────────────────────────────────────────
 const ProjectsSectionHeader = () => {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setTimeout(() => setMounted(true), 60); }, []);
+
   const scrollTo = (id) => {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   };
+
+  const fadeUp = (delay = 0) => ({
+    opacity: mounted ? 1 : 0,
+    transform: mounted ? "translateY(0)" : "translateY(22px)",
+    transition: `opacity 0.65s ease ${delay}s, transform 0.65s ease ${delay}s`,
+  });
 
   return (
     <div style={{
@@ -503,7 +481,6 @@ const ProjectsSectionHeader = () => {
       textAlign: "center",
       position: "relative",
       overflow: "hidden",
-      opacity: 1,
     }}>
       {/* Background grid */}
       <div style={{
@@ -511,14 +488,28 @@ const ProjectsSectionHeader = () => {
         backgroundImage: `linear-gradient(rgba(124,58,237,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(124,58,237,0.06) 1px, transparent 1px)`,
         backgroundSize: "48px 48px",
       }} />
-      {/* Glow blobs */}
-      <div style={{ position: "absolute", top: "-60px", left: "20%", width: "320px", height: "320px", borderRadius: "50%", background: `radial-gradient(circle, ${C.violetGlow} 0%, transparent 70%)`, filter: "blur(40px)" }} />
-      <div style={{ position: "absolute", bottom: "-40px", right: "25%", width: "260px", height: "260px", borderRadius: "50%", background: `radial-gradient(circle, ${C.azureGlow} 0%, transparent 70%)`, filter: "blur(40px)" }} />
+
+      {/* Animated glow blobs */}
+      <div style={{
+        position: "absolute", top: "-60px", left: "20%",
+        width: "320px", height: "320px", borderRadius: "50%",
+        background: `radial-gradient(circle, ${C.violetGlow} 0%, transparent 70%)`,
+        filter: "blur(40px)",
+        animation: "floatBlob1 7s ease-in-out infinite",
+      }} />
+      <div style={{
+        position: "absolute", bottom: "-40px", right: "25%",
+        width: "260px", height: "260px", borderRadius: "50%",
+        background: `radial-gradient(circle, ${C.azureGlow} 0%, transparent 70%)`,
+        filter: "blur(40px)",
+        animation: "floatBlob2 9s ease-in-out infinite",
+      }} />
 
       <div style={{ position: "relative", zIndex: 1 }}>
-        {/* Eyebrow */}
-        <span
-          style={{
+
+        {/* Eyebrow badge — fades in */}
+        <div style={{ ...fadeUp(0.05) }}>
+          <span style={{
             display: "inline-block",
             fontSize: "0.6rem", fontWeight: 800,
             letterSpacing: "0.25em", textTransform: "uppercase",
@@ -526,90 +517,94 @@ const ProjectsSectionHeader = () => {
             border: `1px solid ${C.violetLight}40`,
             borderRadius: "999px", padding: "6px 18px",
             marginBottom: "22px",
-          }}
-        >
-          Portfolio — 2 Projects
-        </span>
+            animation: "pulseGlow 3s ease-in-out infinite",
+          }}>
+            Portfolio — 2 Projects
+          </span>
+        </div>
 
-        <h1 style={{
-          fontSize: "clamp(2rem, 5vw, 3.4rem)",
-          fontWeight: 900, color: C.white,
-          letterSpacing: "-0.035em", lineHeight: 1.08,
-          marginBottom: "18px",
-          fontFamily: "'Georgia', serif",
-        }}>
-          Work I've{" "}
-          <TypingText words={["built.", "shipped.", "automated.", "designed."]} color={C.violetLight} />
-        </h1>
+        {/* Headline with TypingText */}
+        <div style={{ ...fadeUp(0.15) }}>
+          <h1 style={{
+            fontSize: "clamp(2rem, 5vw, 3.4rem)",
+            fontWeight: 900, color: C.white,
+            letterSpacing: "-0.035em", lineHeight: 1.08,
+            marginBottom: "18px",
+            fontFamily: "'Georgia', serif",
+          }}>
+            Work I've{" "}
+            <TypingText words={["built.", "shipped.", "automated.", "designed."]} color={C.violetLight} />
+          </h1>
+        </div>
 
-        <p style={{
-          fontSize: "1rem", color: C.ghost,
-          lineHeight: 1.75, maxWidth: "420px",
-          margin: "0 auto 36px",
-        }}>
-          From data pipelines to no-code automation — projects built while learning CS, solving real problems.
-        </p>
+        {/* Subtitle */}
+        <div style={{ ...fadeUp(0.25) }}>
+          <p style={{
+            fontSize: "1rem", color: C.ghost,
+            lineHeight: 1.75, maxWidth: "420px",
+            margin: "0 auto 36px",
+          }}>
+            From data pipelines to no-code automation — projects built while learning CS, solving real problems.
+          </p>
+        </div>
 
-        {/* Stats row */}
-        <div style={{ display: "flex", justifyContent: "center", gap: "32px", flexWrap: "wrap", marginBottom: "36px" }}>
+        {/* Animated counter stats */}
+        <div style={{ ...fadeUp(0.35), display: "flex", justifyContent: "center", gap: "32px", flexWrap: "wrap", marginBottom: "36px" }}>
           {[
             { num: 2,   suffix: "",   label: "Projects"  },
             { num: 100, suffix: "%",  label: "Automated" },
             { num: 24,  suffix: "/7", label: "Running"   },
           ].map((s, i) => (
-            <motion.div
-              key={i}
-              transition={{ delay: 0.1 + i * 0.1 }}
-              style={{ textAlign: "center" }}
-            >
+            <div key={i} style={{ textAlign: "center" }}>
               <div style={{ fontSize: "1.8rem", fontWeight: 900, color: C.white, lineHeight: 1 }}>
                 <Counter to={s.num} suffix={s.suffix} />
               </div>
               <div style={{ fontSize: "0.62rem", color: C.ghost, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", marginTop: "4px" }}>
                 {s.label}
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
 
-        {/* ── Project pills — clicking scrolls to that section ── */}
-        <div style={{ display: "flex", justifyContent: "center", gap: "10px", flexWrap: "wrap" }}>
+        {/* Project pills with hover scale */}
+        <div style={{ ...fadeUp(0.45), display: "flex", justifyContent: "center", gap: "10px", flexWrap: "wrap" }}>
           {[
             { num: "01", label: "Expense Tracker",    color: C.violetLight, bg: `${C.violetLight}18`, border: `${C.violetLight}40`, id: "project-expense"   },
             { num: "02", label: "Customer Analytics", color: C.azureLight,  bg: `${C.azureLight}18`,  border: `${C.azureLight}40`,  id: "project-analytics" },
           ].map((p) => (
-            <motion.div
+            <div
               key={p.num}
+              className="header-pill"
               onClick={() => scrollTo(p.id)}
-              whileHover={{ scale: 1.07, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-              transition={{ type: "spring", stiffness: 320, damping: 22 }}
               style={{
                 display: "flex", alignItems: "center", gap: "8px",
                 background: p.bg, border: `1px solid ${p.border}`,
                 borderRadius: "999px", padding: "7px 18px",
                 cursor: "pointer",
+                transition: "transform 0.18s ease, box-shadow 0.18s ease",
               }}
+              onMouseEnter={(e) => { e.currentTarget.style.transform = "scale(1.07) translateY(-2px)"; e.currentTarget.style.boxShadow = `0 6px 20px ${p.color}30`; }}
+              onMouseLeave={(e) => { e.currentTarget.style.transform = "scale(1) translateY(0)"; e.currentTarget.style.boxShadow = "none"; }}
             >
               <span style={{ fontSize: "0.6rem", fontWeight: 900, color: p.color, letterSpacing: "0.12em" }}>{p.num}</span>
               <span style={{ width: "1px", height: "12px", background: `${p.color}40` }} />
               <span style={{ fontSize: "0.74rem", fontWeight: 600, color: C.white }}>{p.label}</span>
-              {/* Down-arrow hint */}
               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" style={{ marginLeft: "2px" }}>
                 <path d="M12 5v14M5 12l7 7 7-7" stroke={p.color} strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-            </motion.div>
+            </div>
           ))}
         </div>
 
-        {/* Scroll hint */}
-        <div style={{ marginTop: "36px", display: "flex", flexDirection: "column", alignItems: "center", gap: "7px" }}>
+        {/* Bouncing scroll hint */}
+        <div style={{ ...fadeUp(0.55), marginTop: "36px", display: "flex", flexDirection: "column", alignItems: "center", gap: "7px" }}>
           <span style={{ fontSize: "0.6rem", color: C.ghost, letterSpacing: "0.12em", textTransform: "uppercase" }}>scroll to explore</span>
-          <motion.div animate={{ y: [0, 6, 0] }} transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-              <path d="M12 5v14M5 12l7 7 7-7" stroke={C.violetLight} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </motion.div>
+          <svg
+            width="18" height="18" viewBox="0 0 24 24" fill="none"
+            style={{ animation: "bounceArrow 1.5s ease-in-out infinite" }}
+          >
+            <path d="M12 5v14M5 12l7 7 7-7" stroke={C.violetLight} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
         </div>
       </div>
     </div>
@@ -633,10 +628,450 @@ const ProjectBadge = ({ number, total, color }) => (
 );
 
 // ─────────────────────────────────────────────────────────────
-// PROJECT 01 — Daily Expense Tracker  ← id="project-expense" added
+// SCROLL-TRIGGER HOOK
+// ─────────────────────────────────────────────────────────────
+const useScrollReveal = (threshold = 0.15) => {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) setVisible(true); },
+      { threshold }
+    );
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, [threshold]);
+  return [ref, visible];
+};
+
+// ─────────────────────────────────────────────────────────────
+// KEY FEATURES — new animated design
+// ─────────────────────────────────────────────────────────────
+const KeyFeaturesSection = () => {
+  const [sectionRef, sectionVisible] = useScrollReveal(0.1);
+  const [hovered, setHovered] = useState(null);
+
+  const featureColors = [
+    { accent: "#7c3aed", glow: "rgba(124,58,237,0.12)", light: "#ede9fe" },
+    { accent: "#0369a1", glow: "rgba(3,105,161,0.12)",  light: "#e0f2fe" },
+    { accent: "#15803d", glow: "rgba(21,128,61,0.12)",  light: "#dcfce7" },
+    { accent: "#b45309", glow: "rgba(180,83,9,0.12)",   light: "#fef3c7" },
+  ];
+
+  return (
+    <div ref={sectionRef} style={{ marginBottom: "52px" }}>
+      {/* Section header */}
+      <div style={{
+        display: "flex", alignItems: "center", gap: "14px",
+        marginBottom: "28px",
+        opacity: sectionVisible ? 1 : 0,
+        transform: sectionVisible ? "translateY(0)" : "translateY(16px)",
+        transition: "opacity 0.5s ease, transform 0.5s ease",
+      }}>
+        <div style={{
+          width: "36px", height: "36px", borderRadius: "10px",
+          background: `linear-gradient(135deg, ${C.violet}, ${C.violetLight})`,
+          display: "flex", alignItems: "center", justifyContent: "center",
+          boxShadow: `0 4px 14px ${C.violetGlow}`,
+          flexShrink: 0,
+        }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+          </svg>
+        </div>
+        <div>
+          <p style={{ fontSize: "0.58rem", fontWeight: 800, letterSpacing: "0.2em", textTransform: "uppercase", color: C.ghost, marginBottom: "2px" }}>What it does</p>
+          <h3 style={{ fontSize: "1.15rem", fontWeight: 900, color: C.inkLight, letterSpacing: "-0.02em" }}>Key Features</h3>
+        </div>
+      </div>
+
+      {/* Feature cards grid */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))", gap: "14px" }}>
+        {FEATURES.map((f, i) => {
+          const col = featureColors[i % featureColors.length];
+          const isHovered = hovered === i;
+          return (
+            <div
+              key={i}
+              onMouseEnter={() => setHovered(i)}
+              onMouseLeave={() => setHovered(null)}
+              style={{
+                position: "relative", overflow: "hidden",
+                background: isHovered ? C.inkLight : C.white,
+                border: `1.5px solid ${isHovered ? col.accent + "60" : C.border}`,
+                borderRadius: "18px", padding: "26px 22px 22px",
+                boxShadow: isHovered ? `0 12px 36px ${col.glow}, 0 0 0 1px ${col.accent}20` : "0 1px 6px rgba(0,0,0,0.05)",
+                cursor: "default",
+                transition: "all 0.3s cubic-bezier(0.34,1.56,0.64,1)",
+                opacity: sectionVisible ? 1 : 0,
+                transform: sectionVisible ? "translateY(0) scale(1)" : "translateY(24px) scale(0.96)",
+                transitionDelay: sectionVisible ? `${0.08 + i * 0.09}s` : "0s",
+              }}
+            >
+              {/* Glow blob on hover */}
+              <div style={{
+                position: "absolute", top: "-20px", right: "-20px",
+                width: "100px", height: "100px", borderRadius: "50%",
+                background: `radial-gradient(circle, ${col.accent}30 0%, transparent 70%)`,
+                opacity: isHovered ? 1 : 0,
+                transition: "opacity 0.3s ease",
+                pointerEvents: "none",
+              }} />
+
+              {/* Animated icon container */}
+              <div style={{
+                width: "48px", height: "48px", borderRadius: "14px",
+                background: isHovered ? `linear-gradient(135deg, ${col.accent}, ${col.accent}bb)` : col.light,
+                display: "flex", alignItems: "center", justifyContent: "center",
+                marginBottom: "16px",
+                transition: "all 0.3s cubic-bezier(0.34,1.56,0.64,1)",
+                transform: isHovered ? "scale(1.12) rotate(-4deg)" : "scale(1) rotate(0deg)",
+                boxShadow: isHovered ? `0 6px 18px ${col.glow}` : "none",
+              }}>
+                <span style={{ fontSize: "1.5rem", lineHeight: 1 }}>{f.icon}</span>
+              </div>
+
+              {/* Number tag */}
+              <div style={{
+                position: "absolute", top: "20px", right: "18px",
+                fontSize: "0.58rem", fontWeight: 900, letterSpacing: "0.1em",
+                color: isHovered ? col.accent : C.ghost,
+                opacity: 0.7, transition: "color 0.3s ease",
+              }}>
+                {String(i + 1).padStart(2, "0")}
+              </div>
+
+              <h3 style={{
+                fontSize: "0.88rem", fontWeight: 800,
+                color: isHovered ? "#fff" : C.inkLight,
+                marginBottom: "8px", letterSpacing: "-0.01em",
+                transition: "color 0.3s ease",
+              }}>{f.title}</h3>
+
+              <p style={{
+                fontSize: "0.75rem", lineHeight: 1.68,
+                color: isHovered ? "#94a3b8" : C.muted,
+                transition: "color 0.3s ease",
+              }}>{f.desc}</p>
+
+              {/* Bottom accent bar */}
+              <div style={{
+                position: "absolute", bottom: 0, left: 0, right: 0, height: "3px",
+                background: `linear-gradient(90deg, ${col.accent}, ${col.accent}55)`,
+                borderRadius: "0 0 18px 18px",
+                transform: isHovered ? "scaleX(1)" : "scaleX(0)",
+                transformOrigin: "left",
+                transition: "transform 0.35s cubic-bezier(0.34,1.56,0.64,1)",
+              }} />
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+// ─────────────────────────────────────────────────────────────
+// RESPONSIVE HOOK
+// ─────────────────────────────────────────────────────────────
+const useIsMobile = () => {
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 600);
+  useEffect(() => {
+    const handler = () => setIsMobile(window.innerWidth < 600);
+    window.addEventListener("resize", handler);
+    return () => window.removeEventListener("resize", handler);
+  }, []);
+  return isMobile;
+};
+
+// ─────────────────────────────────────────────────────────────
+// ANIMATED PIPELINE NODE — responsive
+// ─────────────────────────────────────────────────────────────
+const AnimatedPipelineNode = ({ icon, label, sub, accentColor, delay, visible, active, isMobile }) => (
+  <div style={{
+    position: "relative",
+    opacity: visible ? 1 : 0,
+    transform: visible ? "translateY(0) scale(1)" : "translateY(18px) scale(0.88)",
+    transition: `opacity 0.5s ease ${delay}s, transform 0.5s cubic-bezier(0.34,1.56,0.64,1) ${delay}s`,
+    width: isMobile ? "100%" : "auto",
+  }}>
+    {active && (
+      <div style={{
+        position: "absolute", inset: "-4px",
+        borderRadius: "16px",
+        border: `2px solid ${accentColor}50`,
+        animation: "ringPulse 2s ease-in-out infinite",
+        pointerEvents: "none",
+      }} />
+    )}
+    <div style={{
+      background: active ? "rgba(255,255,255,0.07)" : "rgba(255,255,255,0.04)",
+      border: `1.5px solid ${active ? accentColor + "80" : "rgba(255,255,255,0.1)"}`,
+      borderRadius: "14px",
+      padding: isMobile ? "14px 18px" : "14px 16px",
+      textAlign: isMobile ? "left" : "center",
+      display: isMobile ? "flex" : "block",
+      alignItems: isMobile ? "center" : undefined,
+      gap: isMobile ? "14px" : undefined,
+      minWidth: isMobile ? undefined : "88px",
+      boxShadow: active ? `0 6px 22px ${accentColor}30` : "0 2px 8px rgba(0,0,0,0.12)",
+      transition: "all 0.4s ease",
+      cursor: "default",
+    }}>
+      {/* Icon badge */}
+      <div style={{
+        width: isMobile ? "40px" : "auto",
+        height: isMobile ? "40px" : "auto",
+        borderRadius: isMobile ? "10px" : "0",
+        background: isMobile ? (active ? `${accentColor}30` : "rgba(255,255,255,0.06)") : "transparent",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        flexShrink: 0,
+        fontSize: isMobile ? "1.2rem" : "1.3rem",
+        marginBottom: isMobile ? 0 : "6px",
+      }}>
+        {icon}
+      </div>
+      <div style={{ flex: isMobile ? 1 : undefined }}>
+        <div style={{ fontSize: "0.7rem", fontWeight: 800, color: active ? "#fff" : "rgba(255,255,255,0.85)", lineHeight: 1.3 }}>{label}</div>
+        <div style={{ fontSize: "0.6rem", color: active ? accentColor : "rgba(255,255,255,0.4)", marginTop: "2px", fontWeight: 600 }}>{sub}</div>
+      </div>
+      {/* Active dot on mobile */}
+      {isMobile && active && (
+        <div style={{
+          width: "8px", height: "8px", borderRadius: "50%",
+          background: accentColor, flexShrink: 0,
+          animation: "pulseGlow 1.2s ease-in-out infinite",
+        }} />
+      )}
+    </div>
+  </div>
+);
+
+// Horizontal animated arrow (desktop)
+const HArrow = ({ color, delay, visible, id }) => (
+  <div style={{
+    opacity: visible ? 1 : 0,
+    transition: `opacity 0.4s ease ${delay}s`,
+    flexShrink: 0, display: "flex", alignItems: "center",
+  }}>
+    <svg width="28" height="14" viewBox="0 0 28 14" fill="none" overflow="visible">
+      <defs>
+        <linearGradient id={`hlg-${id}`} x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor={color} stopOpacity="0.15" />
+          <stop offset="100%" stopColor={color} stopOpacity="1" />
+        </linearGradient>
+      </defs>
+      <line x1="2" y1="7" x2="22" y2="7" stroke={`url(#hlg-${id})`} strokeWidth="1.8" strokeLinecap="round" />
+      <path d="M19 4L24 7L19 10" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+      <circle fill={color} r="2.5" opacity="0.9">
+        <animateMotion dur="1.4s" repeatCount="indefinite" begin={`${delay * 0.4}s`} path="M2,7 L22,7" />
+      </circle>
+    </svg>
+  </div>
+);
+
+// Vertical animated arrow (mobile)
+const VArrow = ({ color, delay, visible, id }) => (
+  <div style={{
+    opacity: visible ? 1 : 0,
+    transition: `opacity 0.4s ease ${delay}s`,
+    display: "flex", justifyContent: "flex-start",
+    paddingLeft: "19px",
+    height: "28px",
+  }}>
+    <svg width="14" height="28" viewBox="0 0 14 28" fill="none" overflow="visible">
+      <defs>
+        <linearGradient id={`vlg-${id}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={color} stopOpacity="0.15" />
+          <stop offset="100%" stopColor={color} stopOpacity="1" />
+        </linearGradient>
+      </defs>
+      <line x1="7" y1="2" x2="7" y2="22" stroke={`url(#vlg-${id})`} strokeWidth="1.8" strokeLinecap="round" />
+      <path d="M4 19L7 24L10 19" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+      <circle fill={color} r="2.5" opacity="0.9">
+        <animateMotion dur="1.4s" repeatCount="indefinite" begin={`${delay * 0.4}s`} path="M7,2 L7,22" />
+      </circle>
+    </svg>
+  </div>
+);
+
+// ─────────────────────────────────────────────────────────────
+// AUTOMATION PIPELINE — fully responsive
+// ─────────────────────────────────────────────────────────────
+const AutomationPipelineSection = () => {
+  const [sectionRef, sectionVisible] = useScrollReveal(0.1);
+  const [activeNode, setActiveNode] = useState(0);
+  const isMobile = useIsMobile();
+
+  useEffect(() => {
+    if (!sectionVisible) return;
+    const timer = setInterval(() => {
+      setActiveNode(n => (n + 1) % (PIPELINE_1.length + PIPELINE_2.length));
+    }, 900);
+    return () => clearInterval(timer);
+  }, [sectionVisible]);
+
+  const renderPipeline = (nodes, accentColor, baseDelay, pipelineOffset) => {
+    if (isMobile) {
+      // Mobile: vertical stack
+      return (
+        <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
+          {nodes.map((node, i) => (
+            <React.Fragment key={i}>
+              <AnimatedPipelineNode
+                {...node}
+                accentColor={accentColor}
+                delay={baseDelay + i * 0.1}
+                visible={sectionVisible}
+                active={activeNode === pipelineOffset + i}
+                isMobile={true}
+              />
+              {i < nodes.length - 1 && (
+                <VArrow
+                  color={accentColor}
+                  delay={baseDelay + i * 0.1 + 0.05}
+                  visible={sectionVisible}
+                  id={`v-${pipelineOffset}-${i}`}
+                />
+              )}
+            </React.Fragment>
+          ))}
+        </div>
+      );
+    }
+
+    // Desktop: horizontal row
+    return (
+      <div style={{ display: "flex", flexWrap: "nowrap", gap: "6px", alignItems: "center", overflowX: "auto", paddingBottom: "4px" }}>
+        {nodes.map((node, i) => (
+          <React.Fragment key={i}>
+            {i > 0 && (
+              <HArrow
+                color={accentColor}
+                delay={baseDelay + i * 0.1}
+                visible={sectionVisible}
+                id={`h-${pipelineOffset}-${i}`}
+              />
+            )}
+            <AnimatedPipelineNode
+              {...node}
+              accentColor={accentColor}
+              delay={baseDelay + i * 0.1}
+              visible={sectionVisible}
+              active={activeNode === pipelineOffset + i}
+              isMobile={false}
+            />
+          </React.Fragment>
+        ))}
+      </div>
+    );
+  };
+
+  return (
+    <div
+      ref={sectionRef}
+      style={{
+        position: "relative", overflow: "hidden",
+        background: C.inkLight,
+        borderRadius: "22px",
+        padding: isMobile ? "24px 18px 28px" : "36px 32px 34px",
+        boxShadow: `0 4px 32px rgba(0,0,0,0.18), 0 0 0 1px ${C.violet}20`,
+      }}
+    >
+      {/* Background grid */}
+      <div style={{
+        position: "absolute", inset: 0, borderRadius: "22px",
+        backgroundImage: `linear-gradient(${C.violetGlow} 1px, transparent 1px), linear-gradient(90deg, ${C.violetGlow} 1px, transparent 1px)`,
+        backgroundSize: "32px 32px", opacity: 0.4, pointerEvents: "none",
+      }} />
+      <div style={{ position: "absolute", top: 0, right: 0, width: "180px", height: "180px", background: `radial-gradient(circle, ${C.violetGlow} 0%, transparent 70%)`, pointerEvents: "none" }} />
+      <div style={{ position: "absolute", bottom: 0, left: 0, width: "130px", height: "130px", background: `radial-gradient(circle, ${C.azureGlow} 0%, transparent 70%)`, pointerEvents: "none" }} />
+
+      {/* Header */}
+      <div style={{
+        position: "relative", zIndex: 1,
+        display: "flex", alignItems: "center", gap: "12px",
+        marginBottom: "28px",
+        flexWrap: "wrap",
+        opacity: sectionVisible ? 1 : 0,
+        transform: sectionVisible ? "translateY(0)" : "translateY(14px)",
+        transition: "opacity 0.5s ease, transform 0.5s ease",
+      }}>
+        <div style={{
+          width: "36px", height: "36px", borderRadius: "10px", flexShrink: 0,
+          background: `linear-gradient(135deg, ${C.violet}, ${C.violetLight})`,
+          display: "flex", alignItems: "center", justifyContent: "center",
+          boxShadow: `0 4px 16px ${C.violetGlow}`,
+          animation: sectionVisible ? "pulseGlow 2.5s ease-in-out infinite" : "none",
+        }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+          </svg>
+        </div>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <p style={{ fontSize: "0.55rem", fontWeight: 800, letterSpacing: "0.18em", textTransform: "uppercase", color: `${C.violetLight}90`, marginBottom: "1px" }}>Make.com · No-code</p>
+          <h3 style={{ fontSize: isMobile ? "1rem" : "1.15rem", fontWeight: 900, color: C.white, letterSpacing: "-0.02em" }}>Automation Pipeline</h3>
+        </div>
+        <div style={{
+          display: "flex", alignItems: "center", gap: "6px", flexShrink: 0,
+          background: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.3)",
+          borderRadius: "999px", padding: "4px 12px",
+        }}>
+          <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#22c55e", display: "inline-block", animation: "pulseGlow 1.5s ease-in-out infinite" }} />
+          <span style={{ fontSize: "0.6rem", fontWeight: 700, color: "#4ade80" }}>Live</span>
+        </div>
+      </div>
+
+      {/* Content */}
+      <div style={{ position: "relative", zIndex: 1 }}>
+
+        {/* Trigger 1 */}
+        <div style={{
+          display: "inline-flex", alignItems: "center", gap: "7px",
+          background: `${C.violet}20`, border: `1px solid ${C.violet}40`,
+          borderRadius: "8px", padding: "4px 12px", marginBottom: "14px",
+          opacity: sectionVisible ? 1 : 0, transition: "opacity 0.4s ease 0.15s",
+          maxWidth: "100%",
+        }}>
+          <span style={{ fontSize: "0.58rem", fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase", color: C.violetLight, whiteSpace: "nowrap" }}>
+            ⚡ Trigger — On message received
+          </span>
+        </div>
+
+        <div style={{ marginBottom: "28px" }}>
+          {renderPipeline(PIPELINE_1, C.violetLight, 0.2, 0)}
+        </div>
+
+        {/* Divider */}
+        <div style={{
+          height: "1px", marginBottom: "22px",
+          background: `linear-gradient(90deg, transparent, ${C.violet}40, transparent)`,
+          opacity: sectionVisible ? 1 : 0, transition: "opacity 0.4s ease 0.55s",
+        }} />
+
+        {/* Trigger 2 */}
+        <div style={{
+          display: "inline-flex", alignItems: "center", gap: "7px",
+          background: `${C.azure}20`, border: `1px solid ${C.azure}40`,
+          borderRadius: "8px", padding: "4px 12px", marginBottom: "14px",
+          opacity: sectionVisible ? 1 : 0, transition: "opacity 0.4s ease 0.6s",
+          maxWidth: "100%",
+        }}>
+          <span style={{ fontSize: "0.58rem", fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase", color: C.azureLight, whiteSpace: "nowrap" }}>
+            🕕 Scheduled — Daily at 6:00 AM
+          </span>
+        </div>
+
+        {renderPipeline(PIPELINE_2, C.azureLight, 0.65, PIPELINE_1.length)}
+      </div>
+    </div>
+  );
+};
+
+// ─────────────────────────────────────────────────────────────
+// PROJECT 01 — Daily Expense Tracker
 // ─────────────────────────────────────────────────────────────
 const DailyExpenseTracker = () => {
-  const [hoveredFeature, setHoveredFeature] = useState(null);
 
   return (
     <section
@@ -660,13 +1095,7 @@ const DailyExpenseTracker = () => {
       }} />
 
       <div style={{ maxWidth: "860px", margin: "0 auto" }}>
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.05 }}
-          transition={{ duration: 0.65 }}
-          style={{ marginBottom: "52px" }}
-        >
+        <div style={{ marginBottom: "52px" }}>
           <ProjectBadge number="01" total="02" color={C.violet} />
 
           <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "20px", flexWrap: "wrap" }}>
@@ -681,11 +1110,7 @@ const DailyExpenseTracker = () => {
               borderRadius: "999px", padding: "5px 14px",
               display: "inline-flex", alignItems: "center", gap: "5px",
             }}>
-              <motion.span
-                animate={{ scale: [1, 1.4, 1], opacity: [1, 0.6, 1] }}
-                transition={{ duration: 1.8, repeat: Infinity }}
-                style={{ width: "7px", height: "7px", borderRadius: "50%", background: "#22c55e", display: "inline-block" }}
-              />
+              <span style={{ width: "7px", height: "7px", borderRadius: "50%", background: "#22c55e", display: "inline-block" }} />
               Live &amp; Running
             </span>
           </div>
@@ -716,91 +1141,36 @@ const DailyExpenseTracker = () => {
 
           <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
             {TAGS_EXPENSE.map((t) => (
-              <motion.span
+              <span
                 key={t.label}
-                whileHover={{ scale: 1.06 }}
                 style={{
                   fontSize: "0.7rem", fontWeight: 700,
                   padding: "5px 14px", borderRadius: "999px",
                   color: t.color, background: t.bg,
                   border: `1px solid ${t.color}28`, cursor: "default",
                 }}
-              >{t.label}</motion.span>
+              >{t.label}</span>
             ))}
           </div>
-        </motion.div>
+        </div>
 
-        <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false, amount: 0.05 }} transition={{ delay: 0.15, duration: 0.6 }}>
-          <ScreenshotGallery accentColor={C.violet} />
-        </motion.div>
+        <ScreenshotGallery accentColor={C.violet} />
+        <VideoPlayer accentColor={C.violet} />
 
-        <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false, amount: 0.05 }} transition={{ delay: 0.25, duration: 0.6 }}>
-          <VideoPlayer accentColor={C.violet} />
-        </motion.div>
+        {/* ── KEY FEATURES — animated redesign ── */}
+        <KeyFeaturesSection />
 
-        <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false, amount: 0.05 }} transition={{ delay: 0.35, duration: 0.6 }} style={{ marginBottom: "52px" }}>
-          <SectionLabel>Key Features</SectionLabel>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(195px, 1fr))", gap: "14px" }}>
-            {FEATURES.map((f, i) => (
-              <motion.div
-                key={i}
-                onHoverStart={() => setHoveredFeature(i)}
-                onHoverEnd={() => setHoveredFeature(null)}
-                whileHover={{ y: -5 }}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false, amount: 0.05 }}
-                transition={{ delay: 0.4 + i * 0.07, duration: 0.5, type: "spring", stiffness: 200 }}
-                style={{
-                  background: hoveredFeature === i ? `${C.violetGlow}` : C.surface,
-                  border: hoveredFeature === i ? `1px solid ${C.violetLight}40` : `1px solid ${C.border}`,
-                  borderRadius: "14px", padding: "22px 20px",
-                  boxShadow: hoveredFeature === i ? `0 8px 24px ${C.violetGlow}` : "0 1px 4px rgba(0,0,0,0.04)",
-                  transition: "all 0.22s ease",
-                }}
-              >
-                <span style={{ fontSize: "1.7rem", display: "block", marginBottom: "12px" }}>{f.icon}</span>
-                <h3 style={{ fontSize: "0.87rem", fontWeight: 800, color: C.inkLight, marginBottom: "7px" }}>{f.title}</h3>
-                <p style={{ fontSize: "0.76rem", color: C.muted, lineHeight: 1.65 }}>{f.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false, amount: 0.05 }} transition={{ delay: 0.5, duration: 0.6 }}
-          style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: "18px", padding: "30px 28px 26px", boxShadow: "0 2px 12px rgba(0,0,0,0.05)" }}
-        >
-          <SectionLabel>Automation Pipeline</SectionLabel>
-          <p style={{ fontSize: "0.68rem", fontWeight: 700, color: C.ghost, marginBottom: "12px", textTransform: "uppercase", letterSpacing: "0.1em" }}>On message received</p>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", alignItems: "center", marginBottom: "26px" }}>
-            {PIPELINE_1.map((node, i) => (
-              <React.Fragment key={i}>
-                {i > 0 && <Arrow color={`${C.violet}60`} />}
-                <PipelineNode {...node} accentColor={C.violet} />
-              </React.Fragment>
-            ))}
-          </div>
-          <div style={{ height: "1px", background: `linear-gradient(90deg, transparent, ${C.border}, transparent)`, marginBottom: "26px" }} />
-          <p style={{ fontSize: "0.68rem", fontWeight: 700, color: C.ghost, marginBottom: "12px", textTransform: "uppercase", letterSpacing: "0.1em" }}>Daily at 6:00 AM</p>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", alignItems: "center" }}>
-            {PIPELINE_2.map((node, i) => (
-              <React.Fragment key={i}>
-                {i > 0 && <Arrow color={`${C.violet}60`} />}
-                <PipelineNode {...node} accentColor={C.violet} />
-              </React.Fragment>
-            ))}
-          </div>
-        </motion.div>
+        {/* ── AUTOMATION PIPELINE — animated redesign ── */}
+        <AutomationPipelineSection />
       </div>
     </section>
   );
 };
 
 // ─────────────────────────────────────────────────────────────
-// PROJECT 02 — Customer Analytics  ← id="project-analytics" added
+// PROJECT 02 — Customer Analytics
 // ─────────────────────────────────────────────────────────────
 const CustomerAnalytics = () => {
-
   const ANALYTICS_FEATURES = [
     { icon: "🧠", title: "Customer Segmentation", desc: "K-means clustering to identify distinct customer groups and behavioral patterns." },
     { icon: "💬", title: "Sentiment Analysis",     desc: "NLP-powered review analysis to extract positive, neutral, and negative signals." },
@@ -825,13 +1195,7 @@ const CustomerAnalytics = () => {
       }} />
 
       <div style={{ maxWidth: "680px", margin: "0 auto" }}>
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.05 }}
-          transition={{ duration: 0.65 }}
-          style={{ marginBottom: "52px" }}
-        >
+        <div style={{ marginBottom: "52px" }}>
           <ProjectBadge number="02" total="02" color={C.azure} />
 
           <div style={{ marginBottom: "20px" }}>
@@ -870,37 +1234,30 @@ const CustomerAnalytics = () => {
               { label: "Matplotlib",   color: "#92400e", bg: "#fef3c7" },
               { label: "NLP",          color: "#6d28d9", bg: "#ede9fe" },
             ].map((t) => (
-              <motion.span key={t.label} whileHover={{ scale: 1.06 }} style={{
+              <span key={t.label} style={{
                 fontSize: "0.7rem", fontWeight: 700, padding: "5px 14px", borderRadius: "999px",
                 color: t.color, background: t.bg, border: `1px solid ${t.color}28`, cursor: "default",
-              }}>{t.label}</motion.span>
+              }}>{t.label}</span>
             ))}
           </div>
 
           <SectionLabel>What it does</SectionLabel>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(195px, 1fr))", gap: "14px", marginBottom: "48px" }}>
             {ANALYTICS_FEATURES.map((f, i) => (
-              <motion.div
+              <div
                 key={i}
-                whileHover={{ y: -5 }}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false, amount: 0.05 }}
-                transition={{ delay: 0.2 + i * 0.07, duration: 0.5, type: "spring", stiffness: 200 }}
                 style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: "14px", padding: "22px 20px", boxShadow: "0 1px 4px rgba(0,0,0,0.04)", transition: "all 0.22s ease" }}
-                onHoverStart={(e) => { e.currentTarget.style.borderColor = `${C.azureLight}40`; e.currentTarget.style.background = C.azureGlow; }}
-                onHoverEnd={(e) => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.background = C.surface; }}
+                onMouseEnter={(e) => { e.currentTarget.style.borderColor = `${C.azureLight}40`; e.currentTarget.style.background = C.azureGlow; }}
+                onMouseLeave={(e) => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.background = C.surface; }}
               >
                 <span style={{ fontSize: "1.7rem", display: "block", marginBottom: "12px" }}>{f.icon}</span>
                 <h3 style={{ fontSize: "0.87rem", fontWeight: 800, color: C.inkLight, marginBottom: "7px" }}>{f.title}</h3>
                 <p style={{ fontSize: "0.76rem", color: C.muted, lineHeight: 1.65 }}>{f.desc}</p>
-              </motion.div>
+              </div>
             ))}
           </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: false, amount: 0.05 }} transition={{ delay: 0.5, duration: 0.6 }}
-            style={{ background: `linear-gradient(135deg, ${C.inkLight} 0%, #1e3a5f 100%)`, borderRadius: "18px", padding: "36px 32px", position: "relative", overflow: "hidden" }}
-          >
+          <div style={{ background: `linear-gradient(135deg, ${C.inkLight} 0%, #1e3a5f 100%)`, borderRadius: "18px", padding: "36px 32px", position: "relative", overflow: "hidden" }}>
             <div style={{ position: "absolute", inset: 0, backgroundImage: `linear-gradient(${C.azureGlow} 1px, transparent 1px), linear-gradient(90deg, ${C.azureGlow} 1px, transparent 1px)`, backgroundSize: "28px 28px" }} />
             <div style={{ position: "absolute", top: 0, right: 0, width: "200px", height: "200px", background: `radial-gradient(circle, ${C.azureGlow} 0%, transparent 70%)` }} />
             <div style={{ position: "relative", zIndex: 1 }}>
@@ -912,10 +1269,7 @@ const CustomerAnalytics = () => {
               <p style={{ fontSize: "0.82rem", color: "#94a3b8", lineHeight: 1.65, marginBottom: "22px" }}>
                 Explore the analytics live on your Android device via Firebase App Distribution.
               </p>
-              <motion.button
-                whileHover={{ scale: 1.05, boxShadow: `0 8px 28px ${C.azureGlow}` }}
-                whileTap={{ scale: 0.96 }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              <button
                 style={{ padding: "13px 28px", background: `linear-gradient(135deg, ${C.azure}, ${C.azureLight})`, color: C.white, fontWeight: 700, borderRadius: "12px", border: "none", cursor: "pointer", fontSize: "0.88rem", boxShadow: `0 4px 18px ${C.azureGlow}`, display: "inline-flex", alignItems: "center", gap: "9px" }}
                 onClick={() => window.open("https://appdistribution.firebase.google.com/testerapps/1:195095990413:android:ab80021ee87e6ea70a92c4/releases/3ju5r5sfigrbg?utm_source=firebase-console", "_blank")}
               >
@@ -923,11 +1277,11 @@ const CustomerAnalytics = () => {
                   <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" />
                 </svg>
                 Download Latest Build
-              </motion.button>
+              </button>
               <p style={{ marginTop: "12px", fontSize: "0.74rem", color: "#64748b" }}>📌 Mobile only — link won't open on desktop.</p>
             </div>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       </div>
     </section>
   );
@@ -941,12 +1295,19 @@ const GlobalStyles = () => {
     const style = document.createElement("style");
     style.textContent = `
       @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+      @keyframes floatBlob1 { 0%, 100% { transform: translateY(0px) scale(1); } 50% { transform: translateY(-18px) scale(1.04); } }
+      @keyframes floatBlob2 { 0%, 100% { transform: translateY(0px) scale(1); } 50% { transform: translateY(14px) scale(0.97); } }
+      @keyframes bounceArrow { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
+      @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+      @keyframes ringPulse { 0%, 100% { opacity: 0.5; transform: scale(1); } 50% { opacity: 1; transform: scale(1.06); } }
+      @keyframes pulseGlow { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
       * { box-sizing: border-box; margin: 0; padding: 0; }
       body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
       ::-webkit-scrollbar { width: 6px; height: 6px; }
       ::-webkit-scrollbar-track { background: #f8fafc; }
       ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 999px; }
       ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+      .header-pill:hover { transform: scale(1.07) translateY(-2px); transition: transform 0.18s ease; }
     `;
     document.head.appendChild(style);
     return () => document.head.removeChild(style);
@@ -955,12 +1316,11 @@ const GlobalStyles = () => {
 };
 
 // ─────────────────────────────────────────────────────────────
-// ROOT EXPORT — key={pathname} forces full remount on navigation
+// ROOT EXPORT
 // ─────────────────────────────────────────────────────────────
 const MiniProjectHeader = () => {
-  const { pathname } = useLocation();
   return (
-    <div key={pathname}>
+    <div>
       <GlobalStyles />
       <ProjectsSectionHeader />
       <DailyExpenseTracker />
