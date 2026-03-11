@@ -1271,7 +1271,7 @@ const CustomerAnalytics = () => {
               </p>
               <button
                 style={{ padding: "13px 28px", background: `linear-gradient(135deg, ${C.azure}, ${C.azureLight})`, color: C.white, fontWeight: 700, borderRadius: "12px", border: "none", cursor: "pointer", fontSize: "0.88rem", boxShadow: `0 4px 18px ${C.azureGlow}`, display: "inline-flex", alignItems: "center", gap: "9px" }}
-                onClick={() => window.open("https://drive.google.com/uc?export=download&id=1LoKAjkH_mZnc98XknHwhVLXUgEgl9sD0", "_blank")}
+                onClick={() => window.open("https://drive.google.com/file/d/1dun8jYPZeRxjVWGnNLUQNUUlYtHPX01v/view?usp=share_link", "_blank")}
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" />
@@ -1311,7 +1311,7 @@ const GlobalStyles = () => {
     `;
     document.head.appendChild(style);
     return () => document.head.removeChild(style);
-  }, []);
+  }, []);x
   return null;
 };
 
