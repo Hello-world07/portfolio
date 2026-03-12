@@ -507,7 +507,7 @@ const ProjectsSectionHeader = () => {
 
       <div style={{ position: "relative", zIndex: 1 }}>
 
-        {/* Eyebrow badge — fades in */}
+        {/* Eyebrow badge */}
         <div style={{ ...fadeUp(0.05) }}>
           <span style={{
             display: "inline-block",
@@ -566,7 +566,7 @@ const ProjectsSectionHeader = () => {
           ))}
         </div>
 
-        {/* Project pills with hover scale */}
+        {/* Project pills */}
         <div style={{ ...fadeUp(0.45), display: "flex", justifyContent: "center", gap: "10px", flexWrap: "wrap" }}>
           {[
             { num: "01", label: "Expense Tracker",    color: C.violetLight, bg: `${C.violetLight}18`, border: `${C.violetLight}40`, id: "project-expense"   },
@@ -645,7 +645,7 @@ const useScrollReveal = (threshold = 0.15) => {
 };
 
 // ─────────────────────────────────────────────────────────────
-// KEY FEATURES — new animated design
+// KEY FEATURES — animated design
 // ─────────────────────────────────────────────────────────────
 const KeyFeaturesSection = () => {
   const [sectionRef, sectionVisible] = useScrollReveal(0.1);
@@ -913,7 +913,6 @@ const AutomationPipelineSection = () => {
 
   const renderPipeline = (nodes, accentColor, baseDelay, pipelineOffset) => {
     if (isMobile) {
-      // Mobile: vertical stack
       return (
         <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
           {nodes.map((node, i) => (
@@ -940,7 +939,6 @@ const AutomationPipelineSection = () => {
       );
     }
 
-    // Desktop: horizontal row
     return (
       <div style={{ display: "flex", flexWrap: "nowrap", gap: "6px", alignItems: "center", overflowX: "auto", paddingBottom: "4px" }}>
         {nodes.map((node, i) => (
@@ -1072,7 +1070,6 @@ const AutomationPipelineSection = () => {
 // PROJECT 01 — Daily Expense Tracker
 // ─────────────────────────────────────────────────────────────
 const DailyExpenseTracker = () => {
-
   return (
     <section
       id="project-expense"
@@ -1156,11 +1153,7 @@ const DailyExpenseTracker = () => {
 
         <ScreenshotGallery accentColor={C.violet} />
         <VideoPlayer accentColor={C.violet} />
-
-        {/* ── KEY FEATURES — animated redesign ── */}
         <KeyFeaturesSection />
-
-        {/* ── AUTOMATION PIPELINE — animated redesign ── */}
         <AutomationPipelineSection />
       </div>
     </section>
@@ -1311,7 +1304,7 @@ const GlobalStyles = () => {
     `;
     document.head.appendChild(style);
     return () => document.head.removeChild(style);
-  }, []);x
+  }, []);
   return null;
 };
 
