@@ -1,304 +1,369 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
-function Button({ label, onClick, variant = 'primary', icon }) {
-  const styles = {
-    primary: 'bg-[#1a73e8] text-white hover:bg-[#1557b0] shadow-[0_1px_2px_0_rgba(60,64,67,0.3),0_1px_3px_1px_rgba(60,64,67,0.15)] hover:shadow-[0_1px_3px_0_rgba(60,64,67,0.3),0_4px_8px_3px_rgba(60,64,67,0.15)]',
-    secondary: 'bg-white text-[#1a73e8] border border-[#dadce0] hover:bg-[#f8f9fa] hover:border-[#d2d3d4] shadow-[0_1px_2px_0_rgba(60,64,67,0.3),0_1px_3px_1px_rgba(60,64,67,0.15)] hover:shadow-[0_1px_3px_0_rgba(60,64,67,0.3),0_4px_8px_3px_rgba(60,64,67,0.15)]',
-    outline: 'bg-transparent text-gray-700 border-2 border-gray-300 hover:border-[#1a73e8] hover:bg-blue-50 hover:text-[#1a73e8]',
-  };
+/* ─────────────────────────────────────────
+   Reusable Components
+───────────────────────────────────────── */
 
+function PrimaryButton({ label, onClick, icon }) {
   return (
     <motion.button
-      whileHover={{ 
-        y: -2,
-        transition: { duration: 0.2 }
-      }}
-      whileTap={{ 
-        scale: 0.98,
-        transition: { duration: 0.1 }
-      }}
-      className={`group relative px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-3.5 rounded-lg font-medium transition-all duration-200 overflow-hidden text-sm sm:text-base ${styles[variant]}`}
       onClick={onClick}
-      tabIndex={0}
+      whileHover={{ scale: 1.03 }}
+      whileTap={{ scale: 0.97 }}
+      className="relative inline-flex items-center justify-center gap-2 w-full sm:w-auto px-6 sm:px-7 py-3 sm:py-3.5 rounded-full font-semibold text-sm tracking-wide overflow-hidden group"
+      style={{ background: 'linear-gradient(135deg, #00c6ff 0%, #0072ff 100%)', color: '#fff' }}
     >
-      {/* Ripple effect container */}
-      <motion.span
-        className="absolute inset-0 flex items-center justify-center"
-        initial={false}
-      >
-        <motion.span
-          className={`absolute rounded-full ${variant === 'primary' ? 'bg-white' : 'bg-[#1a73e8]'}`}
-          initial={{ scale: 0, opacity: 0.3 }}
-          whileHover={{ scale: 2, opacity: 0 }}
-          transition={{ duration: 0.6 }}
-          style={{ width: '100%', height: '100%' }}
-        />
-      </motion.span>
-      
-      {/* Button content */}
-      <span className="relative flex items-center justify-center gap-1.5 sm:gap-2">
-        {icon && <span className="text-base sm:text-lg">{icon}</span>}
-        <span className="tracking-wide">{label}</span>
-        
-        {/* Animated arrow */}
-        <motion.span
-          className="inline-block"
-          initial={{ x: 0 }}
-          whileHover={{ x: 3 }}
-          transition={{ duration: 0.2 }}
-        >
-          →
-        </motion.span>
+      <span
+        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        style={{ background: 'linear-gradient(135deg, #0072ff 0%, #00c6ff 100%)' }}
+      />
+      <span className="relative flex items-center gap-2">
+        {icon && <span>{icon}</span>}
+        {label}
       </span>
     </motion.button>
   );
 }
 
-function DownloadResumeButton() {
+function GhostButton({ label, onClick, icon }) {
+  return (
+    <motion.button
+      onClick={onClick}
+      whileHover={{ scale: 1.03 }}
+      whileTap={{ scale: 0.97 }}
+      className="relative inline-flex items-center justify-center gap-2 w-full sm:w-auto px-6 sm:px-7 py-3 sm:py-3.5 rounded-full font-semibold text-sm tracking-wide transition-all duration-300"
+      style={{
+        border: '1px solid rgba(255,255,255,0.2)',
+        color: 'rgba(255,255,255,0.85)',
+        background: 'rgba(255,255,255,0.05)',
+        backdropFilter: 'blur(10px)',
+      }}
+    >
+      {icon && <span>{icon}</span>}
+      {label}
+    </motion.button>
+  );
+}
+
+function DownloadButton() {
   return (
     <motion.a
       href="/resume.pdf"
       download
-      whileHover={{ 
-        y: -2,
-        transition: { duration: 0.2 }
+      whileHover={{ scale: 1.03 }}
+      whileTap={{ scale: 0.97 }}
+      className="relative inline-flex items-center justify-center gap-2 w-full sm:w-auto px-6 sm:px-7 py-3 sm:py-3.5 rounded-full font-semibold text-sm tracking-wide transition-all duration-300"
+      style={{
+        border: '1px solid rgba(255,255,255,0.15)',
+        color: 'rgba(255,255,255,0.85)',
+        background: 'rgba(255,255,255,0.05)',
+        backdropFilter: 'blur(10px)',
       }}
-      whileTap={{ 
-        scale: 0.98,
-        transition: { duration: 0.1 }
-      }}
-      className="group relative inline-flex items-center justify-center gap-1.5 sm:gap-2 px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-3.5 rounded-lg font-medium bg-gradient-to-r from-[#1a73e8] to-[#4285f4] text-white shadow-[0_1px_2px_0_rgba(60,64,67,0.3),0_1px_3px_1px_rgba(60,64,67,0.15)] hover:shadow-[0_1px_3px_0_rgba(60,64,67,0.3),0_4px_8px_3px_rgba(60,64,67,0.15)] transition-all duration-200 overflow-hidden text-sm sm:text-base"
-      tabIndex={0}
-      aria-label="Download Resume"
     >
-      {/* Shimmer effect */}
-      <motion.span
-        className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-20"
-        initial={{ x: '-100%' }}
-        whileHover={{ x: '100%' }}
-        transition={{ duration: 0.6 }}
-      />
-      
-      <span className="relative flex items-center gap-1.5 sm:gap-2 tracking-wide">
-        <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-        </svg>
-        Download Resume
-      </span>
+      <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+          d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+        />
+      </svg>
+      Download Resume
     </motion.a>
   );
 }
 
+function GlowOrb({ color, size, mobileSize, style }) {
+  return (
+    <motion.div
+      className="absolute rounded-full pointer-events-none"
+      style={{
+        width: mobileSize || size,
+        height: mobileSize || size,
+        background: color,
+        filter: 'blur(80px)',
+        opacity: 0.15,
+        ...style,
+      }}
+      animate={{ scale: [1, 1.2, 1], opacity: [0.15, 0.25, 0.15] }}
+      transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
+    />
+  );
+}
+
+/* ─────────────────────────────────────────
+   Main Home Component
+───────────────────────────────────────── */
 const Home = () => {
   const navigate = useNavigate();
+  const videoRef = useRef(null);
+
+  const containerVariants = {
+    hidden: {},
+    visible: { transition: { staggerChildren: 0.12 } },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 24 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] } },
+  };
 
   return (
-    <section
-      className="relative min-h-screen flex flex-col items-center justify-center text-gray-800 px-6 sm:px-8 md:px-12 py-16 overflow-hidden"
-      aria-label="Home section"
-    >
-      {/* Video Background */}
-      <div className="absolute inset-0 w-full h-full">
-        <video
-          className="absolute inset-0 w-full h-full object-cover"
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 1080'%3E%3Crect fill='%23f0f0f0' width='1920' height='1080'/%3E%3C/svg%3E"
-        >
-          <source src="/5657af743257c466354ddac1b85c3386.mp4" type="video/mp4" />
-        </video>
-        
-        {/* Elegant overlay for readability - reduced opacity for more visibility */}
-        <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/60 to-white/70" />
-        
-        {/* Subtle pattern overlay */}
-        <div 
-          className="absolute inset-0 opacity-[0.015]" 
-          style={{
-            backgroundImage: `radial-gradient(circle at 1px 1px, rgb(0 0 0) 1px, transparent 0)`,
-            backgroundSize: '40px 40px'
-          }} 
-        />
-      </div>
+    <>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Space+Grotesk:wght@500;600;700&display=swap');
 
-      {/* Elegant background gradient orbs */}
-      <div className="absolute top-20 left-10 w-96 h-96 bg-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob" />
-      <div className="absolute top-40 right-10 w-96 h-96 bg-purple-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000" />
-      <div className="absolute -bottom-20 left-1/2 w-96 h-96 bg-pink-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000" />
+        *, *::before, *::after { box-sizing: border-box; }
 
-      {/* Main Content */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6 }}
-        className="relative z-10 text-center w-full max-w-5xl"
-      >
-        {/* Professional badge */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, delay: 0.1, type: "spring", stiffness: 200 }}
-          whileHover={{ scale: 1.05 }}
-          className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/95 backdrop-blur-md border-2 border-blue-500/30 rounded-full mb-8 shadow-xl"
-        >
-          <span className="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse shadow-lg shadow-green-500/50" />
-          <span className="text-sm font-bold text-gray-900 tracking-wide">AVAILABLE FOR OPPORTUNITIES</span>
-        </motion.div>
+        .home-root {
+          font-family: 'DM Sans', sans-serif;
+          background: #000;
+          color: #fff;
+        }
 
-        {/* Main heading with backdrop */}
-        <div className="relative inline-block mb-6">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="absolute inset-0 bg-white/80 backdrop-blur-xl rounded-3xl -m-4 sm:-m-6 md:-m-8 shadow-2xl"
-            style={{ zIndex: -1 }}
-          />
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3, type: "spring", stiffness: 100 }}
-            className="relative text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-900 via-blue-900 to-gray-900 tracking-tight leading-tight px-4 sm:px-6 md:px-8 py-3 sm:py-4"
-            style={{ 
-              fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
-              WebkitTextStroke: '1px rgba(0, 0, 0, 0.1)',
+        .home-root::before {
+          content: '';
+          position: fixed;
+          inset: 0;
+          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+          opacity: 0.025;
+          pointer-events: none;
+          z-index: 0;
+        }
+
+        .gradient-text {
+          background: linear-gradient(135deg, #ffffff 0%, #a0c4ff 50%, #c4b5fd 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+
+        .cyan-gradient-text {
+          background: linear-gradient(135deg, #00c6ff 0%, #a78bfa 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+
+        .glass-card {
+          background: rgba(255,255,255,0.04);
+          border: 1px solid rgba(255,255,255,0.08);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+        }
+
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #0072ff; border-radius: 2px; }
+
+        /* On portrait/mobile — scale video by width so full car is visible, no cropping */
+        @media (max-width: 768px) and (orientation: portrait) {
+          .bg-video {
+            width: 100% !important;
+            height: auto !important;
+            min-width: unset !important;
+            min-height: unset !important;
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+          }
+        }
+
+        /* Landscape mobile / tablet — fill full screen */
+        @media (max-width: 768px) and (orientation: landscape) {
+          .bg-video {
+            width: auto !important;
+            height: 100% !important;
+            min-width: 100% !important;
+          }
+        }
+
+        /* Desktop — cover full background */
+        @media (min-width: 769px) {
+          .bg-video {
+            width: auto !important;
+            height: 100% !important;
+            min-width: 100% !important;
+          }
+        }
+
+        /* Mobile: stack buttons full width in 2 columns */
+        @media (max-width: 480px) {
+          .btn-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            width: 100%;
+          }
+          .btn-grid > *:last-child:nth-child(odd) {
+            grid-column: 1 / -1;
+          }
+        }
+
+        /* Tablet and up: row layout */
+        @media (min-width: 481px) {
+          .btn-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+          }
+        }
+      `}</style>
+
+      <section className="home-root relative flex flex-col items-center justify-center min-h-screen overflow-hidden px-4 sm:px-6 md:px-8">
+
+        {/* ── Video Background ── */}
+        <div className="absolute inset-0 z-0" style={{ overflow: 'hidden' }}>
+          <video
+            ref={videoRef}
+            className="bg-video"
+            autoPlay loop muted playsInline preload="auto"
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              width: '100%',
+              height: 'auto',
+              opacity: 0.6,
             }}
           >
-            Pranith Konda
-          </motion.h1>
+            {/* Place hello123.mp4 in your /public folder */}
+            <source src="/hello123.mp4" type="video/mp4" />
+          </video>
+          {/* Bottom fade so content stays readable */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background: 'linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.15) 40%, rgba(0,0,0,0.6) 100%)',
+            }}
+          />
         </div>
 
-        {/* Subtitle with backdrop */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="mb-8 inline-block w-full max-w-2xl px-2"
-        >
-          <div className="bg-white/85 backdrop-blur-lg rounded-2xl px-4 sm:px-6 md:px-8 py-4 sm:py-5 md:py-6 shadow-xl border border-gray-200/50">
-            <motion.h2 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-              className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-2 sm:mb-3 tracking-tight"
-            >
-              Aspiring Software Engineer & AI Enthusiast
-            </motion.h2>
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.6 }}
-              className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 text-xs sm:text-sm text-gray-700 font-semibold"
-            >
-              <motion.span 
-                whileHover={{ scale: 1.1 }}
-                className="flex items-center gap-1"
-              >
-                🎓 BTech in Computer Science
-              </motion.span>
-              <span className="hidden sm:inline text-gray-400">•</span>
-              <motion.span 
-                whileHover={{ scale: 1.1 }}
-                className="flex items-center gap-1"
-              >
-                📍 Hyderabad, India
-              </motion.span>
-            </motion.div>
-          </div>
-        </motion.div>
+        {/* ── Ambient Glow Orbs ── */}
+        <GlowOrb color="#0072ff" size="520px" mobileSize="260px" style={{ top: '-80px', left: '-80px' }} />
+        <GlowOrb color="#a78bfa" size="420px" mobileSize="220px" style={{ top: '60px', right: '-60px' }} />
+        <GlowOrb color="#00c6ff" size="360px" mobileSize="200px" style={{ bottom: '-60px', left: '30%' }} />
 
-        {/* Description with backdrop */}
+        {/* ── Grid Lines ── */}
+        <div
+          className="absolute inset-0 z-0 pointer-events-none"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)
+            `,
+            backgroundSize: '72px 72px',
+          }}
+        />
+
+        {/* ── Main Content ── */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.7 }}
-          className="mb-12 max-w-3xl mx-auto px-2"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="relative z-10 w-full max-w-4xl mx-auto text-center py-12 sm:py-0"
         >
-          <div className="bg-white/80 backdrop-blur-lg rounded-2xl px-4 sm:px-6 md:px-10 py-4 sm:py-6 md:py-8 shadow-xl border border-gray-200/50">
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.8 }}
-              className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-900 font-medium leading-relaxed"
+
+          {/* Available badge */}
+          <motion.div variants={itemVariants} className="mb-6 sm:mb-8 flex justify-center">
+            <div className="inline-flex items-center gap-2 sm:gap-2.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full glass-card">
+              <span
+                className="w-2 h-2 rounded-full bg-emerald-400 shrink-0"
+                style={{ boxShadow: '0 0 8px #34d399' }}
+              />
+              <span
+                className="text-xs font-semibold tracking-widest uppercase"
+                style={{ color: 'rgba(255,255,255,0.55)' }}
+              >
+                AVAILABLE FOR OPPORTUNITIES
+              </span>
+            </div>
+          </motion.div>
+
+          {/* Name */}
+          <motion.div variants={itemVariants} className="mb-4 sm:mb-5">
+            <h1
+              className="gradient-text font-bold leading-none"
+              style={{
+                fontFamily: "'Space Grotesk', sans-serif",
+                fontSize: 'clamp(2.4rem, 9vw, 7rem)',
+                letterSpacing: '-0.03em',
+              }}
             >
-              Passionate about creating innovative solutions through programming, web development, 
-              and artificial intelligence. Committed to leveraging cutting-edge technologies to 
+              Pranith Konda
+            </h1>
+          </motion.div>
+
+          {/* Role */}
+          <motion.div variants={itemVariants} className="mb-4 sm:mb-5">
+            <p
+              className="cyan-gradient-text font-semibold tracking-wide"
+              style={{ fontSize: 'clamp(1rem, 3vw, 1.5rem)' }}
+            >
+              Aspiring Software Engineer &amp; AI Enthusiast
+            </p>
+          </motion.div>
+
+          {/* Location + Education */}
+          <motion.div
+            variants={itemVariants}
+            className="mb-6 sm:mb-10 flex flex-col sm:flex-row flex-wrap items-center justify-center gap-2 sm:gap-5 text-xs sm:text-sm font-medium"
+            style={{ color: 'rgba(255,255,255,0.95)', textShadow: '0 1px 8px rgba(0,0,0,0.8)' }}
+          >
+            <span className="flex items-center gap-1.5">
+              <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
+                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
+                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              Hyderabad, India
+            </span>
+            <span
+              className="hidden sm:inline w-1 h-1 rounded-full"
+              style={{ background: 'rgba(255,255,255,0.2)' }}
+            />
+            <span className="flex items-center gap-1.5">
+              <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 14l9-5-9-5-9 5 9 5z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
+                  d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+              </svg>
+              BTech — Computer Science
+            </span>
+          </motion.div>
+
+          {/* Description */}
+          <motion.div variants={itemVariants} className="mb-8 sm:mb-10 max-w-xl sm:max-w-2xl mx-auto px-2 sm:px-0">
+            <p
+              className="leading-relaxed"
+              style={{
+                color: 'rgba(255,255,255,0.92)',
+                fontWeight: 400,
+                fontSize: 'clamp(0.875rem, 2.5vw, 1.125rem)',
+                textShadow: '0 1px 10px rgba(0,0,0,0.9)',
+              }}
+            >
+              Passionate about creating innovative solutions through programming, web development,
+              and artificial intelligence. Committed to leveraging cutting-edge technologies to
               solve real-world problems and drive meaningful impact.
-            </motion.p>
-          </div>
-        </motion.div>
+            </p>
+          </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.9 }}
-          className="flex flex-wrap justify-center gap-4"
-        >
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.4, delay: 1.0 }}
-          >
-            <Button label="About Me" onClick={() => navigate('/about')} variant="primary" icon="👤" />
+          {/* CTA Buttons */}
+          <motion.div variants={itemVariants}>
+            <div className="btn-grid">
+              <PrimaryButton label="About Me" onClick={() => navigate('/about')} icon="👤" />
+              <GhostButton label="View Projects" onClick={() => navigate('/projects')} icon="💼" />
+              <GhostButton label="Contact Me" onClick={() => navigate('/contact')} icon="✉️" />
+              <DownloadButton />
+            </div>
           </motion.div>
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.4, delay: 1.1 }}
-          >
-            <Button label="View Projects" onClick={() => navigate('/projects')} variant="secondary" icon="💼" />
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.4, delay: 1.2 }}
-          >
-            <Button label="Contact Me" onClick={() => navigate('/contact')} variant="secondary" icon="✉️" />
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.4, delay: 1.3 }}
-          >
-            <DownloadResumeButton />
-          </motion.div>
-        </motion.div>
-      </motion.div>
 
-      {/* Custom animations */}
-      <style>
-        {`
-          @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-          
-          @keyframes blob {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(30px, -50px) scale(1.1); }
-            66% { transform: translate(-20px, 20px) scale(0.9); }
-          }
-          
-          .animate-blob {
-            animation: blob 7s infinite;
-          }
-          
-          .animation-delay-2000 {
-            animation-delay: 2s;
-          }
-          
-          .animation-delay-4000 {
-            animation-delay: 4s;
-          }
-          
-          body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-          }
-        `}
-      </style>
-    </section>
+        </motion.div>
+      </section>
+    </>
   );
 };
 
