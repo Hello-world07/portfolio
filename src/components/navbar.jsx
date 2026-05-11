@@ -83,7 +83,7 @@ const Navbar = () => {
               <span className="relative z-10">Contact Me</span>
             </Link>
             <a
-              href="/resume.pdf"
+              href="/resume_pranith.pdf"
               target="_blank"
               rel="noopener noreferrer"
               download

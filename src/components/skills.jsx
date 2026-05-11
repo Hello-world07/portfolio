@@ -135,7 +135,7 @@ const Skills = () => {
         {/* Download Resume Button */}
         <div className="mt-10 sm:mt-12 text-center">
           <a
-            href="/resume.pdf"
+            href="/resume_pranith.pdf"
             target="_blank"
             rel="noopener noreferrer"
             download
